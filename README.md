@@ -25,9 +25,16 @@
         }
         .subtext {
             color: white;
-            font-size: 13px;  /* Slightly smaller than the 20px caption */
+            font-size: 13px;
             text-align: left;
             padding-left: 10%;
+        }
+        .video-container {
+            text-align: center;  /* Centers the video */
+            margin: 20px 0;     /* Adds some space above and below the video */
+        }
+        iframe {
+            max-width: 100%;    /* Ensures the video scales responsively */
         }
     </style>
 </head>
@@ -36,6 +43,9 @@
         <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
         <div class="caption">What is this?:</div>
         <div class="subtext">Hamachi the Psychotic Killer is a platformer game where you play as hamachi, a once-ordinary person now possessed by a demon with a craving for souls. This demon influences hamachi to kill innocent civilians to empower her demonic fury, eventually to become strong enough to take over the world. Sounds very dramatic huh.</div>
+        <div class="video-container">
+            <iframe width="560" height="315" src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" title="Hamachi the Psychotic Killer Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 </body>
 </html>
