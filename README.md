@@ -3,7 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamachi the Psychotic Killer</title>
-    <link rel="icon" type="image/x-icon" href="/assets/webicon.ico">
+    <link rel="icon" type="image/x-icon" href="/assets/webicon.ico" sizes="16x16">
+    <link rel="icon" type="image/png" href="/assets/webicon.png" sizes="16x16">
     <style>
         body {
             background-color: black;
@@ -74,7 +75,7 @@
         </div>
         <div class="subtext">there are currently 3 worlds you can play! oh, and did I mention the title screen uses your computer's internal clock to transition from day and night cycles? because why not? (ill update this website in time)</div>
         <div class="image-container">
-            <img src="https://gavinoriley.github.io/assets/brand-1.jpg" alt="End Graphic" class="transparent-gif">
+            <img src="https://gavinoriley.github.io/assets/brand.tiff" alt="End Graphic" class="transparent-gif">
         </div>
     </div>
 </body>
