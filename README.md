@@ -37,12 +37,16 @@
             max-width: 100%;
         }
         .buy-now {
-            text-align: center;  /* Centers the buy now image */
-            margin: 10px 0;     /* Adds some space above and below */
+            text-align: center;
+            margin: 10px 0;
         }
         .buy-now img {
-            width: 200px;       /* Sets a specific width to shrink the image */
-            height: auto;       /* Maintains aspect ratio */
+            width: 200px;
+            height: auto;
+        }
+        .map-select {
+            text-align: center;  /* Centers the map select image */
+            margin: 20px 0;     /* Adds space above and below */
         }
     </style>
 </head>
@@ -50,8 +54,8 @@
     <div class="image-container">
         <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
         <div class="buy-now">
-            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/">
-                <img src="https://gavinoriley.github.io/assets/2buynow.png" alt="Buy Now Button">
+            <a href="https://www.google.com">
+                <img src="https://gavinoriley.github.io/assets/buynow.png" alt="Buy Now Button">
             </a>
         </div>
         <div class="caption">What is this?:</div>
@@ -60,6 +64,9 @@
             <iframe width="560" height="315" src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" title="Hamachi the Psychotic Killer Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
         <div class="subtext">heres a video of the game in action, this game is still in the early access phase but you can try out the demo, or Buy the early access version to suppport me, and see whats currently available for play.</div>
+        <div class="map-select">
+            <img src="https://gavinoriley.github.io/assets/mapselect.png" alt="Map Select Graphic">
+        </div>
     </div>
 </body>
 </html>
