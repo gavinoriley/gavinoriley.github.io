@@ -4,10 +4,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamachi the Psychotic Killer</title>
     <!-- Updated favicon links -->
-    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
-    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
-    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico?">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg?">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png?">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png?">
     <style>
         body {
             background-color: black;
