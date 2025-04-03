@@ -22,7 +22,7 @@
 </head>
 <body>
     <div class="image-container">
-        <img src="/assets/hamachi_hero.png" alt="Hamachi Hero Graphic">
+        <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
     </div>
 </body>
 </html>
