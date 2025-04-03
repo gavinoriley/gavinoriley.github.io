@@ -25,9 +25,9 @@
         }
         .subtext {
             color: white;
-            font-size: 10px;  /* Slightly smaller than the 20px caption */
+            font-size: 13px;  /* Slightly smaller than the 20px caption */
             text-align: left;
-            padding-left: 25%;
+            padding-left: 45%;
         }
     </style>
 </head>
