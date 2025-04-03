@@ -48,6 +48,10 @@
             text-align: center;
             margin: 20px 0;
         }
+        /* New style for the transparent GIF */
+        .transparent-gif {
+            background-color: transparent;
+        }
     </style>
 </head>
 <body>
@@ -69,7 +73,7 @@
         </div>
         <div class="subtext">there are currently 3 worlds you can play! oh, and did I mention the title screen uses your computer's internal clock to transition from day and night cycles? because why not? (ill update this website in time)</div>
         <div class="image-container">
-            <img src="https://gavinoriley.github.io/assets/tnd67K.gif" alt="End Graphic">
+            <img src="https://gavinoriley.github.io/assets/tnd67K.gif" alt="End Graphic" class="transparent-gif">
         </div>
     </div>
 </body>
