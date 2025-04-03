@@ -27,7 +27,7 @@
             color: white;
             font-size: 13px;  /* Slightly smaller than the 20px caption */
             text-align: left;
-            padding-left: 45%;
+            padding-left: 5%;
         }
     </style>
 </head>
