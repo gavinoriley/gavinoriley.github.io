@@ -1,5 +1,5 @@
 
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -21,7 +21,7 @@
         }
         .caption {
             color: white;
-            font-size: 10px;
+            font-size: 30px;
             text-align: center;
         }
     </style>
@@ -29,7 +29,7 @@
 <body>
     <div class="image-container">
         <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
-        <div class="caption">Hello?</div>
+        <div class="caption">Hello? Theres nothing here yet, but it exists.</div>
     </div>
 </body>
 </html>
