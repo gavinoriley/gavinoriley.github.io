@@ -20,7 +20,8 @@
         .caption {
             color: white;
             font-size: 20px;
-            text-align: center;
+            text-align: left;
+            padding-left: 25%;  /* Moves text about a quarter from the left edge */
         }
     </style>
 </head>
