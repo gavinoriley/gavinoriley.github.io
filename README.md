@@ -25,7 +25,7 @@
         }
         .subtext {
             color: white;
-            font-size: 6px;  /* Slightly smaller than the 20px caption */
+            font-size: 10px;  /* Slightly smaller than the 20px caption */
             text-align: left;
             padding-left: 25%;
         }
@@ -35,7 +35,7 @@
     <div class="image-container">
         <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
         <div class="caption">What is this?:</div>
-        <div class="subtext">Hamachi the Psychotic Killer is a platformer game where you play as hamachi, who has fallen to demonic possession <br> this demon influences hamachi to kill innocent civilians to empower her demonic fury, eventually to become strong enough to take over the world.</div>
+        <div class="subtext">Hamachi the Psychotic Killer is a platformer game where you play as hamachi, who has fallen to demonic possession <br> this demon influences hamachi to kill innocent civilians to empower her demonic fury, eventually to become strong enough to take over the world. Sounds very dramatic huh.</div>
     </div>
 </body>
 </html>
