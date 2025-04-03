@@ -1,5 +1,5 @@
 <head>
-  <title>Current Title</title>
+  <title>Hamachi the Psychotic Killer</title>
 </head>
 
 <html lang="en">
