@@ -29,7 +29,7 @@
 <body>
     <div class="image-container">
         <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
-        <div class="caption">Hello? Theres nothing here yet, but it exists.</div>
+        <div class="caption">hello world, ive been born.</div>
     </div>
 </body>
 </html>
