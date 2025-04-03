@@ -3,8 +3,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamachi the Psychotic Killer</title>
-    <link rel="shortcut icon" href="/assets/webicon.ico" type="image/x-icon">
-    <link rel="icon" href="/assets/webicon.png" type="image/png" sizes="16x16">
+    <!-- Updated favicon links -->
+    <link rel="icon" type="image/x-icon" href="/assets/favicon.ico">
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/assets/favicon-96x96.png">
     <style>
         body {
             background-color: black;
