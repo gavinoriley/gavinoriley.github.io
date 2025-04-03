@@ -21,7 +21,7 @@
         }
         .caption {
             color: white;
-            font-size: 30px;
+            font-size: 20px;
             text-align: center;
         }
     </style>
