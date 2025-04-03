@@ -68,6 +68,9 @@
             <img src="https://gavinoriley.github.io/assets/mapselect.png" alt="Map Select Graphic">
         </div>
         <div class="subtext">there are currently 3 worlds you can play! oh, and did I mention the title screen uses your computer's internal clock to transition from day and night cycles? because why not? (ill update this website in time)</div>
+        <div class="image-container">
+            <img src="https://gavinoriley.github.io/assets/tnd67K.gif" alt="End Graphic">
+        </div>
     </div>
 </body>
 </html>
