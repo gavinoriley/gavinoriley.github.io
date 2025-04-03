@@ -2,6 +2,7 @@
   <title>Hamachi the Psychotic Killer</title>
 </head>
 
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -17,9 +18,20 @@
             margin: 0;
             padding: 0;
         }
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            padding-top: 50px; /* Adds space from the top */
+        }
+        .logo {
+            max-width: 300px; /* Adjust this value based on your logo size */
+            height: auto;
+        }
     </style>
 </head>
 <body>
-    <!-- Content will go here in next steps -->
+    <div class="logo-container">
+        <img src="https://gavinoriley.github.io/assets/Z4ow1Dt.png" alt="Website Logo" class="logo">
+    </div>
 </body>
 </html>
