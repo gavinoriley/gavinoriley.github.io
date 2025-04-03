@@ -45,8 +45,8 @@
             height: auto;
         }
         .map-select {
-            text-align: center;  /* Centers the map select image */
-            margin: 20px 0;     /* Adds space above and below */
+            text-align: center;
+            margin: 20px 0;
         }
     </style>
 </head>
@@ -62,13 +62,12 @@
         <div class="subtext">Hamachi the Psychotic Killer is a platformer game where you play as hamachi, a once-ordinary person now possessed by a demon with the influenced goal to kill innocent civilians, flee from the police, and collect their souls to empower her demonic fury. Eventually to become strong enough to take over the entire world. Sounds very dramatic huh.</div>
         <div class="video-container">
             <iframe width="560" height="315" src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" title="Hamachi the Psychotic Killer Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </ 
-   
-div>
+        </div>
         <div class="subtext">heres a video of the game in action, this game is still in the early access phase but you can try out the demo, or Buy the early access version to suppport me, and see whats currently available for play.</div>
         <div class="map-select">
             <img src="https://gavinoriley.github.io/assets/mapselect.png" alt="Map Select Graphic">
         </div>
         <div class="subtext">there are currently 3 worlds you can play! oh, and did I mention the title screen uses your computer's internal clock to transition from day and night cycles? because why not? (ill update this website in time)</div>
     </div>
-
+</body>
+</html>
