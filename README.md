@@ -54,8 +54,8 @@
     <div class="image-container">
         <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
         <div class="buy-now">
-            <a href="https://www.google.com">
-                <img src="https://gavinoriley.github.io/assets/buynow.png" alt="Buy Now Button">
+            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/">
+                <img src="https://gavinoriley.github.io/assets/2buynow.png" alt="Buy Now Button">
             </a>
         </div>
         <div class="caption">What is this?:</div>
