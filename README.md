@@ -3,12 +3,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamachi the Psychotic Killer</title>
-    <!-- Standard favicon (PNG for broad compatibility) -->
-    <link rel="icon" type="image/png" href="/assets/webicon.png" sizes="16x16">
-    <!-- Apple Touch Icon for Safari/iOS -->
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/webicon.png">
-    <!-- Original ICO favicon as fallback -->
-    <link rel="icon" type="image/x-icon" href="/assets/webicon.ico" sizes="16x16">
+    <link rel="shortcut icon" href="/assets/webicon.ico" type="image/x-icon">
+    <link rel="icon" href="/assets/webicon.png" type="image/png" sizes="16x16">
     <style>
         body {
             background-color: black;
@@ -54,7 +50,6 @@
             text-align: center;
             margin: 20px 0;
         }
-        /* New style for the transparent GIF */
         .transparent-gif {
             background-color: transparent;
         }
