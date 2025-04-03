@@ -1,4 +1,5 @@
 
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -18,11 +19,17 @@
             max-width: 100%;
             height: auto;
         }
+        .caption {
+            color: white;
+            font-size: 10px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
     <div class="image-container">
         <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
+        <div class="caption">Hello?</div>
     </div>
 </body>
 </html>
