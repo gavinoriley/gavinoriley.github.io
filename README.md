@@ -21,13 +21,13 @@
             color: white;
             font-size: 20px;
             text-align: left;
-            padding-left: 15%;
+            padding-left: 10%;
         }
         .subtext {
             color: white;
             font-size: 13px;  /* Slightly smaller than the 20px caption */
             text-align: left;
-            padding-left: 15%;
+            padding-left: 10%;
         }
     </style>
 </head>
