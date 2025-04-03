@@ -1,4 +1,6 @@
-
+<head>
+  <title>Current Title</title>
+</head>
 
 <html lang="en">
 <head>
