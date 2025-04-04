@@ -53,6 +53,12 @@
         .transparent-gif {
             background-color: transparent;
         }
+        .footer {
+            color: white;
+            font-size: 12px;
+            text-align: center;
+            padding: 20px 0;
+        }
     </style>
 </head>
 <body>
@@ -76,6 +82,9 @@
         <div class="image-container">
             <img src="https://gavinoriley.github.io/assets/brand-1.jpg" alt="End Graphic" class="transparent-gif">
         </div>
+    </div>
+    <div class="footer">
+        Hamachi the Psychotic Killer © Gavin ORiley 2025
     </div>
 </body>
 </html>
