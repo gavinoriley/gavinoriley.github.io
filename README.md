@@ -150,7 +150,7 @@
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" title="Hamachi the Psychotic Killer Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <p>Here's a video of the game in action. This game is still in the early access phase, but you can try out the demo or buy the early access version to support me and see what's currently available for play.</p>
+            <p>Here's a video of the game in action. This game is still in the early access phase, but you can try out the demo or buy the early access version to support me while I continue to develop it.</p>
         </section>
         <section id="gameplay">
             <div class="image-container">
