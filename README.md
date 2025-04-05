@@ -1,90 +1,153 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hamachi the Psychotic Killer</title>
-    <!-- Single favicon link -->
     <link rel="icon" type="image/png" href="/assets/favicon-96x96.png">
     <style>
+        /* Global Styles */
         body {
             background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
         }
+
+        h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: #ff0000; /* Red accent for headings */
+        }
+
+        p {
+            font-size: 16px;
+            line-height: 1.5;
+        }
+
         .image-container {
             text-align: center;
-            margin: 20px;
+            margin: 20px 0;
         }
+
         img {
             max-width: 100%;
             height: auto;
         }
-        .caption {
-            color: white;
-            font-size: 20px;
-            text-align: left;
-            padding-left: 10%;
-        }
-        .subtext {
-            color: white;
-            font-size: 13px;
-            text-align: left;
-            padding-left: 10%;
-        }
+
+        /* Video Container for Responsive Embed */
         .video-container {
-            text-align: center;
+            position: relative;
+            padding-top: 56.25%; /* 16:9 aspect ratio */
             margin: 20px 0;
         }
-        iframe {
-            max-width: 100%;
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
         }
+
+        /* Buy Now Button Styling */
         .buy-now {
             text-align: center;
-            margin: 10px 0;
-        }
-        .buy-now img {
-            width: 200px;
-            height: auto;
-        }
-        .map-select {
-            text-align: center;
             margin: 20px 0;
         }
-        .transparent-gif {
-            background-color: transparent;
+
+        .buy-now img {
+            width: 200px;
+            transition: transform 0.3s ease;
         }
-        .footer {
-            color: white;
-            font-size: 12px;
+
+        .buy-now img:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 10px #ff0000; /* Red glow on hover */
+        }
+
+        /* Section Styling */
+        main section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Footer Styling */
+        footer {
+            border-top: 1px solid #333;
             text-align: center;
             padding: 20px 0;
+            font-size: 12px;
+        }
+
+        /* Responsive Design */
+        @media (min-width: 768px) {
+            #trailer, #gameplay {
+                display: flex;
+                align-items: center;
+                gap: 20px; /* Space between flex items */
+            }
+
+            #trailer .video-container, #gameplay .image-container {
+                flex: 1;
+            }
+
+            #trailer p, #gameplay p {
+                flex: 1;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="image-container">
-        <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
+    <!-- Hero Section -->
+    <header id="hero">
+        <div class="image-container">
+            <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
+        </div>
         <div class="buy-now">
             <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/">
                 <img src="https://gavinoriley.github.io/assets/2buynow.png" alt="Buy Now Button">
             </a>
         </div>
-        <div class="caption">What is this?:</div>
-        <div class="subtext">Hamachi the Psychotic Killer is a platformer game where you play as hamachi, a once-ordinary person now possessed by a demon with the influenced goal to kill innocent civilians, flee from the police, and collect their souls to empower her demonic fury. Eventually to become strong enough to take over the entire world. Sounds very dramatic huh.</div>
-        <div class="video-container">
-            <iframe width="560" height="315" src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" title="Hamachi the Psychotic Killer Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-        </div>
-        <div class="subtext">heres a video of the game in action, this game is still in the early access phase but you can try out the demo, or Buy the early access version to suppport me, and see whats currently available for play.</div>
-        <div class="map-select">
-            <img src="https://gavinoriley.github.io/assets/mapselect.png" alt="Map Select Graphic">
-        </div>
-        <div class="subtext">there are currently 3 worlds you can play! oh, and did I mention the title screen uses your computer's internal clock to transition from day and night cycles? because why not? (ill update this website in time)</div>
-        <div class="image-container">
-            <img src="https://gavinoriley.github.io/assets/brand-1.jpg" alt="End Graphic" class="transparent-gif">
-        </div>
-    </div>
-    <div class="footer">
-        Hamachi the Psychotic Killer © Gavin ORiley 2025
-    </div>
+    </header>
+
+    <!-- Main Content -->
+    <main>
+        <!-- About Section -->
+        <section id="about">
+            <h2>What is this?</h2>
+            <p>Hamachi the Psychotic Killer is a platformer game where you play as Hamachi, a once-ordinary person now possessed by a demon with the influenced goal to kill innocent civilians, flee from the police, and collect their souls to empower her demonic fury. Eventually to become strong enough to take over the entire world. Sounds very dramatic huh.</p>
+        </section>
+
+        <!-- Trailer Section -->
+        <section id="trailer">
+            <div class="video-container">
+                <iframe src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" title="Hamachi the Psychotic Killer Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            </div>
+            <p>Here's a video of the game in action. This game is still in the early access phase, but you can try out the demo or buy the early access version to support me and see what's currently available for play.</p>
+        </section>
+
+        <!-- Gameplay Section -->
+        <section id="gameplay">
+            <div class="image-container">
+                <img src="https://gavinoriley.github.io/assets/mapselect.png" alt="Map Select Graphic">
+            </div>
+            <p>There are currently 3 worlds you can play! Oh, and did I mention the title screen uses your computer's internal clock to transition from day and night cycles? Because why not? (I'll update this website in time)</p>
+        </section>
+
+        <!-- End Section -->
+        <section id="end">
+            <div class="image-container">
+                <img src="https://gavinoriley.github.io/assets/brand-1.jpg" alt="End Graphic" class="transparent-gif">
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>Hamachi the Psychotic Killer © Gavin ORiley 2025</p>
+    </footer>
 </body>
 </html>
