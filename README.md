@@ -6,7 +6,6 @@
     <title>Hamachi the Psychotic Killer</title>
     <link rel="icon" type="image/png" href="/assets/favicon-96x96.png">
     <style>
-        /* Base Styles (unchanged) */
         body {
             background-color: black;
             color: white;
@@ -50,11 +49,10 @@
             height: 100%;
         }
 
-        /* Button Container Styles */
         .button-container {
             display: flex;
             justify-content: center;
-            gap: 20px; /* Space between buttons */
+            gap: 20px;
             margin: 20px 0;
         }
 
@@ -62,9 +60,8 @@
             display: inline-block;
         }
 
-        /* Shift "Buy Now" button slightly to the left */
         .button-container .buy-now-link {
-            margin-right: -10px; /* Moves "Buy Now" slightly left relative to the gap */
+            margin-right: -10px;
         }
 
         .button-container img {
@@ -75,10 +72,24 @@
 
         .button-container img:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 10px #ff0000; /* Red glow on hover */
+            box-shadow: 0 0 10px #ff0000;
         }
 
-        /* Footer and Media Queries (unchanged) */
+        .demo-link {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .demo-link a {
+            color: white;
+            font-size: 14px;
+            text-decoration: none;
+        }
+
+        .demo-link a:hover {
+            text-decoration: underline;
+        }
+
         footer {
             border-top: 1px solid #333;
             text-align: center;
@@ -104,7 +115,6 @@
     </style>
 </head>
 <body>
-    <!-- Hero Section with Updated Buttons -->
     <header id="hero">
         <div class="image-container">
             <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
@@ -122,9 +132,15 @@
                 <img src="https://gavinoriley.github.io/assets/devlogbutton.png" alt="Devlog Button">
             </a>
         </div>
+        <div class="demo-link">
+            <a href="https://itch.io/embed-upload/13285482?color=333333" 
+               target="_blank" 
+               rel="noopener noreferrer">
+                or play a scuffed (but free) demo online!
+            </a>
+        </div>
     </header>
 
-    <!-- Main Content (unchanged) -->
     <main>
         <section id="about">
             <h2>What is this?</h2>
@@ -134,7 +150,7 @@
             <div class="video-container">
                 <iframe src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" title="Hamachi the Psychotic Killer Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </div>
-            <p>Here's a video of the game in action. This game is still in the early access phase, but you can try out the demo or buy the early access version to support me while I continue to develop it.</p>
+            <p>Here's a video of the game in action. This game is still in the early access phase, but you can try out the demo or buy the early access version to support me and see what's currently available for play.</p>
         </section>
         <section id="gameplay">
             <div class="image-container">
@@ -149,7 +165,6 @@
         </section>
     </main>
 
-    <!-- Footer (unchanged) -->
     <footer>
         <p>Hamachi the Psychotic Killer © Gavin ORiley 2025</p>
     </footer>
