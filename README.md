@@ -144,7 +144,7 @@
     <main>
         <section id="about">
             <h2>What is this?</h2>
-            <p>Hamachi the Psychotic Killer is a platformer game where you play as Hamachi, a once-ordinary person now possessed by a demon with the influenced goal to kill innocent civilians, flee from the police, and collect their souls to empower her demonic fury. Eventually to become strong enough to take over the entire world. Sounds very dramatic huh.</p>
+            <p>Hamachi the Psychotic Killer is a platformer game where you play as Hamachi, a once-ordinary person now possessed by a demon with the influenced goal to kill innocent civilians, flee from the police, and collect their souls to empower the demons demonic fury. Eventually to become strong enough to take over the entire world. Sounds very dramatic huh.</p>
         </section>
         <section id="trailer">
             <div class="video-container">
