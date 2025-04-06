@@ -12,7 +12,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            cursor: url('/assets/sprCursor_2.png'), auto;
+            cursor: url('/assets/sprCursor_3.png'), auto;
         }
 
         a {
