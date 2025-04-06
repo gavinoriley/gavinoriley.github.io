@@ -136,7 +136,7 @@
             <a href="https://itch.io/embed-upload/13285482?color=333333" 
                target="_blank" 
                rel="noopener noreferrer">
-                or play a scuffed (but free) demo online!
+                or click here to play a scuffed (but free) demo online!
             </a>
         </div>
     </header>
