@@ -16,7 +16,7 @@
         }
 
         a {
-            cursor: url('/assets/sprCursor_2.png'), auto;
+            cursor: url('/assets/sprCursor_5.png'), auto;
         }
 
         h2 {
