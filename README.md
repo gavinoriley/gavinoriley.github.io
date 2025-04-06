@@ -12,6 +12,11 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            cursor: url('/assets/sprCursor_2.png'), auto;
+        }
+
+        a {
+            cursor: url('/assets/sprCursor_2.png'), auto;
         }
 
         h2 {
@@ -148,7 +153,12 @@
         </section>
         <section id="trailer">
             <div class="video-container">
-                <iframe src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" title="Hamachi the Psychotic Killer Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                <iframe src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" 
+                        title="Hamachi the Psychotic Killer Trailer" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                </iframe>
             </div>
             <p>Here's a video of the game in action. This game is still in the early access phase, but you can try out the demo or buy the early access version to support me while I continue to develop it.</p>
         </section>
