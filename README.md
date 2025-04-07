@@ -40,13 +40,16 @@
         .image-container {
             text-align: center;
             margin: 20px 0;
+            background: none; /* Ensure no background interferes with transparency */
         }
 
         img {
             max-width: 100%;
             height: auto;
+            background: transparent; /* Explicitly set image background to transparent */
         }
 
+        /* Rest of your existing styles remain unchanged */
         .video-container {
             position: relative;
             padding-top: 56.25%;
