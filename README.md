@@ -8,7 +8,7 @@
         body {
             background-image:
                 linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,1) 100%),
-                url('https://gavinoriley.github.io/assets/unibackground.png');
+                url('https://gavinoriley.github.io/assets/blankhamachi_hero.png');
             background-size: cover;
             background-position: center;
             background-color: black;
