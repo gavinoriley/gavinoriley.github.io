@@ -16,6 +16,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
+            padding-top: 50px; /* Added to push all content down */
             cursor: url('/assets/sprCursor_3.png'), auto;
         }
 
