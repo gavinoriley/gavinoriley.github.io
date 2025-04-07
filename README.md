@@ -16,7 +16,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            cursor: url('/assets/sprCursor_5.png'), auto;
+            cursor: url('/assets/sprCursor_3.png'), auto;
         }
 
         a {
@@ -196,7 +196,7 @@
         </section>
         <section id="end">
             <div class="image-container">
-                <img src="https://gavinoriley.github.io/assets/brand-1.jpg" alt="End Graphic" class="transparent-gif">
+                <img src="https://gavinoriley.github.io/assets/brand-1.png" alt="End Graphic" class="transparent-gif">
             </div>
         </section>
     </main>
