@@ -35,7 +35,7 @@
         }
 
         #about h2 {
-            color: yellow; /* Changed "What is this?" to yellow */
+            color: yellow;
         }
 
         p {
@@ -136,7 +136,7 @@
         footer a {
             color: white;
             text-decoration: none;
-            margin: 0 10px; /* Adds spacing between footer links */
+            margin: 0 10px;
         }
 
         footer a:hover {
@@ -226,12 +226,15 @@
             <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1743916267" 
                target="_blank" 
                rel="noopener noreferrer">Game Manual</a>
-            <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1743916267" 
-               target="_blank" 
-               rel="noopener noreferrer">Hamachi Cube</a>
             <a href="https://x.com/imgavinoriley" 
                target="_blank" 
                rel="noopener noreferrer">X</a>
+            <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1743916267" 
+               target="_blank" 
+               rel="noopener noreferrer">Hamachi Cube</a>
+            <a href="https://imgur.com/a/T2g8AAt" 
+               target="_blank" 
+               rel="noopener noreferrer">Key Art</a>
         </p>
     </footer>
 </body>
