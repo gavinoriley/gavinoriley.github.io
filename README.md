@@ -108,7 +108,7 @@
 
         .button-container img:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 10px #ff0000;
+            box-shadow: 0 0 10px #A100A1; /* Changed from #ff0000 (red) to #A100A1 (purple) */
         }
 
         .demo-link {
@@ -194,7 +194,7 @@
     <main>
         <section id="about">
             <h2>What is this?</h2>
-            <p>Hamachi the Psychotic Killer is a platformer game where you control Hamachi, a once-ordinary individual now possessed by a demon. Driven by the demon's influence, Hamachi must slaughter innocent civilians, evade the police, and fuel the demon's demonic fury through bloodshed. As the demon's power increases, it aims to fully dominate Hamachi's mind and use him to conquer the world. Pretty intense, huh?</p>
+            <p>Hamachi the Psychotic Kuiller is a platformer game where you control Hamachi, a once-ordinary individual now possessed by a demon. Driven by the demon's influence, Hamachi must slaughter innocent civilians, evade the police, and fuel the demon's demonic fury through bloodshed. As the demon's power increases, it aims to fully dominate Hamachi's mind and use him to conquer the world. Pretty intense, huh?</p>
         </section>
         <section id="trailer">
             <div class="video-container">
