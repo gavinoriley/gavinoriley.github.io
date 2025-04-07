@@ -47,12 +47,18 @@
             max-width: 100%;
             height: auto;
             background: transparent; /* Ensure no default background */
-            display: block; /* Remove any inline spacing issues */
+            display: block; /* Remove inline spacing issues */
+            margin: 0 auto; /* Center block-level images horizontally */
         }
 
-        /* Specifically target the titlescreen image */
+        /* Specifically target the titlescreen image for transparency */
         #hero .image-container img {
             background: transparent !important; /* Force transparency */
+        }
+
+        /* Ensure brand-1.jpg stays centered */
+        #end .image-container img {
+            margin: 0 auto; /* Reinforce centering for brand-1.jpg */
         }
 
         /* Rest of your styles remain unchanged */
