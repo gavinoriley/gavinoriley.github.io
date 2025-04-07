@@ -228,7 +228,7 @@
                rel="noopener noreferrer">Game Manual</a>
             <a href="https://x.com/imgavinoriley" 
                target="_blank" 
-               rel="noopener noreferrer">X</a>
+               rel="noopener noreferrer">𝕏</a>
             <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1743916267" 
                target="_blank" 
                rel="noopener noreferrer">Hamachi Cube</a>
