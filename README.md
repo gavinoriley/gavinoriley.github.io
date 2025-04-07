@@ -18,8 +18,8 @@
             padding: 0;
             padding-top: 50px;
             cursor: url('/assets/sprCursor_3.png'), auto;
-            background-attachment: fixed; /* Added for parallax */
-            min-height: 100vh; /* Ensures scrolling is possible */
+            background-attachment: fixed;
+            min-height: 100vh;
         }
 
         a {
@@ -32,6 +32,10 @@
             margin-bottom: 10px;
             color: #ff0000;
             text-shadow: 1px 1px 2px black;
+        }
+
+        #about h2 {
+            color: yellow; /* Changed "What is this?" to yellow */
         }
 
         p {
@@ -129,6 +133,16 @@
             font-size: 12px;
         }
 
+        footer a {
+            color: white;
+            text-decoration: none;
+            margin: 0 10px; /* Adds spacing between footer links */
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
         @media (min-width: 768px) {
             #trailer {
                 text-align: center;
@@ -208,6 +222,17 @@
 
     <footer>
         <p>Hamachi the Psychotic Killer © Gavin ORiley 2025</p>
+        <p>
+            <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1743916267" 
+               target="_blank" 
+               rel="noopener noreferrer">Game Manual</a>
+            <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1743916267" 
+               target="_blank" 
+               rel="noopener noreferrer">Hamachi Cube</a>
+            <a href="https://x.com/imgavinoriley" 
+               target="_blank" 
+               rel="noopener noreferrer">X</a>
+        </p>
     </footer>
 </body>
 </html>
