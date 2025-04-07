@@ -16,8 +16,10 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-top: 50px; /* Added to push all content down */
+            padding-top: 50px;
             cursor: url('/assets/sprCursor_3.png'), auto;
+            background-attachment: fixed; /* Added for parallax */
+            min-height: 100vh; /* Ensures scrolling is possible */
         }
 
         a {
@@ -45,7 +47,7 @@
         }
 
         #hero .image-container {
-            margin-bottom: 40px; /* Adjusted for more space below title screen */
+            margin-bottom: 40px;
         }
 
         img {
@@ -82,8 +84,8 @@
         .button-container {
             display: flex;
             justify-content: center;
-            gap: 40px; /* Adjusted for more space between buttons */
-            margin: 40px 0; /* Adjusted for more vertical space */
+            gap: 40px;
+            margin: 40px 0;
         }
 
         .button-container a {
