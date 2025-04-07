@@ -122,7 +122,7 @@
 <body>
     <header id="hero">
         <div class="image-container">
-            <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
+            <img src="/assets/NewWebHeader.png" alt="Hamachi Hero Graphic">
         </div>
         <div class="button-container">
             <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" 
