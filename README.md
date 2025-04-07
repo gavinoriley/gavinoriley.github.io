@@ -20,7 +20,7 @@
         }
 
         a {
-            cursor: url('/assets/sprCursor_5.png'), auto;
+            cursor: url('/assets/sprCursor_3.png'), auto;
             text-shadow: 1px 1px 2px black;
         }
 
