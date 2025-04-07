@@ -16,7 +16,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            cursor: url('/assets/sprCursor_3.png'), auto;
+            cursor: url('/assets/sprCursor_5.png'), auto;
         }
 
         a {
@@ -40,37 +40,39 @@
         .image-container {
             text-align: center;
             margin: 20px 0;
-            background: none; /* No background on container */
+            background: none;
         }
 
         img {
             max-width: 100%;
             height: auto;
-            background: transparent; /* Ensure no default background */
-            display: block; /* Remove inline spacing issues */
-            margin: 0 auto; /* Center block-level images horizontally */
+            background: transparent;
+            display: block;
+            margin: 0 auto;
         }
 
         /* Force transparency for specific images */
-        #hero .image-container img, /* TITLESCREEN.png */
-        .button-container img,      /* 2buynow.png and devlogbutton.png */
-        #end .image-container img   /* brand-1.jpg */
-        {
-            background: transparent !important; /* Override any default backgrounds */
+        #hero .image-container img,
+        .button-container img,
+        #end .image-container img {
+            background: transparent !important;
         }
 
         .video-container {
-            position: relative;
-            padding-top: 56.25%;
+            text-align: center; /* Center the iframe */
             margin: 20px 0;
         }
 
         .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            width: 560px; /* YouTube default width */
+            height: 315px; /* YouTube default height, maintains 16:9 aspect ratio */
+        }
+
+        /* Center the text below the video */
+        #trailer p {
+            text-align: center;
+            margin: 10px auto;
+            max-width: 560px; /* Match video width for visual alignment */
         }
 
         .button-container {
@@ -122,17 +124,22 @@
         }
 
         @media (min-width: 768px) {
-            #trailer, #gameplay {
+            /* Remove flex layout for #trailer on larger screens */
+            #trailer {
+                text-align: center; /* Ensure centering on larger screens */
+            }
+
+            #gameplay {
                 display: flex;
                 align-items: center;
                 gap: 20px;
             }
 
-            #trailer .video-container, #gameplay .image-container {
+            #gameplay .image-container {
                 flex: 1;
             }
 
-            #trailer p, #gameplay p {
+            #gameplay p {
                 flex: 1;
             }
         }
@@ -189,7 +196,7 @@
         </section>
         <section id="end">
             <div class="image-container">
-                <img src="https://gavinoriley.github.io/assets/brand-1.png" alt="End Graphic" class="transparent-gif">
+                <img src="https://gavinoriley.github.io/assets/brand-1.jpg" alt="End Graphic" class="transparent-gif">
             </div>
         </section>
     </main>
