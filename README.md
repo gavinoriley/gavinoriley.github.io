@@ -1,4 +1,3 @@
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -7,6 +6,11 @@
     <link rel="icon" type="image/png" href="/assets/favicon-96x96.png">
     <style>
         body {
+            background-image:
+                linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,1) 100%),
+                url('https://gavinoriley.github.io/assets/unibackground.png');
+            background-size: cover;
+            background-position: center;
             background-color: black;
             color: white;
             font-family: Arial, sans-serif;
@@ -17,17 +21,20 @@
 
         a {
             cursor: url('/assets/sprCursor_5.png'), auto;
+            text-shadow: 1px 1px 2px black;
         }
 
         h2 {
             font-size: 24px;
             margin-bottom: 10px;
             color: #ff0000;
+            text-shadow: 1px 1px 2px black;
         }
 
         p {
             font-size: 16px;
             line-height: 1.5;
+            text-shadow: 1px 1px 2px black;
         }
 
         .image-container {
@@ -122,7 +129,7 @@
 <body>
     <header id="hero">
         <div class="image-container">
-            <img src="/assets/WebHeader.jpg" alt="Hamachi Hero Graphic">
+            <img src="/assets/TITLESCREEN.png" alt="Hamachi Hero Graphic">
         </div>
         <div class="button-container">
             <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" 
