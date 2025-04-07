@@ -40,16 +40,22 @@
         .image-container {
             text-align: center;
             margin: 20px 0;
-            background: none; /* Ensure no background interferes with transparency */
+            background: none; /* No background on container */
         }
 
         img {
             max-width: 100%;
             height: auto;
-            background: transparent; /* Explicitly set image background to transparent */
+            background: transparent; /* Ensure no default background */
+            display: block; /* Remove any inline spacing issues */
         }
 
-        /* Rest of your existing styles remain unchanged */
+        /* Specifically target the titlescreen image */
+        #hero .image-container img {
+            background: transparent !important; /* Force transparency */
+        }
+
+        /* Rest of your styles remain unchanged */
         .video-container {
             position: relative;
             padding-top: 56.25%;
