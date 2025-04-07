@@ -16,7 +16,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            cursor: url('/assets/sprCursor_3.png'), auto;
+            cursor: url('/assets/sprCursor_5.png'), auto;
         }
 
         a {
@@ -51,17 +51,14 @@
             margin: 0 auto; /* Center block-level images horizontally */
         }
 
-        /* Specifically target the titlescreen image for transparency */
-        #hero .image-container img {
-            background: transparent !important; /* Force transparency */
+        /* Force transparency for specific images */
+        #hero .image-container img, /* TITLESCREEN.png */
+        .button-container img,      /* 2buynow.png and devlogbutton.png */
+        #end .image-container img   /* brand-1.jpg */
+        {
+            background: transparent !important; /* Override any default backgrounds */
         }
 
-        /* Ensure brand-1.jpg stays centered */
-        #end .image-container img {
-            margin: 0 auto; /* Reinforce centering for brand-1.jpg */
-        }
-
-        /* Rest of your styles remain unchanged */
         .video-container {
             position: relative;
             padding-top: 56.25%;
@@ -192,7 +189,7 @@
         </section>
         <section id="end">
             <div class="image-container">
-                <img src="https://gavinoriley.github.io/assets/brand-1.png" alt="End Graphic" class="transparent-gif">
+                <img src="https://gavinoriley.github.io/assets/brand-1.jpg" alt="End Graphic" class="transparent-gif">
             </div>
         </section>
     </main>
