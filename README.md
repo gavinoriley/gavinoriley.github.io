@@ -126,6 +126,15 @@
             text-decoration: underline;
         }
 
+        .location-text {
+            font-family: Arial, sans-serif;
+            font-size: 16px;
+            color: #808080; /* Grey color */
+            text-shadow: 1px 1px 2px black; /* Matches your site's text shadow */
+            margin: 10px 0 0 0; /* Small top margin to separate it from the logo */
+            text-align: center;
+        }
+
         footer {
             border-top: 1px solid #333;
             text-align: center;
@@ -216,6 +225,7 @@
         <section id="end">
             <div class="image-container">
                 <img src="https://gavinoriley.github.io/assets/brand-1.png" alt="End Graphic" class="transparent-gif">
+                <p class="location-text">Made in Los Angeles</p>
             </div>
         </section>
     </main>
