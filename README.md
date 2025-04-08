@@ -220,7 +220,7 @@
             <div class="image-container">
                 <img src="https://gavinoriley.github.io/assets/mapselect.png" alt="Map Select Graphic">
             </div>
-            <p>There are currently 3 worlds you can play! Oh, and did I mention the title screen uses your computer's internal clock to transition from day and night cycles? Because why not? (I'll update this website in time)</p>
+            <p>There are 3 worlds available in early access! Oh, and did I mention the title screen uses your computer's internal clock to transition from day and night cycles? Because why not? (I'll update this website in time)</p>
         </section>
         <section id="end">
             <div class="image-container">
