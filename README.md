@@ -5,7 +5,7 @@
     <meta name="description" content="Official website for Hamachi the Psychotic Killer, an indie platformer game where you play as a demon-possessed killer. Try the demo, buy on Steam, or check dev updates!">
     <meta name="keywords" content="Hamachi the Psychotic Killer, indie game, platformer, early access, Steam, demo">
     <meta name="author" content="Gavin ORiley">
-    <ස;meta property="og:title" content="Hamachi the Psychotic Killer">
+    <meta property="og:title" content="Hamachi the Psychotic Killer">
     <meta property="og:description" content="A platformer game where you control a demon-possessed killer. Available on Steam in early access!">
     <meta property="og:image" content="https://gavinoriley.github.io/assets/TITLESCREEN.png">
     <meta property="og:url" content="https://hamachithepsychotickiller.com">
@@ -215,14 +215,14 @@
         </section>
         <section id="trailer">
             <div class="video-container" style="display: flex; align-items: center; justify-content: center; gap: 20px;">
-                <img src="https://gavinoriley.github.io/assets/demon2.png" alt="Demon Left" style="max-height: 315px; width: auto;">
+                <img src="https://gavinoriley.github.io/assets/demon2.png" alt="Demon Left" style="max-height: 315px; width: auto; background: transparent !important;">
                 <iframe src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" 
                         title="Hamachi the Psychotic Killer Trailer" 
                         frameborder="0" 
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
                         allowfullscreen>
                 </iframe>
-                <img src="https://gavinoriley.github.io/assets/demon.png" alt="Demon Right" style="max-height: 315px; width: auto;">
+                <img src="https://gavinoriley.github.io/assets/demon.png" alt="Demon Right" style="max-height: 315px; width: auto; background: transparent !important;">
             </div>
             <p>Here's a video of the game in action. This game is still in the early access phase, but you can try out the demo or buy the early access version to support me while I continue to develop it.</p>
         </section>
