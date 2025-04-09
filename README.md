@@ -255,6 +255,9 @@
             <a href="https://imgur.com/a/T2g8AAt" 
                target="_blank" 
                rel="noopener noreferrer">Key Art</a>
+            <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20Website" 
+               rel="noopener noreferrer" 
+               title="Send an email to the developer">Contact</a>
         </p>
     </footer>
 </body>
