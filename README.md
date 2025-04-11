@@ -139,6 +139,11 @@
             text-decoration: underline;
         }
 
+        .demo-link .itch-link {
+            display: block; /* Ensures the new link appears below */
+            margin-top: 5px; /* Small spacing between links */
+        }
+
         .location-text {
             font-family: Arial, sans-serif;
             font-size: 14px;
@@ -153,13 +158,12 @@
             bottom: 20px;
             right: 20px;
             z-index: 100;
-            transform: translateY(100%); /* Start off-screen below */
-            transition: transform 0.3s ease; /* Smooth sliding */
+            transform: translateY(100%);
+            transition: transform 0.3s ease;
         }
 
         .back-to-top img {
             height: auto;
-            /* No width set to retain original size */
         }
 
         footer {
@@ -224,6 +228,12 @@
                rel="noopener noreferrer">
                 Play Hamachi in browser (Scuffed, but free)
             </a>
+            <a href="https://gavinoriley.itch.io/hamachithepsychotickiller" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="itch-link">
+                view the itch.io page
+            </a>
         </div>
     </header>
 
@@ -286,7 +296,7 @@
 
     <script>
         const backToTop = document.querySelector('.back-to-top');
-        const triggerDistance = 200; // Distance from bottom where animation completes
+        const triggerDistance = 200;
 
         function updateHandPosition() {
             const scrollPosition = window.scrollY;
@@ -294,13 +304,11 @@
             const documentHeight = document.documentElement.scrollHeight;
             const distanceToBottom = documentHeight - (scrollPosition + viewportHeight);
 
-            // Calculate progress: 0 (far from bottom) to 1 (at bottom)
             let progress = 0;
             if (distanceToBottom < triggerDistance) {
                 progress = Math.min(1, Math.max(0, (triggerDistance - distanceToBottom) / triggerDistance));
             }
 
-            // Move from translateY(100%) (hidden) to translateY(0%) (visible)
             const translateY = (1 - progress) * 100;
             backToTop.style.transform = `translateY(${translateY}%)`;
         }
