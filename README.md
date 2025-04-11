@@ -2,11 +2,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Official website for Hamachi the Psychotic Killer, an indie platformer game where you play as a demon-possessed killer. Try the demo, buy on Steam, or check dev updates!">
-    <meta name="keywords" content="Hamachi the Psychotic Killer, indie game, platformer, early access, Steam, demo">
+    <meta name="description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you play as a demon-possessed killer.">
+    <meta name="keywords" content="Hamachi the Psychotic Killer, indie game, 2D platformer, action game, horror game, early access, Steam, demo, pixel art, game development">
     <meta name="author" content="Gavin ORiley">
     <meta property="og:title" content="Hamachi the Psychotic Killer">
-    <meta property="og:description" content="A platformer game where you control a demon-possessed killer. Available on Steam in early access!">
+    <meta property="og:description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you play as a demon-possessed killer.">
     <meta property="og:image" content="https://gavinoriley.github.io/assets/TITLESCREEN.png">
     <meta property="og:url" content="https://hamachithepsychotickiller.com">
     <meta property="og:type" content="website">
