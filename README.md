@@ -77,7 +77,8 @@
         /* Force transparency for specific images */
         #hero .image-container img,
         .button-container img,
-        #end .image-container img {
+        #end .image-container img,
+        .back-to-top img {  /* Added .back-to-top img */
             background: transparent !important;
         }
 
@@ -120,7 +121,7 @@
 
         .button-container img:hover {
             transform: scale(1.1);
-            box-shadow: 0 0 10px #A100A1; /* Changed from #ff0000 (red) to #A100A1 (purple) */
+            box-shadow: 0 0 10px #A100A1;
         }
 
         .demo-link {
@@ -140,10 +141,10 @@
 
         .location-text {
             font-family: Arial, sans-serif;
-            font-size: 14px; /* Slightly smaller than the original 16px */
-            color: #808080; /* Grey color */
-            text-shadow: 1px 1px 2px black; /* Matches your site's text shadow */
-            margin: 10px 0 0 0; /* Small top margin to separate it from the logo */
+            font-size: 14px;
+            color: #808080;
+            text-shadow: 1px 1px 2px black;
+            margin: 10px 0 0 0;
             text-align: center;
         }
 
@@ -152,12 +153,12 @@
             bottom: 20px;
             right: 20px;
             z-index: 100;
-            display: none; /* Initially hidden */
+            display: none;
         }
 
         .back-to-top img {
-            width: 50px;
             height: auto;
+            /* Removed width: 50px; to display at natural size */
         }
 
         footer {
@@ -288,16 +289,12 @@
 
         // Function to check scroll position and toggle visibility
         function toggleBackToTop() {
-            // Get the total document height
             const documentHeight = Math.max(
                 document.body.scrollHeight,
                 document.documentElement.scrollHeight
             );
-            // Get the current scroll position
             const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            // Get the viewport height
             const windowHeight = window.innerHeight;
-            // Show button when within 100px of the bottom
             if (documentHeight - (scrollTop + windowHeight) < 100) {
                 backToTop.style.display = 'block';
             } else {
@@ -305,9 +302,7 @@
             }
         }
 
-        // Run on scroll
         window.addEventListener('scroll', toggleBackToTop);
-        // Run on page load to check initial position
         toggleBackToTop();
     </script>
 </body>
