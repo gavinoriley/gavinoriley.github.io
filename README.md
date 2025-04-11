@@ -13,6 +13,10 @@
     <title>Hamachi the Psychotic Killer</title>
     <link rel="icon" type="image/png" href="/assets/favicon-96x96.png">
     <style>
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             background-image:
                 linear-gradient(to bottom, rgba(0,0,0,0.6) 0%, rgba(0,0,0,1) 100%),
@@ -143,6 +147,19 @@
             text-align: center;
         }
 
+        .back-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 100;
+            display: none; /* Initially hidden */
+        }
+
+        .back-to-top img {
+            width: 50px;
+            height: auto;
+        }
+
         footer {
             border-top: 1px solid #333;
             text-align: center;
@@ -261,5 +278,37 @@
                title="Send an email to the developer">Contact</a>
         </p>
     </footer>
+    <a href="#" class="back-to-top">
+        <img src="/assets/sprnose.png" alt="Back to top">
+    </a>
+
+    <script>
+        // Get the back-to-top button
+        const backToTop = document.querySelector('.back-to-top');
+
+        // Function to check scroll position and toggle visibility
+        function toggleBackToTop() {
+            // Get the total document height
+            const documentHeight = Math.max(
+                document.body.scrollHeight,
+                document.documentElement.scrollHeight
+            );
+            // Get the current scroll position
+            const scrollTop = window.scrollY || document.documentElement.scrollTop;
+            // Get the viewport height
+            const windowHeight = window.innerHeight;
+            // Show button when within 100px of the bottom
+            if (documentHeight - (scrollTop + windowHeight) < 100) {
+                backToTop.style.display = 'block';
+            } else {
+                backToTop.style.display = 'none';
+            }
+        }
+
+        // Run on scroll
+        window.addEventListener('scroll', toggleBackToTop);
+        // Run on page load to check initial position
+        toggleBackToTop();
+    </script>
 </body>
 </html>
