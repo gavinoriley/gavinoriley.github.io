@@ -78,7 +78,7 @@
         #hero .image-container img,
         .button-container img,
         #end .image-container img,
-        .back-to-top img {  /* Added .back-to-top img */
+        .back-to-top img {
             background: transparent !important;
         }
 
@@ -153,12 +153,13 @@
             bottom: 20px;
             right: 20px;
             z-index: 100;
-            display: none;
+            transform: translateY(100%); /* Start off-screen below */
+            transition: transform 0.3s ease; /* Smooth sliding */
         }
 
         .back-to-top img {
             height: auto;
-            /* Removed width: 50px; to display at natural size */
+            /* No width set to retain original size */
         }
 
         footer {
@@ -284,26 +285,28 @@
     </a>
 
     <script>
-        // Get the back-to-top button
         const backToTop = document.querySelector('.back-to-top');
+        const triggerDistance = 200; // Distance from bottom where animation completes
 
-        // Function to check scroll position and toggle visibility
-        function toggleBackToTop() {
-            const documentHeight = Math.max(
-                document.body.scrollHeight,
-                document.documentElement.scrollHeight
-            );
-            const scrollTop = window.scrollY || document.documentElement.scrollTop;
-            const windowHeight = window.innerHeight;
-            if (documentHeight - (scrollTop + windowHeight) < 100) {
-                backToTop.style.display = 'block';
-            } else {
-                backToTop.style.display = 'none';
+        function updateHandPosition() {
+            const scrollPosition = window.scrollY;
+            const viewportHeight = window.innerHeight;
+            const documentHeight = document.documentElement.scrollHeight;
+            const distanceToBottom = documentHeight - (scrollPosition + viewportHeight);
+
+            // Calculate progress: 0 (far from bottom) to 1 (at bottom)
+            let progress = 0;
+            if (distanceToBottom < triggerDistance) {
+                progress = Math.min(1, Math.max(0, (triggerDistance - distanceToBottom) / triggerDistance));
             }
+
+            // Move from translateY(100%) (hidden) to translateY(0%) (visible)
+            const translateY = (1 - progress) * 100;
+            backToTop.style.transform = `translateY(${translateY}%)`;
         }
 
-        window.addEventListener('scroll', toggleBackToTop);
-        toggleBackToTop();
+        window.addEventListener('scroll', updateHandPosition);
+        updateHandPosition();
     </script>
 </body>
 </html>
