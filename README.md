@@ -214,7 +214,7 @@
                target="_blank" 
                rel="noopener noreferrer" 
                class="buy-now-link">
-                <img src="https://gavinoriley.github.io/assets/3buynow.png" alt="Buy Now Button">
+                <img src="https://gavinoriley.github.io/assets/4buynow.png" alt="Buy Now Button">
             </a>
             <a href="https://store.steampowered.com/news/app/3355690" 
                target="_blank" 
