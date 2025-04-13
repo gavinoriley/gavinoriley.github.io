@@ -223,10 +223,10 @@
             </a>
         </div>
         <div class="demo-link">
-            <a href="https://itch.io/embed-upload/13341746?color=333333" 
+            <a href="https://itch.io/embed-upload/13367839?color=333333" 
                target="_blank" 
                rel="noopener noreferrer">
-                Play Hamachi in browser (Scuffed, but free)
+                Play the HTML5 Edition online!
             </a>
             <a href="https://gavinoriley.itch.io/hamachithepsychotickiller" 
                target="_blank" 
