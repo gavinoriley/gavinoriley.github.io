@@ -223,7 +223,7 @@
             </a>
         </div>
         <div class="demo-link">
-            <a href="https://itch.io/embed-upload/13368167?color=333333" 
+            <a href="https://itch.io/embed-upload/13391195?color=333333" 
                target="_blank" 
                rel="noopener noreferrer">
                 Play the HTML5 Edition online!
