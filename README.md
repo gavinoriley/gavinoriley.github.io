@@ -219,7 +219,7 @@
             <a href="https://store.steampowered.com/news/app/3355690" 
                target="_blank" 
                rel="noopener noreferrer">
-                <img src="https://gavinoriley.github.io/assets/devlogbutton.png" alt="Devlog Button">
+                <img src="https://gavinoriley.github.io/assets/2devlogbutton.png" alt="Devlog Button">
             </a>
         </div>
         <div class="demo-link">
