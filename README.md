@@ -2,11 +2,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you play as a demon-possessed killer.">
-    <meta name="keywords" content="Hamachi the Psychotic Killer, indie game, 2D platformer, action game, horror game, early access, Steam, demo, pixel art, game development">
+    <meta name="description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you can play as the bad guy.">
+    <meta name="keywords" content="hamachi the psychotic killer, hamachi the psychotic killer website, indie game, 2D platformer, action game, horror game">
     <meta name="author" content="Gavin ORiley">
     <meta property="og:title" content="Hamachi the Psychotic Killer">
-    <meta property="og:description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you play as a demon-possessed killer.">
+    <meta property="og:description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you can play as the bad guy.">
     <meta property="og:image" content="https://gavinoriley.github.io/assets/TITLESCREEN.png">
     <meta property="og:url" content="https://hamachithepsychotickiller.com">
     <meta property="og:type" content="website">
@@ -227,12 +227,6 @@
                target="_blank" 
                rel="noopener noreferrer">
                 Play Hamachi in Browser
-            </a>
-            <a href="https://gavinoriley.itch.io/hamachithepsychotickiller" 
-               target="_blank" 
-               rel="noopener noreferrer" 
-               class="itch-link">
-                view the itch.io page
             </a>
         </div>
     </header>
