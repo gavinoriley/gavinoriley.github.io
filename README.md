@@ -223,7 +223,7 @@
             </a>
         </div>
         <div class="demo-link">
-            <a href="https://itch.io/embed-upload/13412987?color=333333" 
+            <a href="https://itch.io/embed-upload/13413323?color=333333" 
                target="_blank" 
                rel="noopener noreferrer">
                 Play Hamachi in Browser
