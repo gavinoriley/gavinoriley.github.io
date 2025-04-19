@@ -261,7 +261,6 @@
         </div>
         <div class="button-container">
             <a href="https://hamachithepsychotickiller.com/buynow/" 
-               target="_blank" 
                rel="noopener noreferrer" 
                class="buy-now-link">
                 <img src="https://gavinoriley.github.io/assets/4buynow.png" alt="Buy Now Button">
