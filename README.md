@@ -35,7 +35,7 @@
             font-family: 'FSEX300', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-top: 90px; /* Adjusted to account for the fixed nav bar */
+            padding-top: 90px;
             cursor: url('/assets/sprCursor_3.png'), auto;
             background-attachment: fixed;
             min-height: 100vh;
@@ -88,6 +88,13 @@
             line-height: 1.5;
             text-shadow: 1px 1px 2px black;
             font-family: 'FSEX300', Arial, sans-serif;
+        }
+
+        /* Increase font size for specific paragraphs */
+        #about p,
+        #trailer p,
+        #gameplay p {
+            font-size: 20px; /* Increased from 16px to 20px */
         }
 
         .image-container {
