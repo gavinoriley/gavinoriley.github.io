@@ -260,13 +260,13 @@
             <img src="/assets/Z4ow1Dt.png" alt="Hamachi Hero Graphic">
         </div>
         <div class="button-container">
-            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" 
+            <a href="https://hamachithepsychotickiller.com/buynow/" 
                target="_blank" 
                rel="noopener noreferrer" 
                class="buy-now-link">
                 <img src="https://gavinoriley.github.io/assets/4buynow.png" alt="Buy Now Button">
             </a>
-            <a href="https://hamachithepsychotickiller.com/buynow/" 
+            <a href="https://store.steampowered.com/news/app/3355690/view/520837042930712593" 
                target="_blank" 
                rel="noopener noreferrer">
                 <img src="https://gavinoriley.github.io/assets/2devlogbutton.png" alt="Devlog Button">
