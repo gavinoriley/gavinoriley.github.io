@@ -35,10 +35,34 @@
             font-family: 'FSEX300', Arial, sans-serif;
             margin: 0;
             padding: 0;
-            padding-top: 50px;
+            padding-top: 90px; /* Adjusted to account for the fixed nav bar */
             cursor: url('/assets/sprCursor_3.png'), auto;
             background-attachment: fixed;
             min-height: 100vh;
+        }
+
+        .nav-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background-color: #333;
+            padding: 10px 0;
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            z-index: 100;
+        }
+
+        .nav-bar a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            text-shadow: 1px 1px 2px black;
+        }
+
+        .nav-bar a:hover {
+            text-decoration: underline;
         }
 
         a {
@@ -151,8 +175,8 @@
         }
 
         .demo-link .itch-link {
-            display: block; /* Ensures the new link appears below */
-            margin-top: 5px; /* Small spacing between links */
+            display: block;
+            margin-top: 5px;
         }
 
         .location-text {
@@ -217,6 +241,12 @@
     </style>
 </head>
 <body>
+    <div class="nav-bar">
+        <a href="https://hamachithepsychotickiller.com">HOME</a>
+        <a href="https://store.steampowered.com/news/app/3355690/view/520837042930712593">READ DEVLOG</a>
+        <a href="https://hamachithepsychotickiller.com/about/">ABOUT</a>
+        <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/">BUY NOW</a>
+    </div>
     <header id="hero">
         <div class="image-container">
             <img src="/assets/TITLESCREEN.png" alt="Hamachi Hero Graphic">
