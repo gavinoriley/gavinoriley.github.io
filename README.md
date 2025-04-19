@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -252,7 +253,7 @@
         <a href="https://hamachithepsychotickiller.com">HOME</a>
         <a href="https://store.steampowered.com/news/app/3355690/view/520837042930712593">READ DEVLOG</a>
         <a href="https://hamachithepsychotickiller.com/about/">ABOUT</a>
-        <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/">BUY NOW</a>
+        <a href="https://hamachithepsychotickiller.com/buynow/">BUY NOW</a>
     </div>
     <header id="hero">
         <div class="image-container">
