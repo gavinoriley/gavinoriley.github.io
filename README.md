@@ -306,7 +306,7 @@
         </section>
         <section id="end">
             <div class="image-container">
-                <img src="https://gavinoriley.github.io/assets/brand-1.png" alt="End Graphic" class="transparent-gif">
+                <img src="https://gavinoriley.github.io/assets/3dspin.gif" alt="End Graphic" class="transparent-gif">
                 <p class="location-text">based in los angeles</p>
             </div>
         </section>
