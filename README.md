@@ -7,7 +7,7 @@
     <meta name="author" content="Gavin ORiley">
     <meta property="og:title" content="Hamachi the Psychotic Killer">
     <meta property="og:description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you can play as the bad guy.">
-    <meta property="og:image" content="https://gavinoriley.github.io/assets/Z4ow1Dt.png">
+    <meta property="og:image" content="https://gavinoriley.github.io/assets/TITLESCREEN.png">
     <meta property="og:url" content="https://hamachithepsychotickiller.com">
     <meta property="og:type" content="website">
     <title>Hamachi the Psychotic Killer</title>
@@ -256,7 +256,7 @@
     </div>
     <header id="hero">
         <div class="image-container">
-            <img src="/assets/TITLESCREEN.png" alt="Hamachi Hero Graphic">
+            <img src="/assets/Z4ow1Dt.png" alt="Hamachi Hero Graphic">
         </div>
         <div class="button-container">
             <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" 
