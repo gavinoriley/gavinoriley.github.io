@@ -13,6 +13,13 @@
     <title>Hamachi the Psychotic Killer</title>
     <link rel="icon" type="image/png" href="/assets/favicon-96x96.png">
     <style>
+        @font-face {
+            font-family: 'FSEX300';
+            src: url('https://gavinoriley.github.io/assets/FSEX300.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
         html {
             scroll-behavior: smooth;
         }
@@ -25,7 +32,7 @@
             background-position: center;
             background-color: black;
             color: white;
-            font-family: Arial, sans-serif;
+            font-family: 'FSEX300', Arial, sans-serif;
             margin: 0;
             padding: 0;
             padding-top: 50px;
@@ -37,6 +44,7 @@
         a {
             cursor: url('/assets/sprCursor_3.png'), auto;
             text-shadow: 1px 1px 2px black;
+            font-family: 'FSEX300', Arial, sans-serif;
         }
 
         h2 {
@@ -44,6 +52,7 @@
             margin-bottom: 10px;
             color: #ff0000;
             text-shadow: 1px 1px 2px black;
+            font-family: 'FSEX300', Arial, sans-serif;
         }
 
         #about h2 {
@@ -54,6 +63,7 @@
             font-size: 16px;
             line-height: 1.5;
             text-shadow: 1px 1px 2px black;
+            font-family: 'FSEX300', Arial, sans-serif;
         }
 
         .image-container {
@@ -133,6 +143,7 @@
             color: white;
             font-size: 14px;
             text-decoration: none;
+            font-family: 'FSEX300', Arial, sans-serif;
         }
 
         .demo-link a:hover {
@@ -145,7 +156,7 @@
         }
 
         .location-text {
-            font-family: Arial, sans-serif;
+            font-family: 'FSEX300', Arial, sans-serif;
             font-size: 14px;
             color: #808080;
             text-shadow: 1px 1px 2px black;
@@ -177,6 +188,7 @@
             color: white;
             text-decoration: none;
             margin: 0 10px;
+            font-family: 'FSEX300', Arial, sans-serif;
         }
 
         footer a:hover {
