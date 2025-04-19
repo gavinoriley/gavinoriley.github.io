@@ -296,7 +296,7 @@
                 </iframe>
                 <img src="https://gavinoriley.github.io/assets/demon.png" alt="Demon Right" style="max-height: 315px; width: auto; background: transparent !important;">
             </div>
-            <p>Here's a video of the game in action. This game is still in the early access phase, but you can try out the demo or buy the early access version to support me while I continue to develop it.</p>
+            <p>Here's a video of the game in action. This game is still in the early access phase, but you can download the demo or buy the early access version to support me while I continue to develop it.</p>
         </section>
         <section id="gameplay">
             <div class="image-container">
