@@ -7,7 +7,7 @@
     <meta name="author" content="Gavin ORiley">
     <meta property="og:title" content="Hamachi the Psychotic Killer">
     <meta property="og:description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you can play as the bad guy.">
-    <meta property="og:image" content="https://gavinoriley.github.io/assets/TITLESCREEN.png">
+    <meta property="og:image" content="https://gavinoriley.github.io/assets/Z4ow1Dt.png">
     <meta property="og:url" content="https://hamachithepsychotickiller.com">
     <meta property="og:type" content="website">
     <title>Hamachi the Psychotic Killer</title>
