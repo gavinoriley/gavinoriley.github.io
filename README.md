@@ -12,12 +12,16 @@
     <meta property="og:type" content="website">
     <title>Hamachi the Psychotic Killer</title>
     <link rel="icon" type="image/x-icon" href="/assets/hamafavi.ico">
+    <link rel="preload" href="/assets/FSEX300.woff2" as="font" type="font/woff2" crossorigin>
     <style>
         @font-face {
             font-family: 'FSEX300';
-            src: url('https://gavinoriley.github.io/assets/FSEX300.ttf') format('truetype');
+            src: url('/assets/FSEX300.woff2') format('woff2'),
+                 url('/assets/FSEX300.woff') format('woff'),
+                 url('/assets/FSEX300.ttf') format('truetype');
             font-weight: normal;
             font-style: normal;
+            font-display: swap;
         }
 
         html {
