@@ -2,14 +2,6 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you can play as the bad guy.">
-    <meta name="keywords" content="hamachi the psychotic killer, hamachi the psychotic killer website, indie game, 2D platformer, action game, horror game">
-    <meta name="author" content="Gavin ORiley">
-    <meta property="og:title" content="Hamachi the Psychotic Killer">
-    <meta property="og:description" content="Official website for Hamachi the Psychotic Killer, a platformer game where you can play as the bad guy.">
-    <meta property="og:image" content="https://gavinoriley.github.io/assets/TITLESCREEN.png">
-    <meta property="og:url" content="https://hamachithepsychotickiller.com">
-    <meta property="og:type" content="website">
     <title>Hamachi the Psychotic Killer</title>
     <link rel="icon" type="image/x-icon" href="/assets/hamafavi.ico">
     <link rel="preload" href="/assets/FSEX300.woff2" as="font" type="font/woff2" crossorigin>
