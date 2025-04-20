@@ -1,4 +1,3 @@
-
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -12,7 +11,7 @@
     <meta property="og:url" content="https://hamachithepsychotickiller.com">
     <meta property="og:type" content="website">
     <title>Hamachi the Psychotic Killer</title>
-    <link rel="icon" type="image/png" href="/assets/favicon-96x96.png">
+    <link rel="icon" type="image/x-icon" href="/assets/hamafavi.ico">
     <style>
         @font-face {
             font-family: 'FSEX300';
