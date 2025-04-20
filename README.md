@@ -11,7 +11,7 @@
     <meta property="og:url" content="https://hamachithepsychotickiller.com">
     <meta property="og:type" content="website">
     <title>Hamachi the Psychotic Killer</title>
-    <link rel="icon" type="image/x-icon" href="/assets/hamafavi.ico">
+    <link rel="icon" type="image/x-icon" href="/assets/hamafavi.ico?v=1">
     <link rel="preload" href="/assets/FSEX300.woff2" as="font" type="font/woff2" crossorigin>
     <style>
         @font-face {
