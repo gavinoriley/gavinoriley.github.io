@@ -13,13 +13,14 @@
            url('https://gavinoriley.github.io/assets/FSEX300.ttf') format('truetype');
       font-weight: normal;
       font-style: normal;
+      font-display: swap; /* Added for cross-browser compatibility */
     }
 
     * {
       margin: 0;
       padding: 0;
       box-sizing: border-box;
-      font-family: 'FSEX300', sans-serif;
+      font-family: 'FSEX300', Arial, sans-serif; /* Added Arial, sans-serif as fallback */
       cursor: url('https://gavinoriley.github.io/assets/sprCursor_3.png'), auto;
     }
 
@@ -29,7 +30,7 @@
       color: #fff;
       position: relative;
       overflow-x: hidden;
-      padding-top: 60px; /* Space for the fixed nav bar */
+      padding-top: 60px;
     }
 
     /* Gradient Overlay */
@@ -63,24 +64,24 @@
       top: 0;
       left: 0;
       width: 100%;
-      background-color: #333; /* Updated to match Buy Now page */
-      padding: 10px 0; /* Updated to match Buy Now page */
-      display: flex; /* Updated to match Buy Now page */
-      justify-content: center; /* Updated to match Buy Now page */
-      gap: 40px; /* Updated to match Buy Now page */
-      z-index: 100; /* Updated to match Buy Now page */
+      background-color: #333;
+      padding: 10px 0;
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      z-index: 100;
     }
 
     .navbar a {
-      color: white; /* Kept same */
-      text-decoration: none; /* Kept same */
-      font-size: 18px; /* Updated to match Buy Now page */
-      text-shadow: 1px 1px 2px black; /* Updated to match Buy Now page */
-      cursor: url('https://gavinoriley.github.io/assets/sprCursor_3.png'), auto; /* Added to match Buy Now page */
+      color: white;
+      text-decoration: none;
+      font-size: 18px;
+      text-shadow: 1px 1px 2px black;
+      cursor: url('https://gavinoriley.github.io/assets/sprCursor_3.png'), auto;
     }
 
     .navbar a:hover {
-      text-decoration: underline; /* Updated to match Buy Now page */
+      text-decoration: underline;
     }
 
     .logo-section {
