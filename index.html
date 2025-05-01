@@ -138,18 +138,28 @@
     }
 
     .video-wrapper {
-      flex: 0 0 60%;
+      flex: 0 0 70%;
       text-align: center;
     }
 
-    .video-wrapper iframe {
+    .video-container {
+      position: relative;
+      padding-bottom: 56.25%; /* 16:9 aspect ratio */
+      height: 0;
+      overflow: hidden;
+    }
+
+    .video-container iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
       width: 100%;
-      height: 600px;
+      height: 100%;
       border: none;
     }
 
     .character-left, .character-right {
-      flex: 0 0 20%;
+      flex: 0 0 15%;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -250,7 +260,9 @@
       <img src="https://gavinoriley.github.io/assets/demon.png" alt="Demon Character">
     </div>
     <div class="video-wrapper">
-      <iframe src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" allowfullscreen></iframe>
+      <div class="video-container">
+        <iframe src="https://www.youtube.com/embed/ltfQsrxRSUw?si=JsxZSltJGaohMLIy" allowfullscreen></iframe>
+      </div>
     </div>
     <div class="character-right">
       <img src="https://gavinoriley.github.io/assets/demon2.png" alt="Demon Character 2">
