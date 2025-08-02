@@ -28,7 +28,7 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'FSEX300', Arial, sans-serif;
+            font-family: 'FSEX00', Arial, sans-serif;
             cursor: url('https://gavinoriley.github.io/assets/sprCursor_3.png'), auto;
         }
 
@@ -222,6 +222,21 @@
             }
             100% {
                 transform: translateX(-266.64vw);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                position: relative;
+                flex-direction: column;
+                gap: 10px;
+                padding: 10px 0;
+            }
+        }
+
+        @media (min-width: 769px) {
+            #container {
+                margin-top: 60px;
             }
         }
     </style>
