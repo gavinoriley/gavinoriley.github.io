@@ -34,7 +34,7 @@
 
         body {
             background: #000000;
-            color: #000;
+            color: #fff;
             position: relative;
             overflow-x: hidden;
         }
@@ -171,6 +171,8 @@
         .business-links {
             display: flex;
             gap: 30px;
+            justify-content: center;
+            align-items: center;
         }
 
         .business-links a {
@@ -224,6 +226,62 @@
                 transform: translateX(-266.64vw);
             }
         }
+
+        footer {
+            background-color: #000000;
+            color: #fff;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+
+        @media screen and (max-width: 768px) {
+            .navbar {
+                justify-content: center;
+                gap: 20px;
+                flex-wrap: wrap;
+                max-width: 100%;
+                overflow-x: auto;
+                padding: 10px 0;
+            }
+
+            .navbar a {
+                font-size: 16px;
+            }
+
+            .navbar a.play-game-link {
+                display: none;
+            }
+
+            .carousel {
+                height: 150px;
+            }
+
+            .carousel-inner img {
+                height: 150px;
+            }
+
+            .business-links {
+                justify-content: center;
+                gap: 15px;
+                flex-wrap: wrap;
+                max-width: 100%;
+                overflow-x: auto;
+            }
+
+            .business-links a {
+                font-size: 12px;
+            }
+
+            section {
+                padding: 10px;
+                min-height: auto;
+            }
+
+            footer p {
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -231,7 +289,7 @@
         <a href="https://hamachithepsychotickiller.com/about/">GAME INFO</a>
         <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank">BUY EARLY ACCESS</a>
         <a href="https://store.steampowered.com/news/app/3355690/view/520845543638827040" target="_blank" class="devlog-link">NEWS</a>
-        <a href="https://itch.io/embed-upload/13425866?color=333333" target="_blank">PLAY GAME</a>
+        <a href="https://itch.io/embed-upload/13425866?color=333333" target="_blank" class="play-game-link">PLAY GAME</a>
         <a href="https://hamachithepsychotickiller.com/devroom/">DEV ROOM</a>
     </nav>
 
