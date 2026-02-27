@@ -22,7 +22,6 @@
             font-style: normal;
             font-display: swap;
         }
-
         * {
             margin: 0;
             padding: 0;
@@ -30,46 +29,39 @@
             font-family: 'FSEX300', Arial, sans-serif;
             cursor: url('https://gavinoriley.github.io/assets/sprCursor_3.png'), auto;
         }
-
         body {
             background: #000000;
             color: #fff;
             position: relative;
             overflow-x: hidden;
         }
-
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            background-color: #8B0000;
+            background-color: #00008B;
             padding: 12px 0;
             display: flex;
             justify-content: center;
             gap: 48px;
             z-index: 100;
         }
-
         .navbar a {
             color: #fff;
             text-decoration: none;
             font-size: 26px;
             text-shadow: 1px 1px 2px black;
         }
-
         .navbar a:hover {
             color: #ddd;
         }
-
         .navbar a.devlog-link {
             color: #ffff00;
         }
-
         .navbar a.devlog-link:hover {
             color: #cccc00;
         }
-
         section {
             width: 100vw;
             min-height: 600px;
@@ -80,13 +72,11 @@
             align-items: center;
             position: relative;
         }
-
         .title-section {
             background-color: #000000;
             padding: 0;
             min-height: 0;
         }
-
         .news-section {
             background-color: #000000;
             color: #fff;
@@ -94,7 +84,6 @@
             padding: 0;
             min-height: 0;
         }
-
         .video-section {
             background-color: #000000;
             color: #fff;
@@ -102,12 +91,10 @@
             padding: 0;
             min-height: 0;
         }
-
         .video-section iframe {
             aspect-ratio: 16 / 9;
             border: none;
         }
-
         .about-section {
             background-color: #000000;
             color: #fff;
@@ -115,7 +102,6 @@
             padding: 0;
             min-height: 0;
         }
-
         .roadblock-section {
             background-color: #000000;
             color: #fff;
@@ -123,7 +109,6 @@
             padding: 0;
             min-height: 0;
         }
-
         .characters-section {
             background-color: #000000;
             color: #fff;
@@ -131,7 +116,6 @@
             padding: 0;
             min-height: 0;
         }
-
         .worlds-section {
             background-color: #000000;
             color: #fff;
@@ -139,23 +123,6 @@
             padding: 0;
             min-height: 0;
         }
-
-        .challengelevels-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
-            padding: 0;
-            min-height: 0;
-        }
-
-        .copyright-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
-            padding: 0;
-            min-height: 0;
-        }
-
         .business-section {
             background-color: #000000;
             color: #fff;
@@ -166,57 +133,47 @@
             justify-content: center;
             align-items: center;
         }
-
         .business-links {
             display: flex;
             gap: 30px;
             justify-content: center;
             align-items: center;
         }
-
         .business-links a {
             color: #fff;
             text-decoration: none;
             font-size: 16px;
             text-shadow: 1px 1px 2px black;
         }
-
         .business-links a:hover {
             color: #ddd;
         }
-
         .title-section img,
         .news-section img,
         .video-section iframe,
         .about-section img,
         .roadblock-section img,
         .characters-section img,
-        .worlds-section img,
-        .challengelevels-section img,
-        .copyright-section img {
+        .worlds-section img {
             width: 100vw;
             height: auto;
             display: block;
         }
-
         .carousel {
             width: 100vw;
             height: 250px;
             overflow: hidden;
             position: relative;
         }
-
         .carousel-inner {
             display: flex;
             animation: scroll 40s linear infinite;
         }
-
         .carousel-inner img {
             width: 33.33vw;
             height: 250px;
             object-fit: cover;
         }
-
         @keyframes scroll {
             0% {
                 transform: translateX(0);
@@ -225,7 +182,6 @@
                 transform: translateX(-266.64vw);
             }
         }
-
         footer {
             background-color: #000000;
             color: #fff;
@@ -233,7 +189,6 @@
             padding: 10px 0;
             font-size: 14px;
         }
-
         @media screen and (max-width: 768px) {
             .navbar {
                 justify-content: center;
@@ -243,23 +198,18 @@
                 overflow-x: auto;
                 padding: 10px 0;
             }
-
             .navbar a {
                 font-size: 16px;
             }
-
             .navbar a.play-game-link {
                 display: none;
             }
-
             .carousel {
                 height: 150px;
             }
-
             .carousel-inner img {
                 height: 150px;
             }
-
             .business-links {
                 justify-content: center;
                 gap: 15px;
@@ -267,20 +217,16 @@
                 max-width: 100%;
                 overflow-x: auto;
             }
-
             .business-links a {
                 font-size: 12px;
             }
-
             section {
                 padding: 10px;
                 min-height: auto;
             }
-
             footer p {
                 font-size: 12px;
             }
-
             .title-section {
                 padding-top: 60px;
             }
@@ -290,12 +236,11 @@
 <body>
     <nav class="navbar">
         <a href="https://hamachithepsychotickiller.com/about/">GAME INFO</a>
-        <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank">BUY EARLY ACCESS</a>
+        <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank">BUY GAME</a>
         <a href="https://store.steampowered.com/news/app/3355690/view/678479604962297685" target="_blank" class="devlog-link">NEWS</a>
         <a href="https://itch.io/embed-upload/13425866?color=333333" target="_blank" class="play-game-link">PLAY GAME</a>
         <a href="https://hamachithepsychotickiller.com/devroom/">DEV ROOM</a>
     </nav>
-
     <div id="wrapper">
         <main id="container">
             <section class="title-section">
@@ -321,55 +266,39 @@
                     </div>
                 </div>
             </section>
-
             <section class="news-section">
             <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer">
-            <img src="https://gavinoriley.github.io/assets/ClipBanner.png" 
+            <img src="https://gavinoriley.github.io/assets/ClipBanner.png"
             alt="Hamachi the Psychotic Killer Challenge Level">
             </a>
             </section>
-
             <section class="video-section">
                 <iframe src="https://www.youtube.com/embed/I6SxoC_FVBg" title="Hamachi the Psychotic Killer Official Trailer" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </section>
-
             <section class="roadblock-section">
                 <img src="https://gavinoriley.github.io/assets/3BLOCkRESTHAMACHI.png" alt="Roadblock and gameplay features for Hamachi the Psychotic Killer">
             </section>
-
             <section class="about-section">
                 <img src="https://gavinoriley.github.io/assets/5INTRODUCTION.png" alt="Introduction screenshot for Hamachi the Psychotic Killer">
             </section>
-
             <section class="characters-section">
                 <img src="https://gavinoriley.github.io/assets/newGREYCHARACTERS.png" alt="Character lineup for Hamachi the Psychotic Killer">
             </section>
-
             <section class="worlds-section">
                 <img src="https://gavinoriley.github.io/assets/GraphicsWorlds.png" alt="World environments in Hamachi the Psychotic Killer">
             </section>
-
-            <section class="challengelevels-section">
-                <img src="https://gavinoriley.github.io/assets/2diffbonuscontent.png" alt="Bonus challenge levels for Hamachi the Psychotic Killer">
-            </section>
-
-            <section class="copyright-section">
-                <img src="https://gavinoriley.github.io/assets/copyexe.png" alt="Copyright and legal information for Hamachi the Psychotic Killer">
-            </section>
-
             <section class="business-section">
                 <div class="business-links">
                     <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank">Game Manual</a>
                     <a href="https://x.com/imgavinoriley" target="_blank">𝕏</a>
                     <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank">Hamachi Cube</a>
                     <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank">YouTube</a>
-                    
+                   
                 </div>
             </section>
         </main>
-
         <footer id="footer-contents">
-            <p>© 2025 Hamachi the Psychotic Killer. All rights reserved.</p>
+            <p>© 2026 Hamachi the Psychotic Killer. All rights reserved.</p>
         </footer>
     </div>
 </body>
