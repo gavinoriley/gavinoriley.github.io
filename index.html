@@ -161,7 +161,7 @@
         }
         .carousel {
             width: 100vw;
-            height: 250px;
+            height: calc(100vw * 3 / 16);
             overflow: hidden;
             position: relative;
         }
@@ -170,8 +170,8 @@
             animation: scroll 40s linear infinite;
         }
         .carousel-inner img {
-            width: 33.33vw;
-            height: 250px;
+            width: calc(100vw / 3);
+            height: 100%;
             object-fit: cover;
         }
         @keyframes scroll {
@@ -179,7 +179,7 @@
                 transform: translateX(0);
             }
             100% {
-                transform: translateX(-266.64vw);
+                transform: translateX(calc(-100vw * 11 / 3));
             }
         }
         footer {
@@ -203,12 +203,6 @@
             }
             .navbar a.play-game-link {
                 display: none;
-            }
-            .carousel {
-                height: 150px;
-            }
-            .carousel-inner img {
-                height: 150px;
             }
             .business-links {
                 justify-content: center;
@@ -247,22 +241,29 @@
                 <img src="https://gavinoriley.github.io/assets/2HamachiTitleLogo.png" alt="Hamachi the Psychotic Killer game title logo">
                 <div class="carousel">
                     <div class="carousel-inner">
-                        <img src="https://gavinoriley.github.io/assets/cara1.png" alt="Gameplay screenshot from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara2.png" alt="In-game environment from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara3.png" alt="Character action scene from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara4.png" alt="Level design from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara5.png" alt="Game feature showcase from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara6.png" alt="Dynamic gameplay moment from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara7.png" alt="Unique game art from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara8.png" alt="Promotional image for Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara1.png" alt="Gameplay screenshot from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara2.png" alt="In-game environment from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara3.png" alt="Character action scene from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara4.png" alt="Level design from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara5.png" alt="Game feature showcase from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara6.png" alt="Dynamic gameplay moment from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara7.png" alt="Unique game art from Hamachi the Psychotic Killer">
-                        <img src="https://gavinoriley.github.io/assets/cara8.png" alt="Promotional image for Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara1.jpg" alt="Gameplay screenshot from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara2.jpg" alt="In-game environment from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara3.jpg" alt="Character action scene from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara4.png" alt="Level design from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara5.png" alt="Game feature showcase from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara6.png" alt="Dynamic gameplay moment from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara7.png" alt="Unique game art from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara8.jpg" alt="Promotional image for Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara9.jpg" alt="Additional gameplay screenshot from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara10.jpg" alt="Another in-game environment from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara11.jpg" alt="Extended promotional image for Hamachi the Psychotic Killer">
+                        <!-- Duplicates for seamless infinite scroll -->
+                        <img src="https://gavinoriley.github.io/assets/finalcara1.jpg" alt="Gameplay screenshot from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara2.jpg" alt="In-game environment from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara3.jpg" alt="Character action scene from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara4.png" alt="Level design from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara5.png" alt="Game feature showcase from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara6.png" alt="Dynamic gameplay moment from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara7.png" alt="Unique game art from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara8.jpg" alt="Promotional image for Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara9.jpg" alt="Additional gameplay screenshot from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara10.jpg" alt="Another in-game environment from Hamachi the Psychotic Killer">
+                        <img src="https://gavinoriley.github.io/assets/finalcara11.jpg" alt="Extended promotional image for Hamachi the Psychotic Killer">
                     </div>
                 </div>
             </section>
@@ -293,7 +294,7 @@
                     <a href="https://x.com/imgavinoriley" target="_blank">𝕏</a>
                     <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank">Hamachi Cube</a>
                     <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank">YouTube</a>
-                   
+                  
                 </div>
             </section>
         </main>
