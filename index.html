@@ -11,27 +11,27 @@
     <meta property="og:image" content="https://gavinoriley.github.io/assets/ScreenshotHomePage.png">
     <meta property="og:url" content="https://hamachithepsychotickiller.com">
    
-    <!-- Extra Open Graph tags (improves Facebook/Instagram/Discord previews) -->
+    <!-- Extra Open Graph tags -->
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Hamachi the Psychotic Killer">
     <meta property="og:locale" content="en_US">
 
-    <!-- Twitter / X Card (appears when the link is shared on X/Twitter - uses the same logo for consistency) -->
+    <!-- Twitter / X Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Hamachi the Psychotic Killer">
     <meta name="twitter:description" content="HAMACHI THE PSYCHOTIC KILLER: The platformer game where you can play as the BAD GUY.">
     <meta name="twitter:image" content="https://gavinoriley.github.io/assets/ScreenshotHomePage.png">
     <meta name="twitter:site" content="@imgavinoriley">
 
-    <!-- Robots & Canonical (helps search engines index the page correctly) -->
+    <!-- Robots & Canonical -->
     <meta name="robots" content="index, follow">
     <link rel="canonical" href="https://hamachithepsychotickiller.com">
     <link rel="icon" type="image/x-icon" href="https://gavinoriley.github.io/assets/hamafavi.ico">
     <link rel="preload" href="/assets/FSEX300.woff2" as="font" type="font/woff2" crossorigin>
    
-    <!-- Preconnect hints for faster loading of external resources -->
     <link rel="preconnect" href="https://www.youtube.com">
     <link rel="preconnect" href="https://store.steampowered.com">
+
     <style>
         @font-face {
             font-family: 'FSEX300';
@@ -55,42 +55,46 @@
             position: relative;
             overflow-x: hidden;
         }
-        .navbar {
+
+        /* === IMPROVED SLEEK TRUE BLACK GLASS NAVBAR === */
+/* === IMPROVED SLEEK TRUE BLACK GLASS NAVBAR === */
+.navbar {
     position: fixed;
     top: 0;
     left: 0;
     width: 100%;
-    background: rgba(10, 10, 50, 0.78);
-    backdrop-filter: blur(12px);
-    padding: 9px 0;                    /* Thinner height */
+    background: rgba(0, 0, 0, 0.85);     /* Slightly more opaque */
+    backdrop-filter: blur(5px);         /* Stronger blur for better effect */
+    padding: 9px 0;
     display: flex;
     justify-content: center;
     gap: 48px;
     z-index: 100;
-    border-bottom: 1px solid rgba(255,255,255,0.1);
+    border-bottom: none;                 /* Removed the problematic border */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6); /* Subtle depth instead */
 }
 
-.navbar a {
-    color: #fff;
-    text-decoration: none;
-    font-size: 24px;                   /* Slightly smaller for sleek look */
-    padding: 6px 14px;
-    border-radius: 4px;
-    transition: color 0.3s ease;
-}
+        .navbar a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 24px;
+            padding: 6px 14px;
+            border-radius: 4px;
+            transition: color 0.3s ease;
+        }
 
-.navbar a:hover {
-    color: #cccccc;                    /* White → Light Grey */
-}
+        .navbar a:hover {
+            color: #cccccc;
+        }
 
-/* Buy Game Link */
-.navbar a.buy-game-link {
-    color: #ffdd88;
-}
+        .navbar a.buy-game-link {
+            color: #ffdd88;
+        }
 
-.navbar a.buy-game-link:hover {
-    color: #e6b55c;                    /* Yellow → Darker Yellow */
-}
+        .navbar a.buy-game-link:hover {
+            color: #e6b55c;
+        }
+
         section {
             width: 100vw;
             min-height: 600px;
@@ -106,14 +110,8 @@
             padding: 0;
             min-height: 0;
         }
-        .news-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
-            padding: 0;
-            min-height: 0;
-        }
-        .video-section {
+        .news-section, .video-section, .about-section, .roadblock-section,
+        .characters-section, .worlds-section, .business-section {
             background-color: #000000;
             color: #fff;
             height: auto;
@@ -124,40 +122,8 @@
             aspect-ratio: 16 / 9;
             border: none;
         }
-        .about-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
-            padding: 0;
-            min-height: 0;
-        }
-        .roadblock-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
-            padding: 0;
-            min-height: 0;
-        }
-        .characters-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
-            padding: 0;
-            min-height: 0;
-        }
-        .worlds-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
-            padding: 0;
-            min-height: 0;
-        }
         .business-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
             padding: 20px 0;
-            min-height: 0;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -204,12 +170,8 @@
             object-fit: cover;
         }
         @keyframes scroll {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(calc(-100vw * 11 / 3));
-            }
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-100vw * 11 / 3)); }
         }
         footer {
             background-color: #000000;
@@ -218,14 +180,13 @@
             padding: 10px 0;
             font-size: 14px;
         }
+
         @media screen and (max-width: 768px) {
             .navbar {
                 justify-content: center;
                 gap: 20px;
                 flex-wrap: wrap;
-                max-width: 100%;
-                overflow-x: auto;
-                padding: 10px 0;
+                padding: 8px 0;
             }
             .navbar a {
                 font-size: 16px;
@@ -234,11 +195,8 @@
                 display: none;
             }
             .business-links {
-                justify-content: center;
                 gap: 15px;
                 flex-wrap: wrap;
-                max-width: 100%;
-                overflow-x: auto;
             }
             .business-links a {
                 font-size: 12px;
@@ -247,15 +205,13 @@
                 padding: 10px;
                 min-height: auto;
             }
-            footer p {
-                font-size: 12px;
-            }
             .title-section {
                 padding-top: 60px;
             }
         }
     </style>
-    <!-- JSON-LD structured data for search engines (helps Google understand this is a VideoGame) -->
+
+    <!-- JSON-LD structured data -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -286,6 +242,7 @@
         <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" class="play-game-link">PLAY ONLINE DEMO</a>
         <a href="https://hamachithepsychotickiller.com/devroom/">DEV ROOM</a>
     </nav>
+
     <div id="wrapper">
         <main id="container">
             <section class="title-section">
@@ -303,7 +260,7 @@
                         <img src="https://gavinoriley.github.io/assets/finalcara9.jpg" alt="Additional gameplay screenshot from Hamachi the Psychotic Killer">
                         <img src="https://gavinoriley.github.io/assets/finalcara10.jpg" alt="Another in-game environment from Hamachi the Psychotic Killer">
                         <img src="https://gavinoriley.github.io/assets/finalcara11.jpg" alt="Extended promotional image for Hamachi the Psychotic Killer">
-                        <!-- Duplicates for seamless infinite scroll -->
+                        <!-- Duplicates for seamless loop -->
                         <img src="https://gavinoriley.github.io/assets/finalcara1.jpg" alt="Gameplay screenshot from Hamachi the Psychotic Killer">
                         <img src="https://gavinoriley.github.io/assets/finalcara2.jpg" alt="In-game environment from Hamachi the Psychotic Killer">
                         <img src="https://gavinoriley.github.io/assets/finalcara3.jpg" alt="Character action scene from Hamachi the Psychotic Killer">
@@ -318,37 +275,44 @@
                     </div>
                 </div>
             </section>
+
             <section class="news-section">
-            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer">
-            <img src="https://gavinoriley.github.io/assets/FinalClipBanner2.png"
-            alt="Hamachi the Psychotic Killer Challenge Level">
-            </a>
+                <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer">
+                    <img src="https://gavinoriley.github.io/assets/FinalClipBanner2.png" alt="Hamachi the Psychotic Killer Challenge Level">
+                </a>
             </section>
+
             <section class="video-section">
                 <iframe src="https://www.youtube.com/embed/VbFZFto8Naw" title="Hamachi the Psychotic Killer - Gameplay Trailer #2" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </section>
+
             <section class="roadblock-section">
                 <img src="https://gavinoriley.github.io/assets/3BLOCkRESTHAMACHI.png" alt="Roadblock and gameplay features for Hamachi the Psychotic Killer">
             </section>
+
             <section class="about-section">
                 <img src="https://gavinoriley.github.io/assets/FinalIntroduction.png" alt="Introduction screenshot for Hamachi the Psychotic Killer">
             </section>
+
             <section class="characters-section">
                 <img src="https://gavinoriley.github.io/assets/FinalCharacters.png" alt="Character lineup for Hamachi the Psychotic Killer">
             </section>
+
             <section class="worlds-section">
                 <img src="https://gavinoriley.github.io/assets/FinalWorlds2.png" alt="World environments in Hamachi the Psychotic Killer">
             </section>
+
             <section class="business-section">
-               <div class="business-links">
-    <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank">Game Manual</a>
-    <a href="https://x.com/imgavinoriley" target="_blank">𝕏</a>
-    <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank">Hamachi Cube</a>
-    <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank">YouTube</a>
-    <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20the%20Psychotic%20Killer%20page">Contact</a>
-</div>
+                <div class="business-links">
+                    <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank">Game Manual</a>
+                    <a href="https://x.com/imgavinoriley" target="_blank">𝕏</a>
+                    <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank">Hamachi Cube</a>
+                    <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank">YouTube</a>
+                    <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20the%20Psychotic%20Killer%20page">Contact</a>
+                </div>
             </section>
         </main>
+
         <footer id="footer-contents">
             <p>© 2026 Hamachi the Psychotic Killer. All rights reserved.</p>
         </footer>
