@@ -58,7 +58,6 @@
         .lenis.lenis-stopped {
             overflow: hidden;
         }
-
         /* === NAVBAR === */
         .navbar {
             position: fixed;
@@ -92,37 +91,33 @@
         .navbar a.buy-game-link:hover {
             color: #e6b55c;
         }
-
-        /* DEV ROOM - Dramatic Demonic Fel Green Pulsing Aura */
+        /* DEV ROOM - Demonic Deep Blood Red Pulsing Aura */
         .navbar a.dev-room-link {
             color: #fff;
             position: relative;
             z-index: 1;
-            animation: fel-glow-pulse 1.8s ease-in-out infinite;
+            animation: demonic-glow-pulse 1.8s ease-in-out infinite;
         }
-
         .navbar a.dev-room-link:hover {
-            color: #ccffcc;
+            color: #ffcccc;
         }
-
-        @keyframes fel-glow-pulse {
+        @keyframes demonic-glow-pulse {
             0%, 100% {
                 text-shadow:
-                    0 0 8px #39ff14,
-                    0 0 18px #39ff14,
-                    0 0 35px #00ff7f;
+                    0 0 8px #ff4444,
+                    0 0 18px #ff4444,
+                    0 0 35px #ff0000;
             }
             50% {
                 text-shadow:
-                    0 0 20px #39ff14,
-                    0 0 40px #39ff14,
-                    0 0 70px #00ff7f,
-                    0 0 100px #00ff41,
-                    0 0 130px #39ff14,
-                    0 0 160px #00ff7f;
+                    0 0 20px #ff4444,
+                    0 0 40px #ff4444,
+                    0 0 70px #ff0000,
+                    0 0 100px #ff8866,
+                    0 0 130px #ff4444,
+                    0 0 160px #ff0000;
             }
         }
-
         section {
             width: 100vw;
             min-height: 600px;
