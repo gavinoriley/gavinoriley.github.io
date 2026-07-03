@@ -238,16 +238,22 @@
             gap: 16px;
             text-align: left;
         }
+        
+        /* FIX: Changed to flex container with nowrap to completely block horizontal title splitting */
         .metadata-row {
+            display: flex;
+            align-items: flex-start;
             font-size: 18px;
             line-height: 1.4;
             color: #bbbbbb;
             letter-spacing: 1px;
+            white-space: nowrap;
         }
         .metadata-row strong {
             color: #ff4444;
             display: inline-block;
             width: 140px;
+            flex-shrink: 0;
         }
 
         /* === FIRST SCREEN SOCIAL DOCK === */
@@ -548,7 +554,6 @@
                 font-size: 28px;
             }
 
-            /* Stacked Synopsis layout on mobile viewport configurations */
             .synopsis-container.active {
                 flex-direction: column;
                 gap: 24px;
@@ -566,8 +571,10 @@
                 padding-top: 20px;
                 gap: 12px;
             }
-            .metadata-row { font-size: 15px; }
-            .metadata-row strong { width: 110px; }
+            
+            /* Clean structural fallback for text scaling profiles on compact displays */
+            .metadata-row { font-size: 15px; white-space: normal; }
+            .metadata-row strong { width: 110px; flex-shrink: 0; }
 
             .business-links { gap: 15px; flex-wrap: wrap; }
             .business-links a { font-size: 12px; }
@@ -617,9 +624,7 @@
             <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" class="menu-link">BUY GAME</a>
             <a href="https://hamachithepsychotickiller.com/devroom/" class="dev-room-link menu-link">DEV ROOM</a>
             <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20the%20Psychotic%20Killer%20page" class="menu-link">CONTACT</a>
-            
             <a href="#" class="menu-link" id="synopsisTriggerBtn">SYNOPSIS</a>
-            
             <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank" class="menu-link" style="font-size: 20px; color: #888;">GAME MANUAL</a>
         </div>
 
@@ -787,7 +792,6 @@
 
             if (isClosing) {
                 document.body.style.overflow = '';
-                // Smoothly resets menu interfaces for cleaner presentation upon subsequent clicks
                 setTimeout(() => {
                     menuLinksWrapper.classList.remove('hidden');
                     synopsisContentPanel.classList.remove('active');
@@ -799,32 +803,28 @@
 
         menuToggle.addEventListener('click', toggleMenu);
 
-        // Handles clicks inside the generic links array
         menuLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                if (link === synopsisTriggerBtn) return; // Ignore routine drawer drops for subpanels
+                if (link === synopsisTriggerBtn) return; 
                 if (navOverlay.classList.contains('open')) {
                     toggleMenu();
                 }
             });
         });
 
-        // Trigger transition loop over Synopsis metrics layout panels
         synopsisTriggerBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            e.stopPropagation(); // Blocks parent overlay layer captures
+            e.stopPropagation(); 
             menuLinksWrapper.classList.add('hidden');
             synopsisContentPanel.classList.add('active');
         });
 
-        // DIMMED BACKGROUND INTERCEPT: Drops total layout drawer instantly if clicked anywhere else
         navOverlay.addEventListener('click', (e) => {
             if (e.target === navOverlay || e.target === synopsisContentPanel) {
                 toggleMenu();
             }
         });
 
-        // Halts deep element tree bubbling to protect context interactions inside content spaces
         synopsisContentPanel.addEventListener('click', (e) => {
             e.stopPropagation();
         });
