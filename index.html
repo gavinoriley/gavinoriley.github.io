@@ -138,12 +138,29 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            gap: 24px;
             opacity: 0;
             visibility: hidden;
             transition: opacity 0.4s ease, visibility 0.4s ease;
         }
         .nav-overlay.open { opacity: 1; visibility: visible; }
+        
+        /* Layout Wrappers inside Menu Overlay */
+        .nav-links-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+            transform: scale(1);
+        }
+        .nav-links-wrapper.hidden {
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: scale(0.95);
+            position: absolute;
+        }
+
         .nav-overlay a {
             color: #fff;
             text-decoration: none;
@@ -153,6 +170,85 @@
         }
         .nav-overlay a:hover { color: #ff4444; transform: scale(1.05); }
         .nav-overlay a.dev-room-link { animation: demonic-glow-pulse 1.8s ease-in-out infinite; }
+
+        /* === SYNOPSIS DIGEST GRID === */
+        .synopsis-container {
+            display: flex;
+            width: 90%;
+            max-width: 1100px;
+            gap: 60px;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+            position: absolute;
+        }
+        .synopsis-container.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            position: relative;
+            transform: translateY(0);
+        }
+        .synopsis-left {
+            flex: 1.4;
+            text-align: left;
+        }
+        .synopsis-desc {
+            font-size: 21px;
+            line-height: 1.6;
+            color: #ffffff;
+            margin-bottom: 28px;
+            letter-spacing: 0.5px;
+        }
+        .synopsis-features-title {
+            font-size: 18px;
+            color: #cc1111;
+            letter-spacing: 2px;
+            margin-bottom: 14px;
+            text-transform: uppercase;
+        }
+        .synopsis-features-list {
+            list-style: none;
+        }
+        .synopsis-features-list li {
+            font-size: 17px;
+            line-height: 1.5;
+            color: #cccccc;
+            margin-bottom: 12px;
+            position: relative;
+            padding-left: 20px;
+        }
+        .synopsis-features-list li::before {
+            content: "•";
+            color: #cc1111;
+            position: absolute;
+            left: 0;
+            font-size: 20px;
+            line-height: 1;
+        }
+        .synopsis-right {
+            flex: 0.8;
+            border-left: 1px solid #222;
+            padding-left: 45px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 16px;
+            text-align: left;
+        }
+        .metadata-row {
+            font-size: 18px;
+            line-height: 1.4;
+            color: #bbbbbb;
+            letter-spacing: 1px;
+        }
+        .metadata-row strong {
+            color: #ff4444;
+            display: inline-block;
+            width: 140px;
+        }
 
         /* === FIRST SCREEN SOCIAL DOCK === */
         .hero-socials {
@@ -299,10 +395,9 @@
 
         .modal-box {
             position: relative;
-            /* FIX 1: Expanded layout variables to fill massive premium scale coordinates */
             width: 92%;
             max-width: 1150px; 
-            max-height: 82vh; /* Prevents vertical viewport clipping on narrow laptops */
+            max-height: 82vh; 
             aspect-ratio: 16 / 9;
             background-color: #000;
             border: 2px solid #cc1111;
@@ -453,6 +548,27 @@
                 font-size: 28px;
             }
 
+            /* Stacked Synopsis layout on mobile viewport configurations */
+            .synopsis-container.active {
+                flex-direction: column;
+                gap: 24px;
+                width: 88%;
+                max-height: 78vh;
+                overflow-y: auto;
+                padding-right: 8px;
+            }
+            .synopsis-desc { font-size: 17px; margin-bottom: 16px; }
+            .synopsis-features-list li { font-size: 15px; margin-bottom: 8px; }
+            .synopsis-right {
+                border-left: none;
+                padding-left: 0;
+                border-top: 1px solid #222;
+                padding-top: 20px;
+                gap: 12px;
+            }
+            .metadata-row { font-size: 15px; }
+            .metadata-row strong { width: 110px; }
+
             .business-links { gap: 15px; flex-wrap: wrap; }
             .business-links a { font-size: 12px; }
             section { padding: 0; min-height: auto; }
@@ -493,13 +609,44 @@
         <span></span>
     </button>
 
-    <nav class="nav-overlay">
-        <a href="https://hamachithepsychotickiller.com/about/" class="menu-link">GAME INFO</a>
-        <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" class="menu-link">BUY GAME</a>
-        <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" class="menu-link">PLAY ONLINE DEMO</a>
-        <a href="https://hamachithepsychotickiller.com/devroom/" class="dev-room-link menu-link">DEV ROOM</a>
-        <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20the%20Psychotic%20Killer%20page" class="menu-link">CONTACT</a>
-        <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank" class="menu-link" style="font-size: 20px; color: #888;">GAME MANUAL</a>
+    <nav class="nav-overlay" id="mainNavOverlay">
+        
+        <div class="nav-links-wrapper" id="menuLinksWrapper">
+            <a href="https://hamachithepsychotickiller.com/about/" class="menu-link">GAME INFO</a>
+            <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" class="menu-link">PLAY ONLINE DEMO</a>
+            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" class="menu-link">BUY GAME</a>
+            <a href="https://hamachithepsychotickiller.com/devroom/" class="dev-room-link menu-link">DEV ROOM</a>
+            <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20the%20Psychotic%20Killer%20page" class="menu-link">CONTACT</a>
+            
+            <a href="#" class="menu-link" id="synopsisTriggerBtn">SYNOPSIS</a>
+            
+            <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank" class="menu-link" style="font-size: 20px; color: #888;">GAME MANUAL</a>
+        </div>
+
+        <div class="synopsis-container" id="synopsisContentPanel">
+            <div class="synopsis-left">
+                <p class="synopsis-desc">In this platformer, you control a piece of tofu named Hamachi, who unexpectedly falls into the possession of Demon Queen Deity, an evil fiend who intends to use him as a vessel to conquer the world through mass murder.</p>
+                <h3 class="synopsis-features-title">features:</h3>
+                <ul class="synopsis-features-list">
+                    <li>Play as the villain: Choose to kill, spare, or ignore every civilian.</li>
+                    <li>Three distinct routes: Pacifist, Neutral, and Genocide, each with its own ending.</li>
+                    <li>Defeat or pacify demonic bosses, pacified bosses will join your side.</li>
+                    <li>Journey through 8 visually distinct worlds built with original pixel art.</li>
+                    <li>Chainsaw power-up grants temporary invincibility and destroys any being you touch.</li>
+                    <li>Collect souls from dead civilians or sushi dropped by Penelope Pom Pom Pink to restore health.</li>
+                    <li>Your crimes will not go unnoticed by the authorities.</li>
+                </ul>
+            </div>
+            <div class="synopsis-right">
+                <div class="metadata-row"><strong>TITLE:</strong> Hamachi the Psychotic Killer</div>
+                <div class="metadata-row"><strong>GENRE:</strong> Action, Indie</div>
+                <div class="metadata-row"><strong>DEVELOPER:</strong> gavinoriley</div>
+                <div class="metadata-row"><strong>PUBLISHER:</strong> gavinoriley</div>
+                <div class="metadata-row"><strong>RELEASE DATE:</strong> Feb 27, 2026</div>
+                <div class="metadata-row"><strong>PLATFORM:</strong> Windows/Mac</div>
+            </div>
+        </div>
+
     </nav>
 
     <div class="hero-socials">
@@ -626,22 +773,60 @@
         });
 
         const menuToggle = document.querySelector('.menu-toggle');
-        const navOverlay = document.querySelector('.nav-overlay');
+        const navOverlay = document.getElementById('mainNavOverlay');
         const menuLinks = document.querySelectorAll('.menu-link');
+        
+        const menuLinksWrapper = document.getElementById('menuLinksWrapper');
+        const synopsisTriggerBtn = document.getElementById('synopsisTriggerBtn');
+        const synopsisContentPanel = document.getElementById('synopsisContentPanel');
 
         function toggleMenu() {
+            const isClosing = menuToggle.classList.contains('open');
             menuToggle.classList.toggle('open');
             navOverlay.classList.toggle('open');
+
+            if (isClosing) {
+                document.body.style.overflow = '';
+                // Smoothly resets menu interfaces for cleaner presentation upon subsequent clicks
+                setTimeout(() => {
+                    menuLinksWrapper.classList.remove('hidden');
+                    synopsisContentPanel.classList.remove('active');
+                }, 400);
+            } else {
+                document.body.style.overflow = 'hidden';
+            }
         }
 
         menuToggle.addEventListener('click', toggleMenu);
 
+        // Handles clicks inside the generic links array
         menuLinks.forEach(link => {
-            link.addEventListener('click', () => {
+            link.addEventListener('click', (e) => {
+                if (link === synopsisTriggerBtn) return; // Ignore routine drawer drops for subpanels
                 if (navOverlay.classList.contains('open')) {
                     toggleMenu();
                 }
             });
+        });
+
+        // Trigger transition loop over Synopsis metrics layout panels
+        synopsisTriggerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation(); // Blocks parent overlay layer captures
+            menuLinksWrapper.classList.add('hidden');
+            synopsisContentPanel.classList.add('active');
+        });
+
+        // DIMMED BACKGROUND INTERCEPT: Drops total layout drawer instantly if clicked anywhere else
+        navOverlay.addEventListener('click', (e) => {
+            if (e.target === navOverlay || e.target === synopsisContentPanel) {
+                toggleMenu();
+            }
+        });
+
+        // Halts deep element tree bubbling to protect context interactions inside content spaces
+        synopsisContentPanel.addEventListener('click', (e) => {
+            e.stopPropagation();
         });
 
         const trailerLightbox = document.getElementById('trailerLightbox');
@@ -652,8 +837,6 @@
             if (event) event.preventDefault();
             modalVideoIframe.src = targetEmbedSource;
             trailerLightbox.classList.add('open');
-            
-            // FIX 3: Native browser background freeze instead of halting the Lenis core instance script
             document.body.style.overflow = 'hidden'; 
         }
 
@@ -661,8 +844,6 @@
             if (event) event.preventDefault();
             trailerLightbox.classList.remove('open');
             modalVideoIframe.src = "";
-            
-            // FIX 4: Safely unlocks scroll coordinates natively so page interaction never drops frame focus
             document.body.style.overflow = ''; 
         }
     </script>
