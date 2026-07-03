@@ -66,20 +66,15 @@
             left: 0;
             width: 100vw;
             height: 100vh;
-            background: #0b0b0d; /* Soft premium cinematic off-black */
+            background: #0b0b0d; 
             z-index: 9999;
             pointer-events: none;
-            /* 0.5s initial hold delay, 0.85s incredibly silky cubic easing curve */
             animation: swipeUpwards 0.85s cubic-bezier(0.76, 0, 0.24, 1) 0.5s forwards;
         }
 
         @keyframes swipeUpwards {
-            0% {
-                transform: translateY(0);
-            }
-            100% {
-                transform: translateY(-100%);
-            }
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-100%); }
         }
 
         /* === TOP GRADIENT SHADOW === */
@@ -89,7 +84,6 @@
             left: 0;
             width: 100vw;
             height: 180px;
-            /* Multi-stop eased shadow gradient to soften layout drop-off completely */
             background: linear-gradient(to bottom, 
                 rgba(0,0,0,1) 0%, 
                 rgba(0,0,0,0.92) 25%, 
@@ -125,20 +119,10 @@
             transition: all 0.3s ease-in-out;
             box-shadow: 0 1px 3px rgba(0, 0, 0, 0.9), 0 0 2px rgba(0, 0, 0, 0.9);
         }
-        /* Custom line-length variance: Top Long, Middle Short, Bottom Long */
-        .menu-toggle span:nth-child(2) {
-            width: 70%;
-        }
-        /* Hamburger Animation to 'X' */
-        .menu-toggle.open span:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
-        }
-        .menu-toggle.open span:nth-child(2) {
-            opacity: 0;
-        }
-        .menu-toggle.open span:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
-        }
+        .menu-toggle span:nth-child(2) { width: 70%; }
+        .menu-toggle.open span:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+        .menu-toggle.open span:nth-child(2) { opacity: 0; }
+        .menu-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
         /* === FULLSCREEN NAVIGATION OVERLAY === */
         .nav-overlay {
@@ -159,10 +143,7 @@
             visibility: hidden;
             transition: opacity 0.4s ease, visibility 0.4s ease;
         }
-        .nav-overlay.open {
-            opacity: 1;
-            visibility: visible;
-        }
+        .nav-overlay.open { opacity: 1; visibility: visible; }
         .nav-overlay a {
             color: #fff;
             text-decoration: none;
@@ -170,13 +151,8 @@
             letter-spacing: 2px;
             transition: color 0.3s ease, transform 0.3s ease;
         }
-        .nav-overlay a:hover {
-            color: #ff4444;
-            transform: scale(1.05);
-        }
-        .nav-overlay a.dev-room-link {
-            animation: demonic-glow-pulse 1.8s ease-in-out infinite;
-        }
+        .nav-overlay a:hover { color: #ff4444; transform: scale(1.05); }
+        .nav-overlay a.dev-room-link { animation: demonic-glow-pulse 1.8s ease-in-out infinite; }
 
         /* === FIRST SCREEN SOCIAL DOCK === */
         .hero-socials {
@@ -188,11 +164,7 @@
             z-index: 110;
             align-items: center;
         }
-        .hero-socials a {
-            display: flex;
-            align-items: center;
-            text-decoration: none;
-        }
+        .hero-socials a { display: flex; align-items: center; text-decoration: none; }
         .hero-socials img {
             height: 32px; 
             width: auto;
@@ -202,25 +174,171 @@
             will-change: opacity; 
             transform: translateZ(0); 
         }
-        .hero-socials a:hover img {
-            opacity: 0.5;
-        }
+        .hero-socials a:hover img { opacity: 0.5; }
 
         /* === TITLE / HERO SECTION === */
         .title-section {
             background-color: #000000;
             padding: 0;
             min-height: 0;
+            position: relative;
         }
 
-        /* Demonic Pulse Animation */
+        .hero-video-container {
+            position: relative;
+            width: 100vw;
+            height: 100vh; 
+            overflow: hidden;
+            background-color: #000;
+        }
+
+        .video-background {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw; 
+            min-height: 100vh;
+            min-width: 177.77vh; 
+            transform: translate3d(-50%, -50%, 0); 
+            pointer-events: none; 
+            z-index: 1;
+            will-change: transform;
+        }
+
+        .video-background video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border: none;
+            backface-visibility: hidden;
+            -webkit-backface-visibility: hidden;
+        }
+
+        .logo-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            background: rgba(0, 0, 0, 0.25); 
+        }
+
+        .hero-content-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 24px;
+            width: 85%;
+            max-width: 750px;
+        }
+
+        .hero-content-wrapper img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .hero-action-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+        }
+
+        .pill-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(0, 0, 0, 0.45);
+            color: #ffffff;
+            border: 1.5px solid #cc1111; 
+            padding: 10px 28px;
+            font-size: 18px;
+            letter-spacing: 1px;
+            border-radius: 50px;
+            text-decoration: none;
+            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        }
+
+        .pill-btn:hover {
+            background-color: rgba(204, 17, 17, 0.2);
+            border-color: #ff3333;
+            transform: translateY(-1px);
+        }
+
+        /* === OPTIMIZED THEATER MODAL BOX === */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.88);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 3000; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-box {
+            position: relative;
+            /* FIX 1: Expanded layout variables to fill massive premium scale coordinates */
+            width: 92%;
+            max-width: 1150px; 
+            max-height: 82vh; /* Prevents vertical viewport clipping on narrow laptops */
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            border: 2px solid #cc1111;
+            border-radius: 6px;
+            box-shadow: 0 15px 50px rgba(204, 17, 17, 0.35);
+        }
+
+        .modal-box iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            display: block;
+            border-radius: 4px;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: -48px;
+            right: 0;
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 38px;
+            line-height: 1;
+            cursor: pointer;
+            transition: color 0.2s ease, transform 0.2s ease;
+        }
+
+        .modal-close-btn:hover {
+            color: #ff3333;
+            transform: scale(1.1);
+        }
+
         @keyframes demonic-glow-pulse {
-            0%, 100% {
-                text-shadow: 0 0 8px #ff4444, 0 0 18px #ff4444, 0 0 35px #ff0000;
-            }
-            50% {
-                text-shadow: 0 0 20px #ff4444, 0 0 40px #ff4444, 0 0 70px #ff0000, 0 0 100px #ff8866;
-            }
+            0%, 100% { text-shadow: 0 0 8px #ff4444, 0 0 18px #ff4444, 0 0 35px #ff0000; }
+            50% { text-shadow: 0 0 20px #ff4444, 0 0 40px #ff4444, 0 0 70px #ff0000, 0 0 100px #ff8866; }
         }
 
         /* === SECTIONS GENERAL === */
@@ -233,17 +351,13 @@
             align-items: center;
             position: relative;
         }
-        .news-section, .video-section, .about-section, .roadblock-section,
+        .news-section, .about-section, .roadblock-section,
         .characters-section, .worlds-section, .business-section {
             background-color: #000000;
             color: #fff;
             height: auto;
             padding: 0;
             min-height: 0;
-        }
-        .video-section iframe {
-            aspect-ratio: 16 / 9;
-            border: none;
         }
         .business-section {
             padding: 40px 0;
@@ -264,13 +378,9 @@
             font-size: 16px;
             transition: color 0.3s ease;
         }
-        .business-links a:hover {
-            color: #fff;
-        }
+        .business-links a:hover { color: #fff; }
         
-        .title-section img,
         .news-section img,
-        .video-section iframe,
         .about-section img,
         .roadblock-section img,
         .characters-section img,
@@ -316,40 +426,36 @@
                 width: 24px;
                 height: 16px;
             }
-            .menu-toggle span {
-                height: 2px;
-            }
+            .menu-toggle span { height: 2px; }
             .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
             .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-            .top-shadow {
-                height: 120px;
+            .top-shadow { height: 120px; }
+            .nav-overlay a { font-size: 26px; }
+            .hero-socials { top: 30px; right: 30px; gap: 16px; }
+            .hero-socials img { height: 26px; }
+            .title-section { padding-top: 0; }
+            .hero-video-container { height: 60vh; }
+            
+            .hero-action-row {
+                flex-direction: column;
+                gap: 12px;
             }
-            .nav-overlay a {
-                font-size: 26px;
+            .pill-btn {
+                width: 80%;
+                font-size: 16px;
+                padding: 8px 20px;
             }
-            .hero-socials {
-                top: 30px;
-                right: 30px;
-                gap: 16px;
+
+            .modal-close-btn {
+                top: -38px;
+                right: 4px;
+                font-size: 28px;
             }
-            .hero-socials img {
-                height: 26px; 
-            }
-            .title-section {
-                padding-top: 60px;
-            }
-            .business-links {
-                gap: 15px;
-                flex-wrap: wrap;
-            }
-            .business-links a {
-                font-size: 12px;
-            }
-            section {
-                padding: 0;
-                min-height: auto;
-            }
+
+            .business-links { gap: 15px; flex-wrap: wrap; }
+            .business-links a { font-size: 12px; }
+            section { padding: 0; min-height: auto; }
         }
     </style>
     <script type="application/ld+json">
@@ -408,11 +514,36 @@
         </a>
     </div>
 
+    <div class="modal-overlay" id="trailerLightbox" onclick="closeTrailerModal(event)" data-lenis-prevent>
+        <div class="modal-box" onclick="event.stopPropagation()">
+            <button class="modal-close-btn" onclick="closeTrailerModal(event)" aria-label="Close video pop-up">&times;</button>
+            <iframe id="modalVideoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
     <div id="wrapper">
         <main id="container">
             
             <section class="title-section">
-                <img src="https://gavinoriley.github.io/assets/ScreenshotHomePage.png" alt="Hamachi the Psychotic Killer game title logo">
+                <div class="hero-video-container">
+                    <div class="video-background">
+                        <video autoplay muted loop playsinline preload="auto">
+                            <source src="https://gavinoriley.github.io/assets/Hamachi%20the%20Psychotic%20Killer%20Release%20Trailer.mp4" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    
+                    <div class="logo-overlay">
+                        <div class="hero-content-wrapper">
+                            <img src="https://gavinoriley.github.io/assets/ScreenHomePageOver.png" alt="Hamachi the Psychotic Killer game title logo">
+                            
+                            <div class="hero-action-row">
+                                <a href="#" class="pill-btn" onclick="openTrailerModal(event)">Watch Trailer</a>
+                                <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="pill-btn">Buy Game</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 
                 <div class="carousel">
                     <div class="carousel-inner">
@@ -446,10 +577,6 @@
                 <a href="https://x.com/imgavinoriley/status/2068302846442000537" target="_blank" rel="noopener noreferrer">
                     <img src="https://gavinoriley.github.io/assets/FinalClipBannerclickme.png" alt="Hamachi the Psychotic Killer">
                 </a>
-            </section>
-            
-            <section class="video-section">
-                <iframe src="https://www.youtube.com/embed/VbFZFto8Naw" title="Hamachi the Psychotic Killer - Gameplay Trailer #2" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
             </section>
             
             <section class="roadblock-section">
@@ -516,6 +643,28 @@
                 }
             });
         });
+
+        const trailerLightbox = document.getElementById('trailerLightbox');
+        const modalVideoIframe = document.getElementById('modalVideoIframe');
+        const targetEmbedSource = "https://www.youtube.com/embed/VbFZFto8Naw?autoplay=1&modestbranding=1&rel=0";
+
+        function openTrailerModal(event) {
+            if (event) event.preventDefault();
+            modalVideoIframe.src = targetEmbedSource;
+            trailerLightbox.classList.add('open');
+            
+            // FIX 3: Native browser background freeze instead of halting the Lenis core instance script
+            document.body.style.overflow = 'hidden'; 
+        }
+
+        function closeTrailerModal(event) {
+            if (event) event.preventDefault();
+            trailerLightbox.classList.remove('open');
+            modalVideoIframe.src = "";
+            
+            // FIX 4: Safely unlocks scroll coordinates natively so page interaction never drops frame focus
+            document.body.style.overflow = ''; 
+        }
     </script>
 </body>
 </html>
