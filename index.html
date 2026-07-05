@@ -266,6 +266,47 @@
             flex-shrink: 0;
         }
 
+        /* === DEFINITIVE VERSION PANEL STYLES === */
+        .definitive-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 85%;
+            max-width: 850px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+            position: absolute;
+            gap: 30px;
+        }
+        .definitive-container.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            position: relative;
+            transform: translateY(0);
+        }
+        .definitive-title {
+            font-size: 32px;
+            color: #cc1111;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+        .definitive-desc {
+            font-size: 22px;
+            line-height: 1.6;
+            color: #ffffff;
+            letter-spacing: 0.5px;
+        }
+        .definitive-desc em {
+            font-style: italic;
+        }
+
         /* === FIRST SCREEN SOCIAL DOCK === */
         .hero-socials {
             position: fixed;
@@ -698,6 +739,8 @@
             }
             section { padding: 0; min-height: auto;
             }
+            .definitive-title { font-size: 22px; }
+            .definitive-desc { font-size: 16px; }
         }
     </style>
     <script type="application/ld+json">
@@ -745,8 +788,7 @@
             <a href="https://hamachithepsychotickiller.com/devroom/" class="dev-room-link menu-link">DEV ROOM</a>
             <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20the%20Psychotic%20Killer%20page" class="menu-link">CONTACT</a>
             <a href="#" class="menu-link" id="synopsisTriggerBtn">SYNOPSIS</a>
-            <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank" class="menu-link" style="font-size: 20px;
-color: #888;">GAME MANUAL</a>
+            <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank" class="menu-link" style="font-size: 20px; color: #888;">GAME MANUAL</a>
         </div>
 
         <div class="synopsis-container" id="synopsisContentPanel">
@@ -775,6 +817,12 @@ color: #888;">GAME MANUAL</a>
                 <div class="metadata-row"><strong>PLATFORM:</strong> Windows/Mac</div>
        
             </div>
+        </div>
+
+        <!-- UPDATED DEFINITIVE VERSION INTERFACE PANEL -->
+        <div class="definitive-container" id="definitiveContentPanel">
+            <h2 class="definitive-title">HAMACHI: The Psychotic Killer Definitive Version</h2>
+            <p class="definitive-desc">While the full game is complete and publicly available, I continue to experiment, polish, and develop new content beyond the public release. While I won't name a release date just yet, if you're curious to see some of what I'm doing, check out the DEV ROOM page as I <em>sometimes</em> post on there.</p>
         </div>
     </nav>
 
@@ -828,8 +876,7 @@ color: #888;">GAME MANUAL</a>
     <div class="modal-overlay" id="trailerLightbox" onclick="closeTrailerModal(event)" data-lenis-prevent>
         <div class="modal-box" onclick="event.stopPropagation()">
             <button class="modal-close-btn" onclick="closeTrailerModal(event)" aria-label="Close video pop-up">&times;</button>
-            <iframe id="modalVideoIframe" src="" allow="accelerometer;
-autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+            <iframe id="modalVideoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </div>
     </div>
 
@@ -852,9 +899,9 @@ autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allow
                             <img src="https://gavinoriley.github.io/assets/ScreenHomePageOver.png" alt="Hamachi the Psychotic Killer game title logo">
                             
                             <div class="hero-action-row">
-                     
-                            <a href="#" class="pill-btn" onclick="openTrailerModal(event)">Watch Trailer</a>
+                                <a href="#" class="pill-btn" onclick="openTrailerModal(event)">Watch Trailer</a>
                                 <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="pill-btn">Buy Game</a>
+                                <a href="#" class="pill-btn" id="definitiveTriggerBtn">Definitive Version</a>
                             </div>
                    
                         </div>
@@ -962,6 +1009,9 @@ autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allow
         const menuLinksWrapper = document.getElementById('menuLinksWrapper');
         const synopsisTriggerBtn = document.getElementById('synopsisTriggerBtn');
         const synopsisContentPanel = document.getElementById('synopsisContentPanel');
+        
+        const definitiveTriggerBtn = document.getElementById('definitiveTriggerBtn');
+        const definitiveContentPanel = document.getElementById('definitiveContentPanel');
 
         function toggleMenu() {
             const isClosing = menuToggle.classList.contains('open');
@@ -973,6 +1023,7 @@ autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allow
                 setTimeout(() => {
                     menuLinksWrapper.classList.remove('hidden');
                     synopsisContentPanel.classList.remove('active');
+                    definitiveContentPanel.classList.remove('active');
                 }, 400);
             } else {
                 document.body.style.overflow = 'hidden';
@@ -993,16 +1044,35 @@ autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allow
             e.preventDefault();
             e.stopPropagation(); 
             menuLinksWrapper.classList.add('hidden');
+            definitiveContentPanel.classList.remove('active');
             synopsisContentPanel.classList.add('active');
         });
+
+        definitiveTriggerBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            if (!navOverlay.classList.contains('open')) {
+                menuToggle.classList.add('open');
+                navOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+            menuLinksWrapper.classList.add('hidden');
+            synopsisContentPanel.classList.remove('active');
+            definitiveContentPanel.classList.add('active');
+        });
+
         navOverlay.addEventListener('click', (e) => {
-            if (e.target === navOverlay || e.target === synopsisContentPanel) {
+            if (e.target === navOverlay || e.target === synopsisContentPanel || e.target === definitiveContentPanel) {
                 toggleMenu();
             }
         });
         synopsisContentPanel.addEventListener('click', (e) => {
             e.stopPropagation();
         });
+        definitiveContentPanel.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+
         const trailerLightbox = document.getElementById('trailerLightbox');
         const modalVideoIframe = document.getElementById('modalVideoIframe');
         const targetEmbedSource = "https://www.youtube.com/embed/VbFZFto8Naw?autoplay=1&modestbranding=1&rel=0";
@@ -1020,7 +1090,6 @@ autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allow
             document.body.style.overflow = ''; 
         }
 
-        /* === DROPDOWN PANEL CONTROLLER LOGIC ENGINE === */
         const shareEngineTrigger = document.getElementById('shareEngineTrigger');
         const shareDropdownPanel = document.getElementById('shareDropdownPanel');
         const copyLinkActionBtn = document.getElementById('copyLinkActionBtn');
