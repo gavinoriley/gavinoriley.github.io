@@ -91,8 +91,7 @@
                 rgba(0,0,0,0.65) 55%, 
                 rgba(0,0,0,0.25) 80%, 
                 rgba(0,0,0,0) 
-                100%
-            );
+                100    );
             pointer-events: none;
             z-index: 105;
         }
@@ -400,6 +399,39 @@
             flex-shrink: 0;
         }
 
+        /* === X HOVER DROPDOWN ARCHITECTURE === */
+        .x-hover-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+        .x-hover-card {
+            position: absolute;
+            top: 45px;
+            right: 0;
+            background: rgba(11, 11, 13, 0.95);
+            border: 1.5px solid #cc1111;
+            border-radius: 4px;
+            width: auto;
+            white-space: nowrap;
+            padding: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(204, 17, 17, 0.2);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s ease;
+            z-index: 500;
+        }
+        .x-hover-wrapper:hover .x-hover-card {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
         /* === TITLE / HERO SECTION === */
         .title-section {
             background-color: #000000;
@@ -662,6 +694,7 @@
             .hero-socials img { height: 26px; }
             .share-trigger-btn svg { width: 26px; height: 26px; }
             .share-card { top: 38px; right: 0; }
+            .x-hover-card { top: 38px; right: 0; }
             .title-section { padding-top: 0; }
             .hero-video-container { height: 60vh; }
             
@@ -794,9 +827,16 @@
     </nav>
 
     <div class="hero-socials">
-        <a href="https://x.com/imgavinoriley" target="_blank" rel="noopener noreferrer" aria-label="Follow gavinoriley on X">
-            <img src="https://gavinoriley.github.io/assets/whitex.png" alt="X Icon">
-        </a>
+        <div class="x-hover-wrapper">
+            <a href="https://x.com/imgavinoriley" target="_blank" rel="noopener noreferrer" aria-label="Follow gavinoriley on X">
+                <img src="https://gavinoriley.github.io/assets/whitex.png" alt="X Icon">
+            </a>
+            <div class="x-hover-card">
+                <a href="https://x.com/search?q=%23hamachithepsychotickiller&src=hashtag_click" target="_blank" rel="noopener noreferrer" class="share-opt-link">
+                    #hamachithepsychotickiller
+                </a>
+            </div>
+        </div>
         <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank" rel="noopener noreferrer" aria-label="Hamachi the Psychotic Killer YouTube Channel">
             <img src="https://gavinoriley.github.io/assets/whiteyoutube.png" alt="YouTube Icon">
         </a>
