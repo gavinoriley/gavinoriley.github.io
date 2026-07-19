@@ -84,12 +84,12 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 140px; /* Reduced height to take up less screen space */
+            height: 140px;
             background: linear-gradient(to bottom, 
                 rgba(0,0,0,1) 0%, 
                 rgba(0,0,0,0.0) 0%, 
                 rgba(0,0,0,0.0) 0%, 
-                rgba(0,0,0,0) 0%); /* Accelerated falloff to prevent bleeding */
+                rgba(0,0,0,0) 0%);
             pointer-events: none;
             z-index: 105;
         }
@@ -491,7 +491,9 @@
             max-width: 750px;
         }
 
+        /* PREVENTS LOGO FROM LOOKING HUGE */
         .hero-content-wrapper img {
+            max-width: 520px;
             width: 100%;
             height: auto;
             display: block;
@@ -503,6 +505,7 @@
             align-items: center;
             gap: 16px;
             width: 100%;
+            flex-wrap: wrap;
         }
 
         .pill-btn {
@@ -519,6 +522,7 @@
             text-decoration: none;
             transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            width: auto;
         }
 
         .pill-btn:hover {
@@ -686,7 +690,7 @@
             .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
             .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-            .top-shadow { height: 60px; } /* Reduced from 120px to scale nicely with desktop */
+            .top-shadow { height: 60px; }
             .nav-overlay a { font-size: 26px; }
             .hero-socials { top: 30px; right: 30px; gap: 16px; }
             .hero-socials img { height: 26px; }
@@ -700,10 +704,12 @@
                 flex-direction: column;
                 gap: 12px;
             }
+            /* PREVENTS BUTTONS FROM LOOKING MASSIVE ON MOBILE */
             .pill-btn {
-                width: 80%;
+                width: auto;
+                min-width: 200px;
                 font-size: 16px;
-                padding: 8px 20px;
+                padding: 10px 24px;
             }
 
             .modal-close-btn {
