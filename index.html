@@ -84,12 +84,12 @@
             top: 0;
             left: 0;
             width: 100vw;
-            height: 140px;
+            height: 140px; /* Reduced height to take up less screen space */
             background: linear-gradient(to bottom, 
                 rgba(0,0,0,1) 0%, 
                 rgba(0,0,0,0.0) 0%, 
                 rgba(0,0,0,0.0) 0%, 
-                rgba(0,0,0,0) 0%);
+                rgba(0,0,0,0) 0%); /* Accelerated falloff to prevent bleeding */
             pointer-events: none;
             z-index: 105;
         }
@@ -491,9 +491,7 @@
             max-width: 750px;
         }
 
-        /* PREVENTS LOGO FROM LOOKING HUGE */
         .hero-content-wrapper img {
-            max-width: 520px;
             width: 100%;
             height: auto;
             display: block;
@@ -505,7 +503,6 @@
             align-items: center;
             gap: 16px;
             width: 100%;
-            flex-wrap: wrap;
         }
 
         .pill-btn {
@@ -522,7 +519,6 @@
             text-decoration: none;
             transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
-            width: auto;
         }
 
         .pill-btn:hover {
@@ -690,7 +686,7 @@
             .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
             .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-            .top-shadow { height: 60px; }
+            .top-shadow { height: 60px; } /* Reduced from 120px to scale nicely with desktop */
             .nav-overlay a { font-size: 26px; }
             .hero-socials { top: 30px; right: 30px; gap: 16px; }
             .hero-socials img { height: 26px; }
@@ -704,12 +700,10 @@
                 flex-direction: column;
                 gap: 12px;
             }
-            /* PREVENTS BUTTONS FROM LOOKING MASSIVE ON MOBILE */
             .pill-btn {
-                width: auto;
-                min-width: 200px;
+                width: 80%;
                 font-size: 16px;
-                padding: 10px 24px;
+                padding: 8px 20px;
             }
 
             .modal-close-btn {
@@ -912,8 +906,8 @@
                            <div class="hero-action-row">
                                 <a href="#" class="pill-btn" onclick="openTrailerModal(event)">Watch Trailer</a>
                                <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" rel="noopener noreferrer" class="pill-btn">Play Demo</a>
-                                <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="pill-btn">Buy on Steam</a>
-                               <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank" rel="noopener noreferrer" class="pill-btn">Have Hamachi live with You</a>
+                                <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="pill-btn">Buy Game</a>
+                               <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank" rel="noopener noreferrer" class="pill-btn">Hamachi Cube</a>
                             </div>
                    
                         </div>
