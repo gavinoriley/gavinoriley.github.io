@@ -496,34 +496,62 @@
             display: block;
         }
 
+        /* === NEW SLASHER ACTION BUTTON DESIGN === */
         .hero-action-row {
             display: flex;
             justify-content: center;
             align-items: center;
-            gap: 16px;
+            gap: 18px;
             width: 100%;
+            flex-wrap: wrap;
         }
 
         .pill-btn {
+            position: relative;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            background: rgba(0, 0, 0, 0.45);
+            background: rgba(12, 3, 3, 0.85);
             color: #ffffff;
-            border: 1.5px solid #cc1111; 
-            padding: 10px 28px;
+            border: 2px solid #cc1111; 
+            padding: 12px 28px;
             font-size: 18px;
-            letter-spacing: 1px;
-            border-radius: 50px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
             text-decoration: none;
-            transition: background-color 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
+            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            box-shadow: 0 0 12px rgba(204, 17, 17, 0.3);
+            overflow: hidden;
+        }
+
+        .pill-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 68, 68, 0.45), transparent);
+            transition: left 0.4s ease;
+        }
+
+        .pill-btn:hover::before {
+            left: 100%;
         }
 
         .pill-btn:hover {
-            background-color: rgba(204, 17, 17, 0.2);
-            border-color: #ff3333;
-            transform: translateY(-1px);
+            background-color: #cc1111;
+            color: #ffffff;
+            border-color: #ff4444;
+            transform: translateY(-3px) scale(1.03);
+            box-shadow: 0 0 25px rgba(204, 17, 17, 0.85), 0 0 8px rgba(255, 255, 255, 0.4);
+            text-shadow: 0 0 6px rgba(0, 0, 0, 0.9);
+        }
+
+        .pill-btn:active {
+            transform: translateY(0) scale(0.98);
         }
 
         /* === OPTIMIZED THEATER MODAL BOX === */
@@ -685,7 +713,7 @@
             .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
             .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-            .top-shadow { height: 60px; } /* Reduced from 120px to scale nicely with desktop */
+            .top-shadow { height: 60px; }
             .nav-overlay a { font-size: 26px; }
             .hero-socials { top: 30px; right: 30px; gap: 16px; }
             .hero-socials img { height: 26px; }
@@ -702,7 +730,8 @@
             .pill-btn {
                 width: 80%;
                 font-size: 16px;
-                padding: 8px 20px;
+                padding: 10px 20px;
+                clip-path: polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%);
             }
 
             .modal-close-btn {
@@ -903,11 +932,11 @@
               
                             <img src="https://gavinoriley.github.io/assets/newScreenHomePageOver.png" alt="Hamachi the Psychotic Killer game title logo">
                             
-                           <div class="hero-action-row">
+                            <div class="hero-action-row">
                                 <a href="#" class="pill-btn" onclick="openTrailerModal(event)">Watch Trailer</a>
-                               <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" rel="noopener noreferrer" class="pill-btn">Play Demo</a>
+                                <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" rel="noopener noreferrer" class="pill-btn">Play Demo</a>
                                 <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="pill-btn">Buy Game</a>
-                               <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank" rel="noopener noreferrer" class="pill-btn">Hamachi Cube</a>
+                                <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank" rel="noopener noreferrer" class="pill-btn">Hamachi Cube</a>
                             </div>
                    
                         </div>
