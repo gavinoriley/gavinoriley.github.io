@@ -167,7 +167,14 @@
             letter-spacing: 2px;
             transition: color 0.3s ease;
         }
-        .nav-overlay a:hover { color: #ff4444; }
+        .nav-overlay a:nth-child(1):hover { color: #ff5577; } /* Game Info - Red */
+        .nav-overlay a:nth-child(2):hover { color: #00e676; } /* Play Demo - Green */
+        .nav-overlay a:nth-child(3):hover { color: #38b6ff; } /* Buy Game - Blue */
+        .nav-overlay a:nth-child(4):hover { color: #ffd700; } /* Dev Room - Yellow */
+        .nav-overlay a:nth-child(5):hover { color: #ff5577; } /* Contact - Red */
+        .nav-overlay a:nth-child(6):hover { color: #00e676; } /* Synopsis - Green */
+        .nav-overlay a:nth-child(7):hover { color: #38b6ff; } /* Wallpaper - Blue */
+        .nav-overlay a:nth-child(8):hover { color: #ffd700; } /* Game Manual - Yellow */
 
         /* === SYNOPSIS DIGEST GRID === */
         .synopsis-container {
@@ -346,12 +353,13 @@
             position: absolute;
             top: 45px;
             right: 0;
-            background: rgba(11, 11, 13, 0.95);
-            border: 1.5px solid #cc1111;
+            background: linear-gradient(rgba(11, 11, 13, 0.95), rgba(11, 11, 13, 0.95)) padding-box,
+                        linear-gradient(to right, #ff5577, #00e676, #38b6ff, #ffd700) border-box;
+            border: 2px solid transparent;
             border-radius: 4px;
             width: 220px;
             padding: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(204, 17, 17, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             display: flex;
@@ -384,10 +392,25 @@
             letter-spacing: 0.5px;
             transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
-        .share-opt-link:hover {
-            background: rgba(204, 17, 17, 0.15);
-            border-color: #ff3333;
-            color: #ff4444;
+        .share-card .share-opt-link:nth-child(1):hover {
+            background: rgba(255, 85, 119, 0.15);
+            border-color: #ff5577;
+            color: #ff5577;
+        }
+        .share-card .share-opt-link:nth-child(2):hover {
+            background: rgba(0, 230, 118, 0.15);
+            border-color: #00e676;
+            color: #00e676;
+        }
+        .share-card .share-opt-link:nth-child(3):hover {
+            background: rgba(56, 182, 255, 0.15);
+            border-color: #38b6ff;
+            color: #38b6ff;
+        }
+        .share-card .share-opt-link:nth-child(4):hover {
+            background: rgba(255, 215, 0, 0.15);
+            border-color: #ffd700;
+            color: #ffd700;
         }
         .share-opt-link svg {
             width: 16px;
@@ -405,13 +428,14 @@
             position: absolute;
             top: 45px;
             right: 0;
-            background: rgba(11, 11, 13, 0.95);
-            border: 1.5px solid #cc1111;
+            background: linear-gradient(rgba(11, 11, 13, 0.95), rgba(11, 11, 13, 0.95)) padding-box,
+                        linear-gradient(to right, #ff5577, #00e676, #38b6ff, #ffd700) border-box;
+            border: 2px solid transparent;
             border-radius: 4px;
             width: auto;
             white-space: nowrap;
             padding: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8), 0 0 15px rgba(204, 17, 17, 0.2);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
             backdrop-filter: blur(8px);
             -webkit-backdrop-filter: blur(8px);
             display: flex;
@@ -523,27 +547,27 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
         }
 
-        /* Distinct Color Schemes Matching the HAMACHI Logo Palette */
+        /* Color Schemes Matching the HAMACHI Palette */
         .pill-btn.btn-trailer {
-            background-color: #ff5577; /* Bright Pink */
+            background-color: #ff5577; /* Red */
             color: #ffffff;
             text-shadow: 2px 2px 0px #000000;
         }
 
         .pill-btn.btn-demo {
+            background-color: #00e676; /* Green */
+            color: #000000;
+            text-shadow: none;
+        }
+
+        .pill-btn.btn-buy {
             background-color: #38b6ff; /* Sky Blue */
             color: #ffffff;
             text-shadow: 2px 2px 0px #000000;
         }
 
-        .pill-btn.btn-buy {
-            background-color: #00e676; /* Platformer Green */
-            color: #000000;
-            text-shadow: none;
-        }
-
         .pill-btn.btn-cube {
-            background-color: #ffd700; /* Arcade Gold/Yellow */
+            background-color: #ffd700; /* Yellow */
             color: #000000;
             text-shadow: none;
         }
