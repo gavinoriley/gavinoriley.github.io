@@ -165,9 +165,9 @@
             text-decoration: none;
             font-size: 36px;
             letter-spacing: 2px;
-            transition: color 0.3s ease, transform 0.3s ease;
+            transition: color 0.3s ease;
         }
-        .nav-overlay a:hover { color: #ff4444; transform: scale(1.05); }
+        .nav-overlay a:hover { color: #ff4444; }
 
         /* === SYNOPSIS DIGEST GRID === */
         .synopsis-container {
@@ -496,7 +496,7 @@
             display: block;
         }
 
-        /* === NEW SLASHER ACTION BUTTON DESIGN === */
+        /* === NEW SLASHER ACTION BUTTON DESIGN (UPDATED FIX) === */
         .hero-action-row {
             display: flex;
             justify-content: center;
@@ -521,7 +521,7 @@
             text-transform: uppercase;
             text-decoration: none;
             clip-path: polygon(14px 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
-            transition: all 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+            transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease, color 0.25s ease;
             box-shadow: 0 0 12px rgba(204, 17, 17, 0.3);
             overflow: hidden;
         }
@@ -545,13 +545,12 @@
             background-color: #cc1111;
             color: #ffffff;
             border-color: #ff4444;
-            transform: translateY(-3px) scale(1.03);
             box-shadow: 0 0 25px rgba(204, 17, 17, 0.85), 0 0 8px rgba(255, 255, 255, 0.4);
             text-shadow: 0 0 6px rgba(0, 0, 0, 0.9);
         }
 
         .pill-btn:active {
-            transform: translateY(0) scale(0.98);
+            transform: scale(0.98);
         }
 
         /* === OPTIMIZED THEATER MODAL BOX === */
@@ -608,12 +607,11 @@
             font-size: 38px;
             line-height: 1;
             cursor: pointer;
-            transition: color 0.2s ease, transform 0.2s ease;
+            transition: color 0.2s ease;
         }
 
         .modal-close-btn:hover {
             color: #ff3333;
-            transform: scale(1.1);
         }
 
         @keyframes demonic-glow-pulse {
