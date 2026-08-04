@@ -78,18 +78,18 @@
             100% { transform: translateY(-100%); }
         }
 
-        /* === TOP GRADIENT SHADOW (UPDATED) === */
+        /* === TOP GRADIENT SHADOW === */
         .top-shadow {
             position: absolute;
             top: 0;
             left: 0;
             width: 100vw;
-            height: 140px; /* Reduced height to take up less screen space */
+            height: 140px;
             background: linear-gradient(to bottom, 
                 rgba(0,0,0,1) 0%, 
                 rgba(0,0,0,0.0) 0%, 
                 rgba(0,0,0,0.0) 0%, 
-                rgba(0,0,0,0) 0%); /* Accelerated falloff to prevent bleeding */
+                rgba(0,0,0,0) 0%);
             pointer-events: none;
             z-index: 105;
         }
@@ -123,7 +123,7 @@
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
         .menu-toggle.open span:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
-        /* === FULLSCREEN NAVIGATION OVERLAY (UPDATED FOR BLUMHOUSE FROSTED GLASS EFFECT) === */
+        /* === FULLSCREEN NAVIGATION OVERLAY === */
         .nav-overlay {
             position: fixed;
             top: 0;
@@ -144,8 +144,21 @@
         }
         .nav-overlay.open { opacity: 1; visibility: visible; }
         
+        /* Interactive Background Canvas for Menu Effect */
+        #menuBgCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
         /* Layout Wrappers inside Menu Overlay */
         .nav-links-wrapper {
+            position: relative;
+            z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -169,17 +182,18 @@
             transition: color 0.3s ease;
             text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
         }
-        .nav-overlay a:nth-child(1):hover { color: #ff5577; } /* Game Info - Red */
-        .nav-overlay a:nth-child(2):hover { color: #00e676; } /* Play Demo - Green */
-        .nav-overlay a:nth-child(3):hover { color: #38b6ff; } /* Buy Game - Blue */
-        .nav-overlay a:nth-child(4):hover { color: #ffd700; } /* Dev Room - Yellow */
-        .nav-overlay a:nth-child(5):hover { color: #ff5577; } /* Contact - Red */
-        .nav-overlay a:nth-child(6):hover { color: #00e676; } /* Synopsis - Green */
-        .nav-overlay a:nth-child(7):hover { color: #38b6ff; } /* Wallpaper - Blue */
-        .nav-overlay a:nth-child(8):hover { color: #ffd700; } /* Game Manual - Yellow */
+        .nav-overlay a:nth-child(1):hover { color: #ff5577; }
+        .nav-overlay a:nth-child(2):hover { color: #00e676; }
+        .nav-overlay a:nth-child(3):hover { color: #38b6ff; }
+        .nav-overlay a:nth-child(4):hover { color: #ffd700; }
+        .nav-overlay a:nth-child(5):hover { color: #ff5577; }
+        .nav-overlay a:nth-child(6):hover { color: #00e676; }
+        .nav-overlay a:nth-child(7):hover { color: #38b6ff; }
+        .nav-overlay a:nth-child(8):hover { color: #ffd700; }
 
         /* === SYNOPSIS DIGEST GRID === */
         .synopsis-container {
+            z-index: 10;
             display: flex;
             width: 90%;
             max-width: 1100px;
@@ -264,6 +278,7 @@
 
         /* === DEFINITIVE VERSION PANEL STYLES === */
         .definitive-container {
+            z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -549,27 +564,26 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
         }
 
-        /* Color Schemes Matching the HAMACHI Palette */
         .pill-btn.btn-trailer {
-            background-color: #ff5577; /* Red */
+            background-color: #ff5577;
             color: #ffffff;
             text-shadow: 2px 2px 0px #000000;
         }
 
         .pill-btn.btn-demo {
-            background-color: #00e676; /* Green */
+            background-color: #00e676;
             color: #000000;
             text-shadow: none;
         }
 
         .pill-btn.btn-buy {
-            background-color: #38b6ff; /* Sky Blue */
+            background-color: #38b6ff;
             color: #ffffff;
             text-shadow: 2px 2px 0px #000000;
         }
 
         .pill-btn.btn-cube {
-            background-color: #ffd700; /* Yellow */
+            background-color: #ffd700;
             color: #000000;
             text-shadow: none;
         }
@@ -834,6 +848,9 @@
     </button>
 
     <nav class="nav-overlay" id="mainNavOverlay">
+        <!-- Floating Retro Shape Collision Canvas -->
+        <canvas id="menuBgCanvas"></canvas>
+
         <div class="nav-links-wrapper" id="menuLinksWrapper">
             <a href="https://hamachithepsychotickiller.com/about/" class="menu-link">GAME INFO</a>
             <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" class="menu-link mobile-hide">PLAY DEMO</a>
@@ -1052,7 +1069,6 @@
             wheelMultiplier: 1.0,
             touchMultiplier: 1.5,
             smoothWheel: true,
-         
             smoothTouch: false,
             autoRaf: true,
             autoToggle: true,
@@ -1060,6 +1076,232 @@
             allowNestedScroll: true,
             stopInertiaOnNavigate: true
         });
+
+        /* === RETRO MENU FLOATING SHAPES BACKGROUND ANIMATION ENGINE === */
+        const canvas = document.getElementById('menuBgCanvas');
+        const ctx = canvas.getContext('2d');
+        let animFrameId = null;
+        let shapesArr = [];
+        let particlesArr = [];
+
+        const PALETTE = [
+            { top: '#ff5577', side: '#cc3355', darkSide: '#992244' }, // Red/Pink
+            { top: '#00e676', side: '#00b359', darkSide: '#008040' }, // Green
+            { top: '#38b6ff', side: '#2080cc', darkSide: '#155599' }, // Sky Blue
+            { top: '#ffd700', side: '#ccac00', darkSide: '#998000' }, // Yellow
+            { top: '#a155ff', side: '#7733cc', darkSide: '#552299' }, // Purple
+            { top: '#a0a0a0', side: '#707070', darkSide: '#404040' }  // Silver/Grey
+        ];
+
+        function resizeMenuCanvas() {
+            if (!canvas) return;
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeMenuCanvas);
+
+        function drawIsometricDiamond(x, y, size, color, alpha, rotation = 0) {
+            ctx.save();
+            ctx.globalAlpha = alpha;
+            ctx.translate(x, y);
+
+            // Apply slow visual rotation around shape center
+            if (rotation !== 0) {
+                ctx.rotate(rotation);
+            }
+
+            // Top Face
+            ctx.fillStyle = color.top;
+            ctx.beginPath();
+            ctx.moveTo(0, -size * 0.5);
+            ctx.lineTo(size, 0);
+            ctx.lineTo(0, size * 0.5);
+            ctx.lineTo(-size, 0);
+            ctx.closePath();
+            ctx.fill();
+
+            // Left Side Face (Shaded)
+            ctx.fillStyle = color.side;
+            ctx.beginPath();
+            ctx.moveTo(-size, 0);
+            ctx.lineTo(0, size * 0.5);
+            ctx.lineTo(0, size * 0.8);
+            ctx.lineTo(-size, size * 0.3);
+            ctx.closePath();
+            ctx.fill();
+
+            // Right Side Face (Darker Shaded)
+            ctx.fillStyle = color.darkSide;
+            ctx.beginPath();
+            ctx.moveTo(0, size * 0.5);
+            ctx.lineTo(size, 0);
+            ctx.lineTo(size, size * 0.3);
+            ctx.lineTo(0, size * 0.8);
+            ctx.closePath();
+            ctx.fill();
+
+            ctx.restore();
+        }
+
+        function createShapeInstance(startFadedIn = false) {
+            const margin = 80;
+            const width = canvas.width || window.innerWidth;
+            const height = canvas.height || window.innerHeight;
+            
+            // Random spin behavior: ~35% Clockwise, ~35% Counter-Clockwise, ~30% Static
+            let rotSpeed = 0;
+            const spinRoll = Math.random();
+            if (spinRoll < 0.35) {
+                rotSpeed = 0.005 + Math.random() * 0.008; // Clockwise
+            } else if (spinRoll < 0.70) {
+                rotSpeed = -(0.005 + Math.random() * 0.008); // Counter-Clockwise
+            }
+
+            return {
+                x: margin + Math.random() * Math.max(100, width - margin * 2),
+                y: margin + Math.random() * Math.max(100, height - margin * 2),
+                vx: (Math.random() - 0.5) * 0.7,
+                vy: (Math.random() - 0.5) * 0.7,
+                size: 16 + Math.random() * 8,
+                color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
+                alpha: startFadedIn ? (0.3 + Math.random() * 0.7) : 0,
+                isFadingIn: !startFadedIn,
+                isDead: false,
+                rotation: Math.random() * Math.PI * 2,
+                rotationSpeed: rotSpeed
+            };
+        }
+
+        function spawnPixelExplosion(x, y, color1, color2) {
+            const particleCount = 18;
+            for (let i = 0; i < particleCount; i++) {
+                const angle = Math.random() * Math.PI * 2;
+                const speed = 1.2 + Math.random() * 3.8;
+                particlesArr.push({
+                    x: x,
+                    y: y,
+                    vx: Math.cos(angle) * speed,
+                    vy: Math.sin(angle) * speed,
+                    size: 3 + Math.floor(Math.random() * 3),
+                    color: Math.random() > 0.5 ? color1 : color2,
+                    life: 1.0,
+                    decay: 0.02 + Math.random() * 0.03
+                });
+            }
+        }
+
+        function evaluateCollisions() {
+            for (let i = 0; i < shapesArr.length; i++) {
+                for (let j = i + 1; j < shapesArr.length; j++) {
+                    const s1 = shapesArr[i];
+                    const s2 = shapesArr[j];
+
+                    // Fixed Hitbox Bug: Lowered alpha check gate so fading shapes can't phase through
+                    if (s1.isDead || s2.isDead || s1.alpha < 0.2 || s2.alpha < 0.2) continue;
+
+                    const dx = s1.x - s2.x;
+                    const dy = s1.y - s2.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minAllowedDist = (s1.size + s2.size) * 0.95;
+
+                    if (distance < minAllowedDist) {
+                        s1.isDead = true;
+                        s2.isDead = true;
+
+                        const midX = (s1.x + s2.x) / 2;
+                        const midY = (s1.y + s2.y) / 2;
+                        spawnPixelExplosion(midX, midY, s1.color.top, s2.color.top);
+
+                        // Schedule replacement shapes to fade in on random locations
+                        setTimeout(() => { if (animFrameId) shapesArr.push(createShapeInstance(false)); }, 400);
+                        setTimeout(() => { if (animFrameId) shapesArr.push(createShapeInstance(false)); }, 800);
+                    }
+                }
+            }
+        }
+
+        function renderMenuBackground() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // 1. Update and draw Shapes
+            for (let i = shapesArr.length - 1; i >= 0; i--) {
+                const s = shapesArr[i];
+
+                if (s.isFadingIn) {
+                    s.alpha += 0.025;
+                    if (s.alpha >= 1) {
+                        s.alpha = 1;
+                        s.isFadingIn = false;
+                    }
+                }
+
+                s.x += s.vx;
+                s.y += s.vy;
+                s.rotation += s.rotationSpeed; // Update visual angle independent of linear movement
+
+                // Bounce off edges
+                if (s.x < s.size || s.x > canvas.width - s.size) s.vx *= -1;
+                if (s.y < s.size || s.y > canvas.height - s.size) s.vy *= -1;
+
+                drawIsometricDiamond(s.x, s.y, s.size, s.color, s.alpha, s.rotation);
+
+                if (s.isDead) {
+                    shapesArr.splice(i, 1);
+                }
+            }
+
+            evaluateCollisions();
+
+            // 2. Update and draw Pixel Explosion Particles
+            for (let i = particlesArr.length - 1; i >= 0; i--) {
+                const p = particlesArr[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.life -= p.decay;
+
+                if (p.life <= 0) {
+                    particlesArr.splice(i, 1);
+                    continue;
+                }
+
+                ctx.save();
+                ctx.globalAlpha = Math.max(0, p.life);
+                ctx.fillStyle = p.color;
+                ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
+                ctx.restore();
+            }
+
+            animFrameId = requestAnimationFrame(renderMenuBackground);
+        }
+
+        function startMenuBgAnimation() {
+            resizeMenuCanvas();
+            shapesArr = [];
+            particlesArr = [];
+            
+            // Spawn initial 12 floating shapes
+            for (let i = 0; i < 12; i++) {
+                shapesArr.push(createShapeInstance(true));
+            }
+
+            if (!animFrameId) {
+                renderMenuBackground();
+            }
+        }
+
+        function stopMenuBgAnimation() {
+            if (animFrameId) {
+                cancelAnimationFrame(animFrameId);
+                animFrameId = null;
+            }
+            if (ctx && canvas) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+            shapesArr = [];
+            particlesArr = [];
+        }
+
+        /* === MENU CONTROLLER === */
         const menuToggle = document.querySelector('.menu-toggle');
         const navOverlay = document.getElementById('mainNavOverlay');
         const menuLinks = document.querySelectorAll('.menu-link');
@@ -1067,14 +1309,17 @@
         const menuLinksWrapper = document.getElementById('menuLinksWrapper');
         const synopsisTriggerBtn = document.getElementById('synopsisTriggerBtn');
         const synopsisContentPanel = document.getElementById('synopsisContentPanel');
-        
         const definitiveContentPanel = document.getElementById('definitiveContentPanel');
+
         function toggleMenu() {
             const isClosing = menuToggle.classList.contains('open');
             menuToggle.classList.toggle('open');
             navOverlay.classList.toggle('open');
+
             if (isClosing) {
                 document.body.style.overflow = '';
+                stopMenuBgAnimation();
+                
                 setTimeout(() => {
                     menuLinksWrapper.classList.remove('hidden');
                     synopsisContentPanel.classList.remove('active');
@@ -1082,6 +1327,7 @@
                 }, 400);
             } else {
                 document.body.style.overflow = 'hidden';
+                startMenuBgAnimation();
             }
         }
 
@@ -1094,6 +1340,7 @@
                 }
             });
         });
+
         synopsisTriggerBtn.addEventListener('click', (e) => {
             e.preventDefault();
             e.stopPropagation(); 
@@ -1113,6 +1360,7 @@
         definitiveContentPanel.addEventListener('click', (e) => {
             e.stopPropagation();
         });
+
         const trailerLightbox = document.getElementById('trailerLightbox');
         const modalVideoIframe = document.getElementById('modalVideoIframe');
         const targetEmbedSource = "https://www.youtube.com/embed/VbFZFto8Naw?autoplay=1&modestbranding=1&rel=0";
@@ -1134,15 +1382,18 @@
         const shareDropdownPanel = document.getElementById('shareDropdownPanel');
         const copyLinkActionBtn = document.getElementById('copyLinkActionBtn');
         const copyLinkTextNode = document.getElementById('copyLinkTextNode');
+
         shareEngineTrigger.addEventListener('click', (e) => {
             e.stopPropagation();
             shareDropdownPanel.classList.toggle('active');
         });
+
         document.addEventListener('click', (e) => {
             if (!shareDropdownPanel.contains(e.target) && e.target !== shareEngineTrigger) {
                 shareDropdownPanel.classList.remove('active');
             }
         });
+
         copyLinkActionBtn.addEventListener('click', (e) => {
             e.preventDefault();
             const urlToCopy = 'https://hamachithepsychotickiller.com/';
@@ -1155,8 +1406,7 @@
                     copyLinkTextNode.textContent = 'Copy Link';
                     copyLinkActionBtn.style.borderColor = '';
                     copyLinkActionBtn.style.color = '';
-                 }, 
-                2000);
+                 }, 2000);
             }).catch(err => {
                 console.error('Could not copy text: ', err);
             });
