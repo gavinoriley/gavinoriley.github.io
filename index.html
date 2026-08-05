@@ -26,6 +26,14 @@
     <link rel="preconnect" href="https://www.youtube.com">
     <link rel="preconnect" href="https://store.steampowered.com">
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.23/dist/lenis.css">
+    
+    <script>
+        // Safari detection to exclude Safari from 10% UI scaling
+        if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
+            document.documentElement.classList.add('is-safari');
+        }
+    </script>
+
     <style>
         @font-face {
             font-family: 'FSEX300';
@@ -343,6 +351,12 @@
             transform: translateZ(0);
         }
         .hero-socials a:hover img { opacity: 0.5; }
+
+        /* === SAFARI EXCLUSION OVERRIDE === */
+        .is-safari .menu-toggle,
+        .is-safari .hero-socials {
+            transform: none;
+        }
 
         /* === INTEGRATED DROPDOWN SHARE ARCHITECTURE === */
         .share-wrapper {
