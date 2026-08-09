@@ -837,11 +837,23 @@
 
             .top-shadow { height: 60px; }
             .nav-overlay a { font-size: 26px; }
-            .hero-socials { top: 30px; right: 30px; gap: 16px; }
+            .hero-socials { top: 30px; right: 30px; gap: 16px; transform: none; }
             .hero-socials img { height: 26px; }
             .share-trigger-btn svg { width: 26px; height: 26px; }
             .share-card { top: 38px; right: 0; }
-            .x-hover-card { top: 38px; left: 0; right: auto; }
+
+            /* Center Hashtag Popup Box Horizontally on Mobile */
+            .x-hover-card {
+                position: fixed;
+                top: 70px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%) translateY(-10px);
+            }
+            .x-hover-wrapper:hover .x-hover-card {
+                transform: translateX(-50%) translateY(0);
+            }
+
             .title-section { padding-top: 0; }
             .hero-video-container { height: 60vh; }
             
