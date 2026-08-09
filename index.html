@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -678,6 +679,63 @@
             color: #ff3333;
         }
 
+        /* === MOBILE DEMO NOTICE POPUP MODAL === */
+        .mobile-demo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            z-index: 4000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            cursor: pointer;
+            padding: 20px;
+        }
+
+        .mobile-demo-modal.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .mobile-demo-box {
+            position: relative;
+            width: 90%;
+            max-width: 380px;
+            background-color: #000000;
+            border: 2px solid #cc1111;
+            border-radius: 6px;
+            padding: 24px 18px;
+            box-shadow: 0 0 35px rgba(204, 17, 17, 0.5);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+            text-align: center;
+        }
+
+        .mobile-demo-img {
+            max-width: 100%;
+            height: auto;
+            max-height: 220px;
+            object-fit: contain;
+            display: block;
+        }
+
+        .mobile-demo-text {
+            color: #ffffff;
+            font-size: 16px;
+            line-height: 1.4;
+            letter-spacing: 0.5px;
+        }
+
         @keyframes demonic-glow-pulse {
             0%, 100% { text-shadow: 0 0 8px #ff4444, 0 0 18px #ff4444, 0 0 35px #ff0000; }
             50% { text-shadow: 0 0 20px #ff4444, 0 0 40px #ff4444, 0 0 70px #ff0000, 0 0 100px #ff8866; }
@@ -785,14 +843,27 @@
             .title-section { padding-top: 0; }
             .hero-video-container { height: 60vh; }
             
+            /* Compact 2x2 Button Grid on Mobile */
             .hero-action-row {
-                flex-direction: column;
-                gap: 12px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 8px 10px;
+                width: 92%;
+                max-width: 380px;
+                margin: 0 auto;
             }
             .pill-btn {
-                width: 85%;
-                font-size: 16px;
-                padding: 10px 20px;
+                width: calc(50% - 5px);
+                font-size: 13px;
+                padding: 8px 6px;
+                letter-spacing: 0.5px;
+                border-width: 2px;
+                box-shadow: 2px 2px 0px #000000;
+                white-space: nowrap;
+            }
+            .pill-btn:hover {
+                box-shadow: 3px 3px 0px #000000;
             }
 
             .modal-close-btn {
@@ -975,6 +1046,14 @@
         <div class="modal-box" onclick="event.stopPropagation()">
             <button class="modal-close-btn" onclick="closeTrailerModal(event)" aria-label="Close video pop-up">&times;</button>
             <iframe id="modalVideoIframe" src="" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- === MOBILE DEMO NOTICE MODAL === -->
+    <div class="mobile-demo-modal" id="mobileDemoModal">
+        <div class="mobile-demo-box">
+            <img src="https://gavinoriley.github.io/assets/hamademonflip1.png" alt="Hamachi Mobile Notice" class="mobile-demo-img">
+            <p class="mobile-demo-text">Sorry! This demo can not be played on Mobile Devices!</p>
         </div>
     </div>
 
@@ -1396,6 +1475,26 @@
             document.body.style.overflow = ''; 
         }
 
+        /* === MOBILE DEMO INTERCEPTOR === */
+        const playDemoBtn = document.querySelector('.btn-demo');
+        const mobileDemoModal = document.getElementById('mobileDemoModal');
+
+        if (playDemoBtn && mobileDemoModal) {
+            playDemoBtn.addEventListener('click', (e) => {
+                if (window.innerWidth <= 768) {
+                    e.preventDefault();
+                    mobileDemoModal.classList.add('open');
+                    document.body.style.overflow = 'hidden';
+                }
+            });
+
+            // Clicking anywhere on or outside the popup removes it
+            mobileDemoModal.addEventListener('click', () => {
+                mobileDemoModal.classList.remove('open');
+                document.body.style.overflow = '';
+            });
+        }
+
         const shareEngineTrigger = document.getElementById('shareEngineTrigger');
         const shareDropdownPanel = document.getElementById('shareDropdownPanel');
         const copyLinkActionBtn = document.getElementById('copyLinkActionBtn');
@@ -1432,3 +1531,4 @@
     </script>
 </body>
 </html>
+```
