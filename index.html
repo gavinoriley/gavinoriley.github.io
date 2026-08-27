@@ -328,6 +328,128 @@
             font-style: italic;
         }
 
+        /* === PUBLISHING OPPORTUNITY PANEL STYLES === */
+        .pub-op-container {
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 900px;
+            max-height: 85vh;
+            overflow-y: auto;
+            text-align: left;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+            position: absolute;
+            gap: 24px;
+            padding: 20px 10px;
+        }
+        .pub-op-container.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            position: relative;
+            transform: translateY(0);
+        }
+        .pub-op-header {
+            text-align: center;
+            border-bottom: 1px solid rgba(255, 215, 0, 0.4);
+            padding-bottom: 16px;
+            width: 100%;
+        }
+        .pub-op-title {
+            font-size: 32px;
+            color: #ffd700;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+        }
+        .pub-op-intro {
+            font-size: 19px;
+            line-height: 1.6;
+            color: #e0e0e0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .pub-op-section-title {
+            font-size: 20px;
+            color: #ffd700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            border-left: 3px solid #ffd700;
+            padding-left: 10px;
+        }
+        .pub-op-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 18px;
+            width: 100%;
+        }
+        .pub-op-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            padding: 16px;
+        }
+        .pub-op-card h4 {
+            font-size: 18px;
+            color: #ffffff;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .pub-op-card p {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #cccccc;
+        }
+        .pub-op-flexible {
+            background: rgba(255, 215, 0, 0.08);
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            border-radius: 4px;
+            padding: 18px;
+            width: 100%;
+        }
+        .pub-op-flexible h4 {
+            font-size: 18px;
+            color: #ffd700;
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+        .pub-op-flexible p {
+            font-size: 15px;
+            line-height: 1.5;
+            color: #dddddd;
+        }
+        .pub-op-cta {
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            margin-top: 10px;
+            width: 100%;
+            text-align: center;
+            flex-wrap: wrap;
+        }
+        .pub-op-cta-link {
+            font-size: 16px;
+            color: #ffffff;
+            letter-spacing: 1px;
+            text-decoration: none;
+            transition: color 0.3s ease;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            display: inline-block;
+            text-align: center;
+        }
+        .pub-op-cta-link:hover {
+            color: #ffff00;
+        }
+
         /* === FIRST SCREEN SOCIAL DOCK === */
         .hero-socials {
             position: fixed;
@@ -904,6 +1026,16 @@
                 padding-top: 20px;
                 gap: 12px;
             }
+
+            .pub-op-container.active {
+                width: 92%;
+                max-height: 80vh;
+                padding: 10px 5px;
+            }
+            .pub-op-title { font-size: 24px; }
+            .pub-op-intro { font-size: 16px; }
+            .pub-op-section-title { font-size: 17px; }
+            .pub-op-grid { grid-template-columns: 1fr; }
             
             .metadata-row { font-size: 15px; white-space: normal; }
             .metadata-row strong { width: 110px; flex-shrink: 0; }
@@ -1000,6 +1132,40 @@
             <h2 class="definitive-title">HAMACHI: The Psychotic Killer Definitive Version</h2>
          
             <p class="definitive-desc">While the full game is complete and publicly available, I continue to experiment, polish, and develop new content beyond the public release. While I won't name a release date just yet, if you're curious to see some of what I'm doing, check out the DEV ROOM page as I <em>sometimes</em> post on there.</p>
+        </div>
+
+        <div class="pub-op-container" id="pubOpContentPanel">
+            <div class="pub-op-header">
+                <h2 class="pub-op-title">PUBLISHING OPPORTUNITY</h2>
+                <p class="pub-op-intro"><em><strong>Hamachi the Psychotic Killer</strong></em> is a completed game, released in February 2026. The game is fully playable and available today. I'm open to exploring publishing partnerships that could help expand Hamachi's reach and further develop the game beyond its current release.</p>
+            </div>
+
+            <div style="width: 100%;">
+                <h3 class="pub-op-section-title">Opportunities</h3>
+                <div class="pub-op-grid">
+                    <div class="pub-op-card">
+                        <h4>Original Soundtrack</h4>
+                        <p>An expanded original soundtrack could further strengthen Hamachi's musical identity and world.</p>
+                    </div>
+                    <div class="pub-op-card">
+                        <h4>Visual Polish</h4>
+                        <p>Additional sprite work, animation, and visual polish could further enhance the game's presentation.</p>
+                    </div>
+                    <div class="pub-op-card">
+                        <h4>Expansion</h4>
+                        <p>There are opportunities to take Hamachi further through additional content, a definitive edition, new platforms, localization, or other directions that make sense for the game.</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="pub-op-flexible">
+                <h4>Flexibility</h4>
+                <p>The opportunities above are not requirements for a publishing partnership. They represent potential directions for Hamachi if the right partnership and resources are available. I'm open to discussing what makes sense for the game and the partner involved.</p>
+            </div>
+
+            <div class="pub-op-cta">
+                <a href="mailto:img.oriley@gmail.com?subject=Hamachi%20the%20Psychotic%20Killer%20Publishing%20Opportunities" class="pub-op-cta-link">Click Here to Chat or Request Pitch Deck</a>
+            </div>
         </div>
     </nav>
 
@@ -1135,8 +1301,8 @@
             </section>
             
             <section class="news-section">
-                <a href="https://x.com/imgavinoriley/status/2068302846442000537" target="_blank" rel="noopener noreferrer">
-                    <img src="https://gavinoriley.github.io/assets/FinalClipBannerclickme.png" alt="Hamachi the Psychotic Killer">
+                <a href="#" id="corPubOpTrigger" style="cursor: pointer; display: block;">
+                    <img src="https://gavinoriley.github.io/assets/CorPubOp.png" alt="Hamachi the Psychotic Killer Publishing Opportunity">
                 </a>
             </section>
             
@@ -1422,6 +1588,9 @@
         const synopsisTriggerBtn = document.getElementById('synopsisTriggerBtn');
         const synopsisContentPanel = document.getElementById('synopsisContentPanel');
         const definitiveContentPanel = document.getElementById('definitiveContentPanel');
+        
+        const corPubOpTrigger = document.getElementById('corPubOpTrigger');
+        const pubOpContentPanel = document.getElementById('pubOpContentPanel');
 
         function toggleMenu() {
             const isClosing = menuToggle.classList.contains('open');
@@ -1436,6 +1605,7 @@
                     menuLinksWrapper.classList.remove('hidden');
                     synopsisContentPanel.classList.remove('active');
                     definitiveContentPanel.classList.remove('active');
+                    pubOpContentPanel.classList.remove('active');
                 }, 400);
             } else {
                 document.body.style.overflow = 'hidden';
@@ -1458,11 +1628,33 @@
             e.stopPropagation(); 
             menuLinksWrapper.classList.add('hidden');
             definitiveContentPanel.classList.remove('active');
+            pubOpContentPanel.classList.remove('active');
             synopsisContentPanel.classList.add('active');
         });
 
+        corPubOpTrigger.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            // Open nav overlay & update hamburger toggle state
+            navOverlay.classList.add('open');
+            menuToggle.classList.add('open');
+            document.body.style.overflow = 'hidden';
+            
+            // Hide standard menu links & other content panels
+            menuLinksWrapper.classList.add('hidden');
+            synopsisContentPanel.classList.remove('active');
+            definitiveContentPanel.classList.remove('active');
+            
+            // Show Publishing Opportunity panel
+            pubOpContentPanel.classList.add('active');
+            
+            // Disable background floating shapes for clarity
+            stopMenuBgAnimation();
+        });
+
         navOverlay.addEventListener('click', (e) => {
-            if (e.target === navOverlay || e.target === synopsisContentPanel || e.target === definitiveContentPanel) {
+            if (e.target === navOverlay || e.target === synopsisContentPanel || e.target === definitiveContentPanel || e.target === pubOpContentPanel) {
                 toggleMenu();
             }
         });
@@ -1470,6 +1662,9 @@
             e.stopPropagation();
         });
         definitiveContentPanel.addEventListener('click', (e) => {
+            e.stopPropagation();
+        });
+        pubOpContentPanel.addEventListener('click', (e) => {
             e.stopPropagation();
         });
 
