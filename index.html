@@ -1301,8 +1301,8 @@
             </section>
             
             <section class="news-section">
-                <a href="#" id="corPubOpTrigger" style="cursor: pointer; display: block;">
-                    <img src="https://gavinoriley.github.io/assets/CorPubOp.png" alt="Hamachi the Psychotic Killer Publishing Opportunity">
+                <a href="https://hamachithepsychotickiller.com/publishingpartnerships/" style="cursor: pointer; display: block;">
+                    <img src="https://gavinoriley.github.io/assets/CorPubOp3.png" alt="Hamachi the Psychotic Killer Publishing Opportunity">
                 </a>
             </section>
             
@@ -1588,8 +1588,6 @@
         const synopsisTriggerBtn = document.getElementById('synopsisTriggerBtn');
         const synopsisContentPanel = document.getElementById('synopsisContentPanel');
         const definitiveContentPanel = document.getElementById('definitiveContentPanel');
-        
-        const corPubOpTrigger = document.getElementById('corPubOpTrigger');
         const pubOpContentPanel = document.getElementById('pubOpContentPanel');
 
         function toggleMenu() {
@@ -1630,27 +1628,6 @@
             definitiveContentPanel.classList.remove('active');
             pubOpContentPanel.classList.remove('active');
             synopsisContentPanel.classList.add('active');
-        });
-
-        corPubOpTrigger.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            // Open nav overlay & update hamburger toggle state
-            navOverlay.classList.add('open');
-            menuToggle.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            
-            // Hide standard menu links & other content panels
-            menuLinksWrapper.classList.add('hidden');
-            synopsisContentPanel.classList.remove('active');
-            definitiveContentPanel.classList.remove('active');
-            
-            // Show Publishing Opportunity panel
-            pubOpContentPanel.classList.add('active');
-            
-            // Disable background floating shapes for clarity
-            stopMenuBgAnimation();
         });
 
         navOverlay.addEventListener('click', (e) => {
