@@ -984,194 +984,156 @@
             min-height: 600px;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
+            justify-content: center;
             align-items: center;
             position: relative;
+            overflow: hidden;
         }
-        .news-section, .about-section, .roadblock-section,
-        .characters-section, .worlds-section, .business-section {
-            background-color: #000000;
-            color: #fff;
-            height: auto;
+
+        .news-section, .roadblock-section, .about-section, .characters-section, .worlds-section {
+            background: #000;
             padding: 0;
-            min-height: 0;
+            min-height: auto;
         }
-        .business-section {
-            padding: 40px 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            border-top: 1px solid #111;
-        }
-        .business-links {
-            display: flex;
-            gap: 30px;
-            justify-content: center;
-            align-items: center;
-        }
-        .business-links a {
-            color: #888;
-            text-decoration: none;
-            font-size: 16px;
-            transition: color 0.3s ease;
-        }
-        .business-links a:hover { color: #fff; }
-        
-        .news-section img,
-        .about-section img,
-        .roadblock-section img,
-        .characters-section img,
-        .worlds-section img {
-            width: 100vw;
+
+        .news-section img, .roadblock-section img, .about-section img, .characters-section img, .worlds-section img {
+            width: 100%;
             height: auto;
             display: block;
+            max-width: 100%;
         }
 
-        .carousel {
-            width: 100vw;
-            height: calc(100vw * 3 / 16);
-            overflow: hidden;
-            position: relative;
+        .business-section {
+            background: #000;
+            min-height: auto;
+            padding: 60px 20px;
         }
+
+        .business-links {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            max-width: 900px;
+        }
+
+        .business-links a {
+            color: #ffffff;
+            text-decoration: none;
+            font-size: 18px;
+            letter-spacing: 1px;
+            transition: color 0.3s ease;
+        }
+
+        .business-links a:hover {
+            color: #ff5577;
+        }
+
+        /* === CAROUSEL === */
+        .carousel {
+            width: 100%;
+            overflow: hidden;
+            background: #000;
+            padding: 0;
+        }
+
         .carousel-inner {
             display: flex;
-            animation: scroll 40s linear infinite;
+            width: max-content;
+            animation: scrollCarousel 40s linear infinite;
         }
+
         .carousel-inner img {
-            width: calc(100vw / 3);
-            height: 100%;
-            object-fit: cover;
+            height: 180px;
+            width: auto;
+            margin-right: 12px;
+            border-radius: 4px;
         }
-        @keyframes scroll {
+
+        @keyframes scrollCarousel {
             0% { transform: translateX(0); }
-            100% { transform: translateX(calc(-100vw * 12 / 3)); }
+            100% { transform: translateX(-50%); }
         }
-        footer {
-            background-color: #000000;
-            color: #555;
+
+        /* === FOOTER === */
+        #footer-contents {
             text-align: center;
-            padding: 20px 0;
+            padding: 30px 0;
+            color: #aaaaaa;
+            font-weight: bold;
             font-size: 14px;
-            border-top: 1px solid #111;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            background: #000;
         }
 
-        /* === RESPONSIVE STYLING === */
+        /* === MOBILE === */
         @media screen and (max-width: 768px) {
-            .mobile-hide {
-                display: none !important;
-            }
             .menu-toggle {
-                top: 30px;
-                left: 30px; 
-                width: 24px;
-                height: 16px;
+                top: 25px;
+                left: 25px;
             }
-            .menu-toggle span { height: 2px; }
-            .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-            .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-            .top-shadow { height: 60px; }
-            .nav-overlay a { font-size: 26px; }
-            .hero-socials { top: 30px; right: 30px; gap: 16px; transform: none; }
-            .hero-socials img { height: 26px; }
-            .share-trigger-btn svg { width: 26px; height: 26px; }
-            .share-card { top: 38px; right: 0; }
-
-            /* Center Hashtag Popup Box Horizontally on Mobile */
-            .x-hover-card {
-                position: fixed;
-                top: 70px;
-                left: 50%;
-                right: auto;
-                transform: translateX(-50%) translateY(-10px);
-            }
-            .x-hover-wrapper:hover .x-hover-card {
-                transform: translateX(-50%) translateY(0);
-            }
-
-            .title-section { padding-top: 0; }
-            .hero-video-container { height: 60vh; }
-            
-            /* Compact 2x2 Button Grid on Mobile */
-            .hero-action-row {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
-                gap: 8px 10px;
-                width: 92%;
-                max-width: 380px;
-                margin: 0 auto;
-            }
-            .pill-btn {
-                width: calc(50% - 5px);
-                font-size: 13px;
-                padding: 8px 6px;
-                letter-spacing: 0.5px;
-                border-width: 2px;
-                box-shadow: 0px 3px 0px #000000;
-                white-space: nowrap;
-            }
-            .pill-btn:hover {
-                transform: translateY(-2px);
-                box-shadow: 0px 5px 0px #000000;
-            }
-
-            .modal-close-btn {
-                top: -38px;
-                right: 4px;
-                font-size: 28px;
-            }
-
-            .synopsis-container.active {
-                flex-direction: column;
-                gap: 24px;
-                width: 88%;
-                max-height: 78vh;
-                overflow-y: auto;
-                padding-right: 8px;
-            }
-            .synopsis-desc { font-size: 17px; margin-bottom: 16px; }
-            .synopsis-features-list li { font-size: 15px; margin-bottom: 8px; }
-            .synopsis-right {
-                border-left: none;
-                padding-left: 0;
-                border-top: 1px solid rgba(255, 255, 255, 0.2);
-                padding-top: 20px;
+            .hero-socials {
+                top: 25px;
+                right: 20px;
                 gap: 12px;
             }
-
-            .pub-op-container.active {
-                width: 92%;
-                max-height: 80vh;
-                padding: 10px 5px;
+            .hero-socials img {
+                height: 26px;
             }
-            .pub-op-title { font-size: 24px; }
-            .pub-op-intro { font-size: 16px; }
-            .pub-op-section-title { font-size: 17px; }
-            .pub-op-grid { grid-template-columns: 1fr; }
-            
-            .metadata-row { font-size: 15px; white-space: normal; }
-            .metadata-row strong { width: 110px; flex-shrink: 0; }
-
-            .business-links { gap: 15px; flex-wrap: wrap; }
-            .business-links a { font-size: 12px; }
-            section { padding: 0; min-height: auto; }
-            .definitive-title { font-size: 22px; }
-            .definitive-desc { font-size: 16px; }
-
-            .contact-container.active {
-                width: 92%;
-                max-height: 80vh;
-                padding: 10px 5px;
+            .share-trigger-btn svg {
+                width: 26px;
+                height: 26px;
             }
-            .contact-btn-row { flex-direction: column; width: 100%; gap: 12px; }
-            .contact-btn-row .gta-pill-btn { width: 100%; }
-            .gta-pill-btn {
-                padding: 14px 20px;
-                font-size: 14px;
+            .nav-overlay a {
+                font-size: 22px;
+            }
+            .nav-links-wrapper {
+                gap: 18px;
+            }
+            .synopsis-container {
+                flex-direction: column;
+                gap: 30px;
+                max-height: 80vh;
+                overflow-y: auto;
+                padding: 10px;
+            }
+            .synopsis-right {
+                border-left: none;
+                border-top: 1px solid rgba(255, 255, 255, 0.2);
+                padding-left: 0;
+                padding-top: 20px;
+            }
+            .metadata-row {
+                font-size: 15px;
+                white-space: normal;
+            }
+            .metadata-row strong {
+                width: 110px;
+            }
+            .hero-content-wrapper {
+                width: 92%;
+            }
+            .hero-action-row {
+                flex-direction: column;
+                gap: 12px;
+            }
+            .pill-btn {
+                width: 100%;
+                max-width: 280px;
+                justify-content: center;
+            }
+            .carousel-inner img {
+                height: 120px;
+            }
+            .business-links {
+                gap: 18px;
+            }
+            .business-links a {
+                font-size: 15px;
             }
         }
     </style>
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -1182,24 +1144,13 @@
       "url": "https://hamachithepsychotickiller.com",
       "genre": "Action, Platformer, Indie",
       "gamePlatform": "PC",
-    
-      "publisher": {
-        "@type": "Person",
-        "name": "Gavin ORiley"
-      },
-      "offers": {
-        "@type": "Offer",
-        "url": "https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/",
-        "price": "0",
-        "priceCurrency": "USD"
-      }
+      "publisher": { "@type": "Person", "name": "Gavin ORiley" }
     }
     </script>
 </head>
 <body>
 
     <div class="intro-swipe"></div>
-
     <div class="top-shadow"></div>
 
     <button class="menu-toggle" aria-label="Toggle Navigation">
@@ -1209,30 +1160,26 @@
     </button>
 
     <nav class="nav-overlay" id="mainNavOverlay">
-        <!-- Floating Retro Shape Collision Canvas -->
         <canvas id="menuBgCanvas"></canvas>
 
         <div class="nav-links-wrapper" id="menuLinksWrapper">
+            <a href="https://hamachithepsychotickiller.com/" class="menu-link">HOME</a>
             <a href="https://hamachithepsychotickiller.com/about/" class="menu-link">GAME INFO</a>
-            <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" class="menu-link mobile-hide">PLAY DEMO</a>
-            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" class="menu-link">BUY GAME</a>
- 
+            <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" class="menu-link">PLAY DEMO</a>
+            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" class="menu-link">STEAM PAGE</a>
             <a href="https://hamachithepsychotickiller.com/devroom/" class="menu-link">DEV ROOM</a>
-            <a href="#" class="menu-link" id="contactTriggerBtn">CONTACT</a>
             <a href="#" class="menu-link" id="synopsisTriggerBtn">SYNOPSIS</a>
-            <a href="https://gavinoriley.github.io/assets/HamaWallPaper.zip" download="HamachiWallpaper.zip" class="menu-link mobile-hide">WALLPAPER</a>
-            <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank" class="menu-link" style="font-size: 20px; color: #888;">GAME MANUAL</a>
+            <a href="#" class="menu-link" id="contactTriggerBtn">CONTACT</a>
+            <a href="https://hamachithepsychotickiller.com/publishingpartnerships/" class="menu-link">PUBLISHING</a>
         </div>
 
         <div class="synopsis-container" id="synopsisContentPanel">
             <div class="synopsis-left">
                 <p class="synopsis-desc">In this platformer, you control a piece of tofu named Hamachi, who unexpectedly falls into the possession of Demon Queen Deity, an evil fiend who intends to use him as a vessel to conquer the world through mass murder.</p>
-            
-                <h3 class="synopsis-features-title">features:</h3>
+                <h3 class="synopsis-features-title">FEATURES:</h3>
                 <ul class="synopsis-features-list">
                     <li>Play as the villain: Choose to kill, spare, or ignore every civilian.</li>
                     <li>Three distinct routes: Pacifist, Neutral, and Genocide, each with its own ending.</li>
-    
                     <li>Defeat or pacify demonic bosses, pacified bosses will join your side.</li>
                     <li>Journey through 8 visually distinct worlds built with original pixel art.</li>
                     <li>Chainsaw power-up, <em>The Psycho Saw</em>, grants temporary invincibility and destroys any being you touch.</li>
@@ -1240,29 +1187,25 @@
                     <li>Your crimes will not go unnoticed by the authorities.</li>
                 </ul>
             </div>
-       
             <div class="synopsis-right">
                 <div class="metadata-row"><strong>TITLE:</strong> Hamachi the Psychotic Killer</div>
- 
                 <div class="metadata-row"><strong>GENRE:</strong> Action, Indie</div>
                 <div class="metadata-row"><strong>DEVELOPER:</strong> gavinoriley</div>
-                <div class="metadata-row"><strong>PUBLISHER:</strong> gavinoriley</div>
+                <div class="metadata-row"><strong>PUBLISHER:</strong> Self-Published</div>
                 <div class="metadata-row"><strong>RELEASE DATE:</strong> Feb 27, 2026</div>
                 <div class="metadata-row"><strong>PLATFORM:</strong> Windows/Mac</div>
-       
             </div>
         </div>
 
         <div class="definitive-container" id="definitiveContentPanel">
-            <h2 class="definitive-title">HAMACHI: The Psychotic Killer Definitive Version</h2>
-         
-            <p class="definitive-desc">While the full game is complete and publicly available, I continue to experiment, polish, and develop new content beyond the public release. While I won't name a release date just yet, if you're curious to see some of what I'm doing, check out the DEV ROOM page as I <em>sometimes</em> post on there.</p>
+            <h2 class="definitive-title">DEFINITIVE VERSION</h2>
+            <p class="definitive-desc">A future update is planned that will expand the game with additional content, polish, and features. Stay tuned.</p>
         </div>
 
         <div class="pub-op-container" id="pubOpContentPanel">
             <div class="pub-op-header">
-                <h2 class="pub-op-title">PUBLISHING OPPORTUNITY</h2>
-                <p class="pub-op-intro"><em><strong>Hamachi the Psychotic Killer</strong></em> is a completed game, released in February 2026. The game is fully playable and available today. I'm open to exploring publishing partnerships that could help expand Hamachi's reach and further develop the game beyond its current release.</p>
+                <h2 class="pub-op-title">PUBLISHING PARTNERSHIPS</h2>
+                <p class="pub-op-intro"><em>Hamachi the Psychotic Killer</em> is a completed game released in 2026. We are exploring publishing partnerships that could help expand Hamachi's reach and further develop the game beyond its current release.</p>
             </div>
 
             <div style="width: 100%;">
@@ -1489,21 +1432,11 @@
             stopInertiaOnNavigate: true
         });
 
-        /* === RETRO MENU FLOATING SHAPES BACKGROUND ANIMATION ENGINE === */
+        /* === MENU FLOATING RED CIRCLES BACKGROUND (ported from publishing partnerships aesthetic) === */
         const canvas = document.getElementById('menuBgCanvas');
         const ctx = canvas.getContext('2d');
         let animFrameId = null;
         let shapesArr = [];
-        let particlesArr = [];
-
-        const PALETTE = [
-            { top: '#ff5577', side: '#cc3355', darkSide: '#992244' }, // Red/Pink
-            { top: '#00e676', side: '#00b359', darkSide: '#008040' }, // Green
-            { top: '#38b6ff', side: '#2080cc', darkSide: '#155599' }, // Sky Blue
-            { top: '#ffd700', side: '#ccac00', darkSide: '#998000' }, // Yellow
-            { top: '#a155ff', side: '#7733cc', darkSide: '#552299' }, // Purple
-            { top: '#a0a0a0', side: '#707070', darkSide: '#404040' }  // Silver/Grey
-        ];
 
         function resizeMenuCanvas() {
             if (!canvas) return;
@@ -1512,193 +1445,41 @@
         }
         window.addEventListener('resize', resizeMenuCanvas);
 
-        function drawIsometricDiamond(x, y, size, color, alpha, rotation = 0) {
+        function drawShape(x, y, size, color) {
             ctx.save();
-            ctx.globalAlpha = alpha;
-            ctx.translate(x, y);
-
-            // Apply slow visual rotation around shape center
-            if (rotation !== 0) {
-                ctx.rotate(rotation);
-            }
-
-            // Top Face
-            ctx.fillStyle = color.top;
+            ctx.fillStyle = color;
             ctx.beginPath();
-            ctx.moveTo(0, -size * 0.5);
-            ctx.lineTo(size, 0);
-            ctx.lineTo(0, size * 0.5);
-            ctx.lineTo(-size, 0);
-            ctx.closePath();
+            ctx.arc(x, y, size, 0, Math.PI * 2);
             ctx.fill();
-
-            // Left Side Face (Shaded)
-            ctx.fillStyle = color.side;
-            ctx.beginPath();
-            ctx.moveTo(-size, 0);
-            ctx.lineTo(0, size * 0.5);
-            ctx.lineTo(0, size * 0.8);
-            ctx.lineTo(-size, size * 0.3);
-            ctx.closePath();
-            ctx.fill();
-
-            // Right Side Face (Darker Shaded)
-            ctx.fillStyle = color.darkSide;
-            ctx.beginPath();
-            ctx.moveTo(0, size * 0.5);
-            ctx.lineTo(size, 0);
-            ctx.lineTo(size, size * 0.3);
-            ctx.lineTo(0, size * 0.8);
-            ctx.closePath();
-            ctx.fill();
-
             ctx.restore();
-        }
-
-        function createShapeInstance(startFadedIn = false) {
-            const margin = 80;
-            const width = canvas.width || window.innerWidth;
-            const height = canvas.height || window.innerHeight;
-            
-            // Random spin behavior: ~35% Clockwise, ~35% Counter-Clockwise, ~30% Static
-            let rotSpeed = 0;
-            const spinRoll = Math.random();
-            if (spinRoll < 0.35) {
-                rotSpeed = 0.005 + Math.random() * 0.008; // Clockwise
-            } else if (spinRoll < 0.70) {
-                rotSpeed = -(0.005 + Math.random() * 0.008); // Counter-Clockwise
-            }
-
-            return {
-                x: margin + Math.random() * Math.max(100, width - margin * 2),
-                y: margin + Math.random() * Math.max(100, height - margin * 2),
-                vx: (Math.random() - 0.5) * 0.7,
-                vy: (Math.random() - 0.5) * 0.7,
-                size: 16 + Math.random() * 8,
-                color: PALETTE[Math.floor(Math.random() * PALETTE.length)],
-                alpha: startFadedIn ? (0.3 + Math.random() * 0.7) : 0,
-                isFadingIn: !startFadedIn,
-                isDead: false,
-                rotation: Math.random() * Math.PI * 2,
-                rotationSpeed: rotSpeed
-            };
-        }
-
-        function spawnPixelExplosion(x, y, color1, color2) {
-            const particleCount = 18;
-            for (let i = 0; i < particleCount; i++) {
-                const angle = Math.random() * Math.PI * 2;
-                const speed = 1.2 + Math.random() * 3.8;
-                particlesArr.push({
-                    x: x,
-                    y: y,
-                    vx: Math.cos(angle) * speed,
-                    vy: Math.sin(angle) * speed,
-                    size: 3 + Math.floor(Math.random() * 3),
-                    color: Math.random() > 0.5 ? color1 : color2,
-                    life: 1.0,
-                    decay: 0.02 + Math.random() * 0.03
-                });
-            }
-        }
-
-        function evaluateCollisions() {
-            for (let i = 0; i < shapesArr.length; i++) {
-                for (let j = i + 1; j < shapesArr.length; j++) {
-                    const s1 = shapesArr[i];
-                    const s2 = shapesArr[j];
-
-                    // Fixed Hitbox Bug: Lowered alpha check gate so fading shapes can't phase through
-                    if (s1.isDead || s2.isDead || s1.alpha < 0.2 || s2.alpha < 0.2) continue;
-
-                    const dx = s1.x - s2.x;
-                    const dy = s1.y - s2.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const minAllowedDist = (s1.size + s2.size) * 0.95;
-
-                    if (distance < minAllowedDist) {
-                        s1.isDead = true;
-                        s2.isDead = true;
-
-                        const midX = (s1.x + s2.x) / 2;
-                        const midY = (s1.y + s2.y) / 2;
-                        spawnPixelExplosion(midX, midY, s1.color.top, s2.color.top);
-
-                        // Schedule replacement shapes to fade in on random locations
-                        setTimeout(() => { if (animFrameId) shapesArr.push(createShapeInstance(false)); }, 400);
-                        setTimeout(() => { if (animFrameId) shapesArr.push(createShapeInstance(false)); }, 800);
-                    }
-                }
-            }
         }
 
         function renderMenuBackground() {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            // 1. Update and draw Shapes
-            for (let i = shapesArr.length - 1; i >= 0; i--) {
-                const s = shapesArr[i];
-
-                if (s.isFadingIn) {
-                    s.alpha += 0.025;
-                    if (s.alpha >= 1) {
-                        s.alpha = 1;
-                        s.isFadingIn = false;
-                    }
-                }
-
+            shapesArr.forEach(s => {
                 s.x += s.vx;
                 s.y += s.vy;
-                s.rotation += s.rotationSpeed; // Update visual angle independent of linear movement
-
-                // Bounce off edges
-                if (s.x < s.size || s.x > canvas.width - s.size) s.vx *= -1;
-                if (s.y < s.size || s.y > canvas.height - s.size) s.vy *= -1;
-
-                drawIsometricDiamond(s.x, s.y, s.size, s.color, s.alpha, s.rotation);
-
-                if (s.isDead) {
-                    shapesArr.splice(i, 1);
-                }
-            }
-
-            evaluateCollisions();
-
-            // 2. Update and draw Pixel Explosion Particles
-            for (let i = particlesArr.length - 1; i >= 0; i--) {
-                const p = particlesArr[i];
-                p.x += p.vx;
-                p.y += p.vy;
-                p.life -= p.decay;
-
-                if (p.life <= 0) {
-                    particlesArr.splice(i, 1);
-                    continue;
-                }
-
-                ctx.save();
-                ctx.globalAlpha = Math.max(0, p.life);
-                ctx.fillStyle = p.color;
-                ctx.fillRect(Math.round(p.x), Math.round(p.y), p.size, p.size);
-                ctx.restore();
-            }
-
+                if (s.x < 0 || s.x > canvas.width) s.vx *= -1;
+                if (s.y < 0 || s.y > canvas.height) s.vy *= -1;
+                drawShape(s.x, s.y, s.size, s.color);
+            });
             animFrameId = requestAnimationFrame(renderMenuBackground);
         }
 
         function startMenuBgAnimation() {
             resizeMenuCanvas();
             shapesArr = [];
-            particlesArr = [];
-            
-            // Spawn initial 12 floating shapes
-            for (let i = 0; i < 12; i++) {
-                shapesArr.push(createShapeInstance(true));
+            for (let i = 0; i < 15; i++) {
+                shapesArr.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    vx: (Math.random() - 0.5) * 0.6,
+                    vy: (Math.random() - 0.5) * 0.6,
+                    size: 4 + Math.random() * 6,
+                    color: 'rgba(255, 42, 117, 0.35)'
+                });
             }
-
-            if (!animFrameId) {
-                renderMenuBackground();
-            }
+            if (!animFrameId) renderMenuBackground();
         }
 
         function stopMenuBgAnimation() {
@@ -1710,7 +1491,6 @@
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
             }
             shapesArr = [];
-            particlesArr = [];
         }
 
         /* === MENU CONTROLLER === */
