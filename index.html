@@ -450,6 +450,119 @@
             color: #ffff00;
         }
 
+        /* === CONTACT PANEL (ported neon aesthetic from publishing partnerships page) === */
+        .gta-pill-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 16px 40px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
+            color: #ffffff;
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 1.5px;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 1.5px solid rgba(255, 42, 117, 0.35);
+            box-shadow: 0 6px 25px rgba(0, 0, 0, 0.7), inset 0 0 12px rgba(255, 42, 117, 0.08);
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        background-color 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        border-color 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1),
+                        color 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            will-change: transform, background-color, box-shadow, border-color;
+            overflow: hidden;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .gta-pill-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 160%;
+            height: 160%;
+            background: radial-gradient(circle, rgba(255, 42, 117, 0.35) 0%, rgba(255, 42, 117, 0) 70%);
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        .gta-pill-btn:hover {
+            color: #ffffff;
+            border-color: rgba(255, 105, 180, 0.85);
+            background: rgba(255, 42, 117, 0.22);
+            box-shadow: 
+                0 0 35px rgba(255, 42, 117, 0.45),
+                0 0 70px rgba(255, 42, 117, 0.2),
+                inset 0 0 20px rgba(255, 105, 180, 0.3);
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
+            transform: translateY(-2px);
+        }
+
+        .gta-pill-btn:hover::before {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .contact-container {
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 90%;
+            max-width: 850px;
+            max-height: 85vh;
+            overflow-y: auto;
+            gap: 25px;
+            padding: 20px 10px;
+            text-align: center;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease, visibility 0.4s ease, transform 0.4s ease;
+            position: absolute;
+        }
+        .contact-container.active {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            position: relative;
+            transform: translateY(0);
+        }
+        .contact-container .pub-op-header {
+            border-bottom: 1px solid rgba(255, 42, 117, 0.4);
+        }
+        .contact-container .pub-op-title {
+            color: #ff2a75;
+            text-shadow: 0 0 20px rgba(255, 42, 117, 0.5);
+        }
+        .contact-btn-row {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 15px;
+        }
+        .contact-btn-row .gta-pill-btn {
+            width: 230px;
+            padding: 16px 20px;
+        }
+        .copy-email-btn.copied {
+            background: rgba(0, 255, 102, 0.25) !important;
+            border-color: #00ff66 !important;
+            color: #00ff66 !important;
+            box-shadow: 0 0 25px rgba(0, 255, 102, 0.5) !important;
+        }
+
         /* === FIRST SCREEN SOCIAL DOCK === */
         .hero-socials {
             position: fixed;
@@ -1045,6 +1158,18 @@
             section { padding: 0; min-height: auto; }
             .definitive-title { font-size: 22px; }
             .definitive-desc { font-size: 16px; }
+
+            .contact-container.active {
+                width: 92%;
+                max-height: 80vh;
+                padding: 10px 5px;
+            }
+            .contact-btn-row { flex-direction: column; width: 100%; gap: 12px; }
+            .contact-btn-row .gta-pill-btn { width: 100%; }
+            .gta-pill-btn {
+                padding: 14px 20px;
+                font-size: 14px;
+            }
         }
     </style>
     <script type="application/ld+json">
@@ -1093,7 +1218,7 @@
             <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" class="menu-link">BUY GAME</a>
  
             <a href="https://hamachithepsychotickiller.com/devroom/" class="menu-link">DEV ROOM</a>
-            <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20the%20Psychotic%20Killer%20page" class="menu-link">CONTACT</a>
+            <a href="#" class="menu-link" id="contactTriggerBtn">CONTACT</a>
             <a href="#" class="menu-link" id="synopsisTriggerBtn">SYNOPSIS</a>
             <a href="https://gavinoriley.github.io/assets/HamaWallPaper.zip" download="HamachiWallpaper.zip" class="menu-link mobile-hide">WALLPAPER</a>
             <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/cbeecc8fd965c68b6d64b82a593dafd5da4b0412/2hamachi-the-psychotic-killer-manual.pdf?t=1746692821" target="_blank" class="menu-link" style="font-size: 20px; color: #888;">GAME MANUAL</a>
@@ -1164,7 +1289,16 @@
             </div>
 
             <div class="pub-op-cta">
-                <a href="mailto:img.oriley@gmail.com?subject=Hamachi%20the%20Psychotic%20Killer%20Publishing%20Opportunities" class="pub-op-cta-link">[Get in Touch / Request Pitch Deck]</a>
+                <a href="#" class="pub-op-cta-link pitch-deck-trigger" id="pubOpContactTrigger">[Get in Touch / Request Pitch Deck]</a>
+            </div>
+        </div>
+
+        <div class="contact-container" id="contactContentPanel">
+            <div class="pub-op-header">
+                <h2 class="pub-op-title">GET IN TOUCH / REQUEST PITCH DECK</h2>
+            </div>
+            <div class="contact-btn-row">
+                <button class="gta-pill-btn copy-email-btn" id="copyEmailBtn">Copy Email</button>
             </div>
         </div>
     </nav>
@@ -1330,7 +1464,7 @@
                     <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank">Hamachi Cube</a>
                     <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank">YouTube</a>
   
-                   <a href="mailto:img.oriley@gmail.com?subject=Contact%20from%20Hamachi%20the%20Psychotic%20Killer%20page">Contact</a>
+                   <a href="#" id="footerContactTrigger">Contact</a>
                 </div>
             </section>
         </main>
@@ -1586,9 +1720,14 @@
         
         const menuLinksWrapper = document.getElementById('menuLinksWrapper');
         const synopsisTriggerBtn = document.getElementById('synopsisTriggerBtn');
+        const contactTriggerBtn = document.getElementById('contactTriggerBtn');
         const synopsisContentPanel = document.getElementById('synopsisContentPanel');
         const definitiveContentPanel = document.getElementById('definitiveContentPanel');
         const pubOpContentPanel = document.getElementById('pubOpContentPanel');
+        const contactContentPanel = document.getElementById('contactContentPanel');
+        const copyEmailBtn = document.getElementById('copyEmailBtn');
+        const footerContactTrigger = document.getElementById('footerContactTrigger');
+        const pubOpContactTrigger = document.getElementById('pubOpContactTrigger');
 
         function toggleMenu() {
             const isClosing = menuToggle.classList.contains('open');
@@ -1604,6 +1743,7 @@
                     synopsisContentPanel.classList.remove('active');
                     definitiveContentPanel.classList.remove('active');
                     pubOpContentPanel.classList.remove('active');
+                    if (contactContentPanel) contactContentPanel.classList.remove('active');
                 }, 400);
             } else {
                 document.body.style.overflow = 'hidden';
@@ -1611,27 +1751,82 @@
             }
         }
 
+        function openContactPanel(e) {
+            if (e) e.preventDefault();
+            if (!navOverlay.classList.contains('open')) {
+                menuToggle.classList.add('open');
+                navOverlay.classList.add('open');
+                document.body.style.overflow = 'hidden';
+                startMenuBgAnimation();
+            }
+            menuLinksWrapper.classList.add('hidden');
+            if (synopsisContentPanel) synopsisContentPanel.classList.remove('active');
+            if (definitiveContentPanel) definitiveContentPanel.classList.remove('active');
+            if (pubOpContentPanel) pubOpContentPanel.classList.remove('active');
+            if (contactContentPanel) contactContentPanel.classList.add('active');
+        }
+
         menuToggle.addEventListener('click', toggleMenu);
         menuLinks.forEach(link => {
             link.addEventListener('click', (e) => {
-                if (link === synopsisTriggerBtn) return; 
+                if (link === synopsisTriggerBtn || link === contactTriggerBtn) return; 
                 if (navOverlay.classList.contains('open')) {
                     toggleMenu();
                 }
             });
         });
 
-        synopsisTriggerBtn.addEventListener('click', (e) => {
-            e.preventDefault();
-            e.stopPropagation(); 
-            menuLinksWrapper.classList.add('hidden');
-            definitiveContentPanel.classList.remove('active');
-            pubOpContentPanel.classList.remove('active');
-            synopsisContentPanel.classList.add('active');
-        });
+        if (synopsisTriggerBtn) {
+            synopsisTriggerBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                e.stopPropagation(); 
+                menuLinksWrapper.classList.add('hidden');
+                definitiveContentPanel.classList.remove('active');
+                pubOpContentPanel.classList.remove('active');
+                if (contactContentPanel) contactContentPanel.classList.remove('active');
+                synopsisContentPanel.classList.add('active');
+            });
+        }
+
+        if (contactTriggerBtn) {
+            contactTriggerBtn.addEventListener('click', openContactPanel);
+        }
+        if (footerContactTrigger) {
+            footerContactTrigger.addEventListener('click', openContactPanel);
+        }
+        if (pubOpContactTrigger) {
+            pubOpContactTrigger.addEventListener('click', openContactPanel);
+        }
+
+        if (copyEmailBtn) {
+            copyEmailBtn.addEventListener('click', () => {
+                const emailToCopy = "img.oriley@gmail.com";
+                navigator.clipboard.writeText(emailToCopy).then(() => {
+                    copyEmailBtn.textContent = "Email Copied!";
+                    copyEmailBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyEmailBtn.textContent = "Copy Email";
+                        copyEmailBtn.classList.remove('copied');
+                    }, 2500);
+                }).catch(() => {
+                    const textArea = document.createElement("textarea");
+                    textArea.value = emailToCopy;
+                    document.body.appendChild(textArea);
+                    textArea.select();
+                    document.execCommand("copy");
+                    document.body.removeChild(textArea);
+                    copyEmailBtn.textContent = "Email Copied!";
+                    copyEmailBtn.classList.add('copied');
+                    setTimeout(() => {
+                        copyEmailBtn.textContent = "Copy Email";
+                        copyEmailBtn.classList.remove('copied');
+                    }, 2500);
+                });
+            });
+        }
 
         navOverlay.addEventListener('click', (e) => {
-            if (e.target === navOverlay || e.target === synopsisContentPanel || e.target === definitiveContentPanel || e.target === pubOpContentPanel) {
+            if (e.target === navOverlay || e.target === synopsisContentPanel || e.target === definitiveContentPanel || e.target === pubOpContentPanel || e.target === contactContentPanel) {
                 toggleMenu();
             }
         });
@@ -1644,6 +1839,11 @@
         pubOpContentPanel.addEventListener('click', (e) => {
             e.stopPropagation();
         });
+        if (contactContentPanel) {
+            contactContentPanel.addEventListener('click', (e) => {
+                e.stopPropagation();
+            });
+        }
 
         const trailerLightbox = document.getElementById('trailerLightbox');
         const modalVideoIframe = document.getElementById('modalVideoIframe');
