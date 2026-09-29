@@ -841,6 +841,12 @@
             text-shadow: none;
         }
 
+        .pill-btn.btn-patch {
+            background-color: #888888;
+            color: #ffffff;
+            text-shadow: 2px 2px 0px #000000;
+        }
+
         .pill-btn:hover {
             filter: brightness(1.15);
             transform: translateY(-3px);
@@ -911,6 +917,142 @@
 
         .modal-close-btn:hover {
             color: #ff3333;
+        }
+
+        /* === SOLID PATCH NOTES MODAL WINDOW === */
+        .patch-modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            z-index: 3500;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+
+        .patch-modal-overlay.open {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .patch-modal-box {
+            position: relative;
+            width: 90%;
+            max-width: 750px;
+            max-height: 82vh;
+            background-color: #0e0e11;
+            border: 3px solid #888888;
+            border-radius: 6px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.95);
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .patch-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #282830;
+            padding-bottom: 14px;
+        }
+
+        .patch-modal-title {
+            font-size: 28px;
+            color: #ffffff;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+        }
+
+        .patch-modal-close-btn {
+            background: none;
+            border: none;
+            color: #ffffff;
+            font-size: 36px;
+            line-height: 1;
+            cursor: pointer;
+            transition: color 0.2s ease;
+        }
+
+        .patch-modal-close-btn:hover {
+            color: #ff5577;
+        }
+
+        .patch-notes-container {
+            overflow-y: auto;
+            flex: 1;
+            padding-right: 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        /* Custom Scrollbar for Patch Notes Window */
+        .patch-notes-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        .patch-notes-container::-webkit-scrollbar-track {
+            background: #18181f;
+            border-radius: 4px;
+        }
+        .patch-notes-container::-webkit-scrollbar-thumb {
+            background: #555560;
+            border-radius: 4px;
+        }
+        .patch-notes-container::-webkit-scrollbar-thumb:hover {
+            background: #888899;
+        }
+
+        .patch-entry {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 5px;
+            padding: 20px;
+        }
+
+        .patch-version-title {
+            font-size: 22px;
+            color: #ffd700;
+            letter-spacing: 1px;
+            margin-bottom: 12px;
+            font-weight: bold;
+        }
+
+        .patch-section-subtitle {
+            font-size: 18px;
+            color: #38b6ff;
+            margin-top: 14px;
+            margin-bottom: 6px;
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .patch-list {
+            list-style-type: disc;
+            padding-left: 22px;
+            color: #dddddd;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .patch-list li {
+            margin-bottom: 6px;
+        }
+
+        .patch-sublist {
+            list-style-type: circle;
+            padding-left: 22px;
+            margin-top: 4px;
+            color: #bbbbbb;
         }
 
         /* === MOBILE DEMO NOTICE POPUP MODAL === */
@@ -1126,6 +1268,9 @@
             .business-links a {
                 font-size: 15px;
             }
+            .patch-modal-box {
+                padding: 20px 15px;
+            }
         }
     </style>
 
@@ -1302,6 +1447,83 @@
         </div>
     </div>
 
+    <!-- === SOLID PATCH NOTES MODAL === -->
+    <div class="patch-modal-overlay" id="patchNotesModal" onclick="closePatchNotesModal(event)" data-lenis-prevent>
+        <div class="patch-modal-box" onclick="event.stopPropagation()">
+            <div class="patch-modal-header">
+                <h2 class="patch-modal-title">Patch Notes</h2>
+                <button class="patch-modal-close-btn" onclick="closePatchNotesModal(event)" aria-label="Close patch notes window">&times;</button>
+            </div>
+            
+            <div class="patch-notes-container">
+
+                <!-- ================================================================= -->
+                <!-- EASY INJECTION GUIDE:                                            -->
+                <!-- To add new patch notes in the future, copy a <div class="patch-entry"> -->
+                <!-- block and paste it right below this comment at the top of the list.  -->
+                <!-- ================================================================= -->
+
+                <!-- PATCH ENTRY: VERSION 1.3 -->
+                <div class="patch-entry">
+                    <div class="patch-version-title">version 1.3 (update soon)</div>
+                    <ul class="patch-list">
+                        <li>Final boss encounter refinements</li>
+                        <li>Minor level design adjustments</li>
+                        <li>Removed C and Y button functionality</li>
+                    </ul>
+                </div>
+
+                <!-- PATCH ENTRY: VERSION 1.2 -->
+                <div class="patch-entry">
+                    <div class="patch-version-title">version 1.2</div>
+                    <ul class="patch-list">
+                        <li>Changed the outcome of the Neutral ending to better reflect the character's terrible fate.</li>
+                        <li>Minor boss mechanic adjustments.</li>
+                        <li>Aesthetic updates to the title screen terrain and characters based on the real-world calendar.</li>
+                        <li>Hamachi’s hp from 6 to 12</li>
+                    </ul>
+                </div>
+
+                <!-- PATCH ENTRY: VERSION 1.1 -->
+                <div class="patch-entry">
+                    <div class="patch-version-title">version 1.1</div>
+                    
+                    <div class="patch-section-subtitle">Gameplay</div>
+                    <ul class="patch-list">
+                        <li>Reduced damage for most enemies and bosses, essentially increasing Hamachi’s hp from 6 to 12</li>
+                        <li>Increased Hamachi’s attack hitbox size from 8×8 to 10×10 (width/height)</li>
+                    </ul>
+
+                    <div class="patch-section-subtitle">Bosses</div>
+                    <ul class="patch-list">
+                        <li>During the first two boss fights, if the player drops to 2 HP, Penelope will spawn from either corner of the arena and provide Hamachi with sushi to restore health. This can occur once with each encounter.</li>
+                    </ul>
+
+                    <div class="patch-section-subtitle">UI</div>
+                    <ul class="patch-list">
+                        <li>Levels containing enemies should now display a counter showing:
+                            <ul class="patch-sublist">
+                                <li>Total enemies in the level</li>
+                                <li>Number of enemies defeated</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- PATCH ENTRY: VERSION 1.0 -->
+                <div class="patch-entry">
+                    <div class="patch-version-title">🐛 patch (1.0)</div>
+                    <ul class="patch-list">
+                        <li>Fixed a bug where the kill counter reset to 0 after dying on World 5/6 stage 1 if the game was previously exited on that level.</li>
+                        <li>Removed decorative ceiling spikes in the first dungeon that caused a crash when touched. (lol)</li>
+                        <li>Made slight adjustments to the pacifist/neutral final bosses.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
     <!-- === MOBILE DEMO NOTICE MODAL === -->
     <div class="mobile-demo-modal" id="mobileDemoModal">
         <div class="mobile-demo-box">
@@ -1333,6 +1555,7 @@
                                 <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" rel="noopener noreferrer" class="pill-btn btn-demo">Play Demo</a>
                                 <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="pill-btn btn-buy">Buy Game</a>
                                 <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank" rel="noopener noreferrer" class="pill-btn btn-cube">Hamachi Cube</a>
+                                <a href="#" class="pill-btn btn-patch" onclick="openPatchNotesModal(event)">Patch Notes</a>
                             </div>
                    
                         </div>
@@ -1632,6 +1855,25 @@
             trailerLightbox.classList.remove('open');
             modalVideoIframe.src = "";
             document.body.style.overflow = ''; 
+        }
+
+        /* === PATCH NOTES MODAL CONTROLLER === */
+        const patchNotesModal = document.getElementById('patchNotesModal');
+
+        function openPatchNotesModal(event) {
+            if (event) event.preventDefault();
+            if (patchNotesModal) {
+                patchNotesModal.classList.add('open');
+                document.body.style.overflow = 'hidden';
+            }
+        }
+
+        function closePatchNotesModal(event) {
+            if (event) event.preventDefault();
+            if (patchNotesModal) {
+                patchNotesModal.classList.remove('open');
+                document.body.style.overflow = '';
+            }
         }
 
         /* === MOBILE DEMO INTERCEPTOR === */
