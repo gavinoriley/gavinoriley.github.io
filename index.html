@@ -1030,7 +1030,7 @@
         .business-links a:nth-child(3):hover { color: #38b6ff; }
         .business-links a:nth-child(4):hover { color: #ffd700; }
 
-        /* === CAROUSEL (restored from oldhomepage) === */
+        /* === CAROUSEL (Safari display bug resolved) === */
         .carousel {
             width: 100vw;
             height: calc(100vw * 3 / 16);
@@ -1039,10 +1039,12 @@
         }
         .carousel-inner {
             display: flex;
+            height: 100%;
             animation: scroll 40s linear infinite;
         }
         .carousel-inner img {
             width: calc(100vw / 3);
+            flex-shrink: 0;
             height: 100%;
             object-fit: cover;
         }
