@@ -154,12 +154,14 @@
             padding: 80px 40px 60px;
             opacity: 0;
             visibility: hidden;
+            pointer-events: none; /* PREVENTS GHOST CLICK INTERCEPTION */
             transition: opacity 0.4s ease, visibility 0.4s ease;
             overflow-y: auto;
         }
         .nav-overlay.open {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
 
         .nav-links-wrapper {
@@ -168,7 +170,6 @@
             gap: 18px;
             max-width: 420px;
             opacity: 1;
-            visibility: visible;
             transition: opacity 0.35s ease, visibility 0.35s ease;
         }
         .nav-links-wrapper.hidden {
@@ -184,15 +185,14 @@
             letter-spacing: 1px;
             transition: color 0.2s;
         }
-        /* Specific hover colors matching hero action buttons */
-        .nav-overlay a:nth-child(1):hover { color: #c33a3a; } /* game info - red */
-        .nav-overlay a:nth-child(2):hover { color: #3a9a4a; } /* play demo - green */
-        .nav-overlay a:nth-child(3):hover { color: #3a6aaa; } /* steam page - blue */
-        .nav-overlay a:nth-child(4):hover { color: #c9a83a; } /* dev room - yellow */
-        .nav-overlay a:nth-child(5):hover { color: #c33a3a; } /* contact - red */
-        .nav-overlay a:nth-child(6):hover { color: #3a9a4a; } /* synopsis - green */
-        .nav-overlay a:nth-child(7):hover { color: #3a6aaa; } /* wallpaper - blue */
-        .nav-overlay a:nth-child(8):hover { color: #c9a83a; } /* publishing - yellow */
+        .nav-overlay a:nth-child(1):hover { color: #c33a3a; }
+        .nav-overlay a:nth-child(2):hover { color: #3a9a4a; }
+        .nav-overlay a:nth-child(3):hover { color: #3a6aaa; }
+        .nav-overlay a:nth-child(4):hover { color: #c9a83a; }
+        .nav-overlay a:nth-child(5):hover { color: #c33a3a; }
+        .nav-overlay a:nth-child(6):hover { color: #3a9a4a; }
+        .nav-overlay a:nth-child(7):hover { color: #3a6aaa; }
+        .nav-overlay a:nth-child(8):hover { color: #c9a83a; }
 
         .panel {
             max-width: 640px;
@@ -260,7 +260,7 @@
             color: #fff;
         }
 
-        /* SOCIALS (inside top nav bar) */
+        /* SOCIALS */
         .hero-socials {
             position: relative;
             top: auto;
@@ -372,7 +372,7 @@
             padding: 0 28px 90px;
         }
 
-        /* ========== HERO WITH VIDEO BACKGROUND ========== */
+        /* HERO SECTION */
         .title-section {
             position: relative;
             z-index: 10;
@@ -489,7 +489,6 @@
             background: rgba(0,0,0,0.55);
         }
 
-        /* unique outer border colors */
         .hero-actions a.watch { border-color: #c33a3a; }
         .hero-actions a.watch:hover { border-color: #e05050; }
         .hero-actions a.demo { border-color: #3a9a4a; }
@@ -501,7 +500,6 @@
         .hero-actions a.patch { border-color: #555; }
         .hero-actions a.patch:hover { border-color: #777; }
 
-        /* continuous image sequence - full bleed to fill space */
         .image-sequence {
             position: relative;
             z-index: 1;
@@ -522,9 +520,6 @@
             padding: 0;
             border: 0;
             line-height: 0;
-        }
-        .image-sequence img {
-            opacity: 1;
         }
 
         .carousel {
@@ -593,6 +588,7 @@
             align-items: center;
             opacity: 0;
             visibility: hidden;
+            pointer-events: none; /* IGNORE TOUCH WHEN CLOSED */
             transition: opacity 0.3s, visibility 0.3s;
             padding: 20px;
         }
@@ -601,6 +597,7 @@
         .mobile-demo-modal.open {
             opacity: 1;
             visibility: visible;
+            pointer-events: auto;
         }
         .modal-box {
             width: 92%;
@@ -890,7 +887,6 @@
 
     <div id="wrapper">
         <main>
-            <!-- HERO WITH BACKGROUND VIDEO -->
             <section class="title-section">
                 <div class="hero-video-container">
                     <div class="video-background">
@@ -915,7 +911,6 @@
                 </div>
             </section>
 
-            <!-- continuous vertical image sequence -->
             <div class="image-sequence">
                 <div class="carousel">
                     <div class="carousel-inner">
@@ -969,7 +964,6 @@
 
     <script src="https://unpkg.com/lenis@1.3.23/dist/lenis.min.js"></script>
     <script>
-        // Lenis smooth scroll
         const lenis = new Lenis({
             lerp: 0.08,
             wheelMultiplier: 1.0,
@@ -983,7 +977,7 @@
             stopInertiaOnNavigate: true
         });
 
-        // ========== MENU ==========
+        // MENU CONTROLS
         const menuToggle = document.getElementById('menuToggleBtn');
         const navOverlay = document.getElementById('mainNavOverlay');
         const menuLinksWrapper = document.getElementById('menuLinksWrapper');
@@ -1067,7 +1061,7 @@
             if (e.target === navOverlay) toggleMenu();
         });
 
-        // ========== TRAILER MODAL ==========
+        // TRAILER LIGHTBOX
         const trailerLightbox = document.getElementById('trailerLightbox');
         const modalVideoIframe = document.getElementById('modalVideoIframe');
         const watchTrailerBtn = document.getElementById('watchTrailerBtn');
@@ -1096,7 +1090,7 @@
             if (e.target === trailerLightbox) closeTrailerModal(e);
         });
 
-        // ========== PATCH NOTES MODAL ==========
+        // PATCH NOTES MODAL
         const patchNotesModal = document.getElementById('patchNotesModal');
         const patchNotesBtn = document.getElementById('patchNotesBtn');
         const closePatchBtn = document.getElementById('closePatchBtn');
@@ -1121,7 +1115,7 @@
             if (e.target === patchNotesModal) closePatchNotesModal(e);
         });
 
-        // ========== MOBILE DEMO INTERCEPT ==========
+        // MOBILE DEMO INTERCEPT
         const playDemoBtn = document.getElementById('playDemoBtn');
         const mobileDemoModal = document.getElementById('mobileDemoModal');
 
@@ -1147,7 +1141,7 @@
             });
         }
 
-        // ========== HERO TAGLINE PERSONALITY ==========
+        // HERO TAGLINE DYNAMICS
         const heroLabel = document.querySelector('.hero-label');
         const defaultTagline = 'the platformer game where you can play as the bad guy';
         const defaultColor = '#c0c0c0';
@@ -1165,38 +1159,33 @@
             heroLabel.style.color = color;
         }
 
-        // Watch Trailer
         const watchBtn = document.getElementById('watchTrailerBtn');
         if (watchBtn) {
             watchBtn.addEventListener('mouseenter', () => setTagline(taglineMap.watchTrailerBtn.text, taglineMap.watchTrailerBtn.color));
             watchBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
         }
-        // Play Demo
         const demoBtn = document.getElementById('playDemoBtn');
         if (demoBtn) {
             demoBtn.addEventListener('mouseenter', () => setTagline(taglineMap.playDemoBtn.text, taglineMap.playDemoBtn.color));
             demoBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
         }
-        // Buy Game (has class "buy")
         const buyBtn = document.querySelector('.hero-actions a.buy');
         if (buyBtn) {
             buyBtn.addEventListener('mouseenter', () => setTagline(taglineMap.buy.text, taglineMap.buy.color));
             buyBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
         }
-        // Hamachi Cube (has class "cube")
         const cubeBtn = document.querySelector('.hero-actions a.cube');
         if (cubeBtn) {
             cubeBtn.addEventListener('mouseenter', () => setTagline(taglineMap.cube.text, taglineMap.cube.color));
             cubeBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
         }
-        // Patch Notes
         const patchBtn = document.getElementById('patchNotesBtn');
         if (patchBtn) {
             patchBtn.addEventListener('mouseenter', () => setTagline(taglineMap.patchNotesBtn.text, taglineMap.patchNotesBtn.color));
             patchBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
         }
 
-        // ========== SHARE ==========
+        // SHARE DROPDOWN
         const shareEngineTrigger = document.getElementById('shareEngineTrigger');
         const shareDropdownPanel = document.getElementById('shareDropdownPanel');
         const copyLinkActionBtn = document.getElementById('copyLinkActionBtn');
