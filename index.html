@@ -315,7 +315,7 @@
             pointer-events: none;
             transition: opacity 0.25s ease, visibility 0.25s ease;
         }
-        /* Keep card open while hovering the wrapper OR the card itself (bridge the gap) + smooth fade */
+
         .share-card.active,
         .x-hover-wrapper:hover .x-hover-card,
         .x-hover-card:hover {
@@ -323,7 +323,7 @@
             visibility: visible;
             pointer-events: auto;
         }
-        /* Invisible bridge so mouse can travel from icon to card without losing hover */
+
         .x-hover-wrapper::after {
             content: '';
             position: absolute;
@@ -375,20 +375,20 @@
         /* ========== HERO WITH VIDEO BACKGROUND ========== */
         .title-section {
             position: relative;
+            z-index: 10;
             width: 100vw;
             left: 50%;
             right: 50%;
             margin-left: -50vw;
             margin-right: -50vw;
-            height: 100vh;
             min-height: 100vh;
+            min-height: 100dvh;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
             padding: 0;
-            z-index: 10;
         }
 
         .hero-video-container {
@@ -430,7 +430,7 @@
 
         .hero-content {
             position: relative;
-            z-index: 3;
+            z-index: 15;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -460,15 +460,18 @@
         }
 
         .hero-actions {
+            position: relative;
+            z-index: 20;
             display: flex;
             flex-wrap: wrap;
             justify-content: center;
             gap: 12px 18px;
-            position: relative;
-            z-index: 20;
         }
 
         .hero-actions a {
+            position: relative;
+            z-index: 20;
+            pointer-events: auto;
             color: #ddd;
             text-decoration: none;
             font-size: 14px;
@@ -487,40 +490,21 @@
         }
 
         /* unique outer border colors */
-        .hero-actions a.watch {
-            border-color: #c33a3a;
-        }
-        .hero-actions a.watch:hover {
-            border-color: #e05050;
-        }
-        .hero-actions a.demo {
-            border-color: #3a9a4a;
-        }
-        .hero-actions a.demo:hover {
-            border-color: #50b860;
-        }
-        .hero-actions a.buy {
-            border-color: #3a6aaa;
-        }
-        .hero-actions a.buy:hover {
-            border-color: #5080c0;
-        }
-        .hero-actions a.cube {
-            border-color: #c9a83a;
-        }
-        .hero-actions a.cube:hover {
-            border-color: #e0c050;
-        }
-        .hero-actions a.patch {
-            border-color: #555;
-        }
-        .hero-actions a.patch:hover {
-            border-color: #777;
-        }
+        .hero-actions a.watch { border-color: #c33a3a; }
+        .hero-actions a.watch:hover { border-color: #e05050; }
+        .hero-actions a.demo { border-color: #3a9a4a; }
+        .hero-actions a.demo:hover { border-color: #50b860; }
+        .hero-actions a.buy { border-color: #3a6aaa; }
+        .hero-actions a.buy:hover { border-color: #5080c0; }
+        .hero-actions a.cube { border-color: #c9a83a; }
+        .hero-actions a.cube:hover { border-color: #e0c050; }
+        .hero-actions a.patch { border-color: #555; }
+        .hero-actions a.patch:hover { border-color: #777; }
 
         /* continuous image sequence - full bleed to fill space */
         .image-sequence {
             position: relative;
+            z-index: 1;
             width: 100vw;
             left: 50%;
             right: 50%;
@@ -528,7 +512,6 @@
             margin-right: -50vw;
             max-width: none;
             padding: 0;
-            z-index: 1;
         }
         .image-sequence a,
         .image-sequence img {
@@ -662,7 +645,6 @@
             pointer-events: auto;
         }
         .patch-modal-overlay {
-            /* ensure wheel events can reach the box */
             overscroll-behavior: contain;
         }
         .patch-modal-title {
@@ -1140,57 +1122,29 @@
         });
 
         // ========== MOBILE DEMO INTERCEPT ==========
-        // Robust mobile check + prevent any navigation to wrong pages on touch devices
         const playDemoBtn = document.getElementById('playDemoBtn');
         const mobileDemoModal = document.getElementById('mobileDemoModal');
 
-        function isMobileViewport() {
-            return window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        function isMobileDevice() {
+            return window.innerWidth <= 768 || 
+                   /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || 
+                   window.matchMedia('(max-width: 768px)').matches;
         }
 
         if (playDemoBtn && mobileDemoModal) {
-            // Use capture phase so this runs before any other handlers / default
             playDemoBtn.addEventListener('click', (e) => {
-                if (isMobileViewport()) {
+                if (isMobileDevice()) {
                     e.preventDefault();
-                    e.stopPropagation();
                     mobileDemoModal.classList.add('open');
                     document.body.style.overflow = 'hidden';
                     if (typeof lenis !== 'undefined') lenis.stop();
                 }
-            }, true);
-            // Also block touchend to avoid ghost clicks that can hit lower elements
-            playDemoBtn.addEventListener('touchend', (e) => {
-                if (isMobileViewport()) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (!mobileDemoModal.classList.contains('open')) {
-                        mobileDemoModal.classList.add('open');
-                        document.body.style.overflow = 'hidden';
-                        if (typeof lenis !== 'undefined') lenis.stop();
-                    }
-                }
-            }, { passive: false, capture: true });
+            });
             mobileDemoModal.addEventListener('click', () => {
                 mobileDemoModal.classList.remove('open');
                 document.body.style.overflow = '';
                 if (typeof lenis !== 'undefined') lenis.start();
             });
-        }
-
-        // Protect the Buy Game button on mobile from any overlapping elements
-        // (ensures the Steam link always wins if something is stacked under it)
-        const buyGameBtn = document.querySelector('.hero-actions a.buy');
-        if (buyGameBtn) {
-            buyGameBtn.addEventListener('click', (e) => {
-                // force navigation to Steam even if something tried to intercept
-                if (isMobileViewport()) {
-                    e.stopPropagation();
-                    // let the default <a> navigation happen; do not preventDefault
-                }
-            }, true);
-            buyGameBtn.style.position = 'relative';
-            buyGameBtn.style.zIndex = '30';
         }
 
         // ========== HERO TAGLINE PERSONALITY ==========
