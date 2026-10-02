@@ -57,6 +57,25 @@
             position: relative;
             overflow-x: hidden;
         }
+
+        /* === OMINOUS HOVER DARKEN OVERLAY === */
+        .hover-darken-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.55);
+            pointer-events: none;
+            z-index: 100;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        body.darken-active .hover-darken-overlay {
+            opacity: 1;
+        }
+
         /* Lenis Recommended Styles */
         html.lenis {
             height: auto;
@@ -771,7 +790,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            z-index: 2;
+            z-index: 105; 
             background: rgba(0, 0, 0, 0.25); 
         }
 
@@ -779,7 +798,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            gap: 22px;
+            gap: 16px;
             width: 85%;
             max-width: 880px;
         }
@@ -789,6 +808,25 @@
             max-width: 720px;
             height: auto;
             display: block;
+        }
+
+        /* === BLOOD RED TAGLINE === */
+        .hero-tagline {
+            color: #b30000;
+            font-size: 21px;
+            letter-spacing: 0.8px;
+            text-transform: lowercase;
+            font-weight: bold;
+            text-shadow: 1px 1px 0px #000000;
+            text-align: center;
+            transition: color 0.4s ease, text-shadow 0.4s ease;
+            margin-top: -4px;
+            margin-bottom: 2px;
+        }
+
+        body.darken-active .hero-tagline {
+            color: #ff1a1a;
+            text-shadow: 0 0 10px #ff0000, 0 0 20px #cc0000, 0 0 35px #990000;
         }
 
         /* === RETRO CHUNKY ARCADE ACTION BUTTONS === */
@@ -818,26 +856,27 @@
             transition: transform 0.1s ease, box-shadow 0.1s ease, filter 0.15s ease;
         }
 
+        /* Adjusted button colors for solid, less oversaturated appearance */
         .pill-btn.btn-trailer {
-            background-color: #ff5577;
+            background-color: #d9435f;
             color: #ffffff;
             text-shadow: 2px 2px 0px #000000;
         }
 
         .pill-btn.btn-demo {
-            background-color: #00e676;
+            background-color: #1cb859;
             color: #000000;
             text-shadow: none;
         }
 
         .pill-btn.btn-buy {
-            background-color: #38b6ff;
+            background-color: #2f91d7;
             color: #ffffff;
             text-shadow: 2px 2px 0px #000000;
         }
 
         .pill-btn.btn-cube {
-            background-color: #ffd700;
+            background-color: #e0ba0d;
             color: #000000;
             text-shadow: none;
         }
@@ -1254,6 +1293,9 @@
             .hero-content-wrapper {
                 width: 92%;
             }
+            .hero-tagline {
+                font-size: 18px;
+            }
             .hero-action-row {
                 flex-direction: column;
                 gap: 12px;
@@ -1291,6 +1333,7 @@
 </head>
 <body>
 
+    <div class="hover-darken-overlay" id="hoverDarkenOverlay"></div>
     <div class="intro-swipe"></div>
     <div class="top-shadow"></div>
 
@@ -1458,12 +1501,6 @@
             
             <div class="patch-notes-container">
 
-                <!-- ================================================================= -->
-                <!--                                                                   -->
-                <!-- To add new patch notes in the future, copy a <div class="patch-entry"> -->
-                <!-- block and paste it right below this comment at the top of the list.  -->
-                <!-- ================================================================= -->
-
                 <!-- PATCH ENTRY: VERSION 1.3 -->
                 <div class="patch-entry">
                     <div class="patch-version-title">version 1.3</div>
@@ -1549,6 +1586,7 @@
                         <div class="hero-content-wrapper">
               
                             <img src="https://gavinoriley.github.io/assets/colorconewScreenHomePageOver.png" alt="Hamachi the Psychotic Killer">
+                            <p class="hero-tagline">the platformer game where you can play as the bad guy</p>
                             
                             <div class="hero-action-row">
                                 <a href="#" class="pill-btn btn-trailer" onclick="openTrailerModal(event)">Watch Trailer</a>
@@ -1647,7 +1685,18 @@
             stopInertiaOnNavigate: true
         });
 
-        /* === MENU FLOATING RED CIRCLES BACKGROUND (ported from publishing partnerships aesthetic) === */
+        /* === OMINOUS HOVER DARKENING ENGINE FOR THE 5 HERO BUTTONS === */
+        const heroActionButtons = document.querySelectorAll('.hero-action-row .pill-btn');
+        heroActionButtons.forEach(button => {
+            button.addEventListener('mouseenter', () => {
+                document.body.classList.add('darken-active');
+            });
+            button.addEventListener('mouseleave', () => {
+                document.body.classList.remove('darken-active');
+            });
+        });
+
+        /* === MENU FLOATING RED CIRCLES BACKGROUND === */
         const canvas = document.getElementById('menuBgCanvas');
         const ctx = canvas.getContext('2d');
         let animFrameId = null;
@@ -1889,7 +1938,6 @@
                 }
             });
 
-            // Clicking anywhere on or outside the popup removes it
             mobileDemoModal.addEventListener('click', () => {
                 mobileDemoModal.classList.remove('open');
                 document.body.style.overflow = '';
