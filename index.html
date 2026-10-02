@@ -380,6 +380,7 @@
             right: 50%;
             margin-left: -50vw;
             margin-right: -50vw;
+            height: 100vh;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -387,6 +388,7 @@
             align-items: center;
             overflow: hidden;
             padding: 0;
+            z-index: 10;
         }
 
         .hero-video-container {
@@ -462,6 +464,8 @@
             flex-wrap: wrap;
             justify-content: center;
             gap: 12px 18px;
+            position: relative;
+            z-index: 20;
         }
 
         .hero-actions a {
@@ -524,6 +528,7 @@
             margin-right: -50vw;
             max-width: none;
             padding: 0;
+            z-index: 1;
         }
         .image-sequence a,
         .image-sequence img {
@@ -1135,23 +1140,57 @@
         });
 
         // ========== MOBILE DEMO INTERCEPT ==========
+        // Robust mobile check + prevent any navigation to wrong pages on touch devices
         const playDemoBtn = document.getElementById('playDemoBtn');
         const mobileDemoModal = document.getElementById('mobileDemoModal');
 
+        function isMobileViewport() {
+            return window.innerWidth <= 768 || /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+        }
+
         if (playDemoBtn && mobileDemoModal) {
+            // Use capture phase so this runs before any other handlers / default
             playDemoBtn.addEventListener('click', (e) => {
-                if (window.innerWidth <= 768) {
+                if (isMobileViewport()) {
                     e.preventDefault();
+                    e.stopPropagation();
                     mobileDemoModal.classList.add('open');
                     document.body.style.overflow = 'hidden';
                     if (typeof lenis !== 'undefined') lenis.stop();
                 }
-            });
+            }, true);
+            // Also block touchend to avoid ghost clicks that can hit lower elements
+            playDemoBtn.addEventListener('touchend', (e) => {
+                if (isMobileViewport()) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    if (!mobileDemoModal.classList.contains('open')) {
+                        mobileDemoModal.classList.add('open');
+                        document.body.style.overflow = 'hidden';
+                        if (typeof lenis !== 'undefined') lenis.stop();
+                    }
+                }
+            }, { passive: false, capture: true });
             mobileDemoModal.addEventListener('click', () => {
                 mobileDemoModal.classList.remove('open');
                 document.body.style.overflow = '';
                 if (typeof lenis !== 'undefined') lenis.start();
             });
+        }
+
+        // Protect the Buy Game button on mobile from any overlapping elements
+        // (ensures the Steam link always wins if something is stacked under it)
+        const buyGameBtn = document.querySelector('.hero-actions a.buy');
+        if (buyGameBtn) {
+            buyGameBtn.addEventListener('click', (e) => {
+                // force navigation to Steam even if something tried to intercept
+                if (isMobileViewport()) {
+                    e.stopPropagation();
+                    // let the default <a> navigation happen; do not preventDefault
+                }
+            }, true);
+            buyGameBtn.style.position = 'relative';
+            buyGameBtn.style.zIndex = '30';
         }
 
         // ========== HERO TAGLINE PERSONALITY ==========
