@@ -86,12 +86,36 @@
             background: #070707;
             z-index: 9999;
             pointer-events: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             animation: swipeUpwards 0.85s cubic-bezier(0.7, 0, 0.3, 1) 0.35s forwards;
+        }
+
+        .intro-swipe::after {
+            content: '';
+            position: absolute;
+            top: calc(100% - 1px);
+            left: 0;
+            width: 100%;
+            height: 14px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14"><polygon points="0,0 10,14 20,0" fill="%23070707"/></svg>');
+            background-repeat: repeat-x;
+            background-size: 20px 14px;
+            pointer-events: none;
+        }
+
+        .intro-logo {
+            max-width: 180px;
+            width: 30vw;
+            height: auto;
+            display: block;
+            object-fit: contain;
         }
 
         @keyframes swipeUpwards {
             0% { transform: translateY(0); }
-            100% { transform: translateY(-100%); }
+            100% { transform: translateY(calc(-100% - 20px)); }
         }
 
         /* FROSTED TOP NAV BAR */
@@ -729,7 +753,9 @@
     </script>
 </head>
 <body>
-    <div class="intro-swipe"></div>
+    <div class="intro-swipe">
+        <img src="https://gavinoriley.github.io/assets/whitehamaface.png" alt="Hamachi" class="intro-logo">
+    </div>
 
     <div class="top-nav-bar">
         <button class="menu-toggle" aria-label="Toggle Navigation" id="menuToggleBtn">
