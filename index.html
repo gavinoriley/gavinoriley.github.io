@@ -182,6 +182,8 @@
             pointer-events: none; /* PREVENTS GHOST CLICK INTERCEPTION */
             transition: opacity 0.4s ease, visibility 0.4s ease;
             overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
         }
         .nav-overlay.open {
             opacity: 1;
@@ -1158,8 +1160,10 @@
             menuLinksWrapper.classList.add('hidden');
             synopsisContentPanel.classList.remove('active');
             contactContentPanel.classList.add('active');
-            // Reset scroll so panel always starts at the top
-            navOverlay.scrollTop = 0;
+            // Reset scroll so the panel always starts at the top
+            requestAnimationFrame(() => {
+                navOverlay.scrollTop = 0;
+            });
         }
 
         menuToggle.addEventListener('click', toggleMenu);
@@ -1170,8 +1174,10 @@
                 menuLinksWrapper.classList.add('hidden');
                 contactContentPanel.classList.remove('active');
                 synopsisContentPanel.classList.add('active');
-                // Reset scroll so synopsis always starts at the top
-                navOverlay.scrollTop = 0;
+                // Reset scroll so the panel always starts at the top (fixes mid-scroll + one-way swipe)
+                requestAnimationFrame(() => {
+                    navOverlay.scrollTop = 0;
+                });
             });
         }
 
