@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Hamachi the Psychotic Killer</title>
     <meta name="description" content="HAMACHI THE PSYCHOTIC KILLER: The platformer game where you can play as the BAD GUY.">
     <meta name="keywords" content="Hamachi the Psychotic Killer, video game, indie game, action game, 2d game, platformer">
@@ -55,6 +55,7 @@
             background: #070707;
             color: #c8c8c8;
             overflow-x: hidden;
+            width: 100%;
         }
 
         body {
@@ -717,15 +718,128 @@
             opacity: 0.9;
         }
 
+        /* MOBILE RESPONSIVE ADAPTATIONS */
         @media (max-width: 700px) {
-            .hero-content { padding: 30px 18px; }
-            .hero-logo { max-width: 100%; }
-            .hero-actions { gap: 10px 12px; }
-            .hero-actions a { font-size: 13px; padding: 9px 14px; }
-            .nav-overlay { padding: 50px 24px; }
-            .image-sequence { padding: 0; }
-            #footer-contents { padding-left: 18px; padding-right: 18px; }
-            .carousel { height: calc(100vw * 3 / 16); }
+            .top-nav-bar {
+                padding-left: max(12px, env(safe-area-inset-left));
+                padding-right: max(12px, env(safe-area-inset-right));
+                padding-top: env(safe-area-inset-top);
+            }
+            .hero-socials {
+                gap: 10px;
+            }
+            .hero-socials img,
+            .share-trigger-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+            .share-card,
+            .x-hover-card {
+                right: -4px;
+                min-width: 200px;
+            }
+            .hero-content {
+                padding: 30px 18px;
+            }
+            .hero-logo {
+                max-width: 100%;
+            }
+            .hero-label {
+                font-size: 13px;
+                margin-bottom: 28px;
+            }
+            .hero-actions {
+                gap: 10px 12px;
+                width: 100%;
+                max-width: 440px;
+            }
+            .hero-actions a {
+                font-size: 13px;
+                padding: 10px 14px;
+                flex: 1 1 auto;
+                text-align: center;
+                min-width: 120px;
+            }
+            .nav-overlay {
+                padding: max(60px, calc(56px + env(safe-area-inset-top))) max(20px, env(safe-area-inset-right)) max(40px, env(safe-area-inset-bottom)) max(20px, env(safe-area-inset-left));
+            }
+            .nav-links-wrapper {
+                gap: 14px;
+            }
+            .nav-overlay a {
+                font-size: 20px;
+            }
+            .panel {
+                font-size: 14px;
+                line-height: 1.6;
+            }
+            .panel h2 {
+                font-size: 16px;
+                margin-bottom: 16px;
+            }
+            .image-sequence {
+                padding: 0;
+            }
+            #wrapper {
+                padding: 0 16px 60px;
+            }
+            #footer-contents {
+                padding-left: 18px;
+                padding-right: 18px;
+                margin-top: 50px;
+            }
+            .footer-links {
+                gap: 14px 18px;
+            }
+            .carousel {
+                height: calc(100vw * 0.25);
+                min-height: 75px;
+            }
+            .modal-overlay,
+            .patch-modal-overlay,
+            .mobile-demo-modal {
+                padding: 12px;
+            }
+            .modal-box {
+                width: 100%;
+            }
+            .modal-close-btn {
+                top: -38px;
+                right: 0;
+                font-size: 32px;
+            }
+            .patch-modal-box {
+                width: 100%;
+                max-height: 85vh;
+                padding: 36px 20px 24px 20px;
+            }
+            .patch-modal-close-btn {
+                top: 12px;
+                right: 14px;
+                font-size: 26px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .hero-socials {
+                gap: 8px;
+            }
+            .hero-socials img,
+            .share-trigger-btn svg {
+                width: 18px;
+                height: 18px;
+            }
+            .hero-actions a {
+                min-width: 45%;
+                font-size: 12px;
+                padding: 9px 10px;
+            }
+            .meta-line strong {
+                width: 90px;
+            }
+            .copy-email-btn {
+                width: 100%;
+            }
         }
     </style>
 
