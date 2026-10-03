@@ -1158,6 +1158,8 @@
             menuLinksWrapper.classList.add('hidden');
             synopsisContentPanel.classList.remove('active');
             contactContentPanel.classList.add('active');
+            // Reset scroll so panel always starts at the top
+            navOverlay.scrollTop = 0;
         }
 
         menuToggle.addEventListener('click', toggleMenu);
@@ -1168,6 +1170,8 @@
                 menuLinksWrapper.classList.add('hidden');
                 contactContentPanel.classList.remove('active');
                 synopsisContentPanel.classList.add('active');
+                // Reset scroll so synopsis always starts at the top
+                navOverlay.scrollTop = 0;
             });
         }
 
