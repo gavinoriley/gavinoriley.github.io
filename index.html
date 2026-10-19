@@ -190,7 +190,7 @@
             padding: 80px 40px 60px;
             opacity: 0;
             visibility: hidden;
-            pointer-events: none; /* PREVENTS GHOST CLICK INTERCEPTION */
+            pointer-events: none;
             transition: opacity 0.4s ease, visibility 0.4s ease;
             overflow-y: auto;
             -webkit-overflow-scrolling: touch;
@@ -298,7 +298,7 @@
             color: #fff;
         }
 
-        /* SOCIALS */
+        /* SOCIALS & COUNTDOWN */
         .hero-socials {
             position: relative;
             top: auto;
@@ -309,6 +309,14 @@
             align-items: center;
             flex-shrink: 0;
         }
+
+        #countdownTimer {
+            color: #aaa;
+            font-size: 13px;
+            letter-spacing: 0.5px;
+            white-space: nowrap;
+        }
+
         .hero-socials a,
         .share-trigger-btn {
             display: flex;
@@ -626,7 +634,7 @@
             align-items: center;
             opacity: 0;
             visibility: hidden;
-            pointer-events: none; /* IGNORE TOUCH WHEN CLOSED */
+            pointer-events: none;
             transition: opacity 0.3s, visibility 0.3s;
             padding: 20px;
         }
@@ -732,6 +740,12 @@
         }
 
         /* MOBILE RESPONSIVE ADAPTATIONS */
+        @media (max-width: 768px) {
+            #countdownTimer {
+                font-size: 11px;
+            }
+        }
+
         @media (max-width: 700px) {
             .top-nav-bar {
                 padding-left: max(12px, env(safe-area-inset-left));
@@ -836,6 +850,12 @@
             }
         }
 
+        @media (max-width: 520px) {
+            #countdownTimer {
+                display: none;
+            }
+        }
+
         @media (max-width: 480px) {
             .hero-socials {
                 gap: 8px;
@@ -896,6 +916,7 @@
         </button>
 
         <div class="hero-socials">
+            <span id="countdownTimer">Sep 3rd 2035: --</span>
             <div class="x-hover-wrapper" style="position:relative;">
                 <a href="https://x.com/imgavinoriley" target="_blank" rel="noopener noreferrer" aria-label="X">
                     <img src="https://gavinoriley.github.io/assets/whitex.png" alt="X">
@@ -1140,6 +1161,33 @@
             stopInertiaOnNavigate: true
         });
 
+        // COUNTDOWN TIMER (Pacific Time)
+        function updateCountdown() {
+            const targetDate = new Date(Date.UTC(2035, 8, 3, 7, 0, 0)); // Sep 3rd 2035 00:00:00 PDT
+            const now = new Date();
+            const pacificString = now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" });
+            const pacificNow = new Date(pacificString);
+            const diff = targetDate - pacificNow;
+            
+            const timerElement = document.getElementById("countdownTimer");
+            if (!timerElement) return;
+
+            if (diff <= 0) {
+                timerElement.textContent = "Sep 3rd 2035: 0d 0h 0m 0s";
+                return;
+            }
+            
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+            
+            timerElement.textContent = `Sep 3rd 2035: ${days}d ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        setInterval(updateCountdown, 1000);
+        updateCountdown();
+
         // MENU CONTROLS
         const menuToggle = document.getElementById('menuToggleBtn');
         const navOverlay = document.getElementById('mainNavOverlay');
@@ -1181,7 +1229,6 @@
             menuLinksWrapper.classList.add('hidden');
             synopsisContentPanel.classList.remove('active');
             contactContentPanel.classList.add('active');
-            // Reset scroll so the panel always starts at the top
             requestAnimationFrame(() => {
                 navOverlay.scrollTop = 0;
             });
@@ -1195,7 +1242,6 @@
                 menuLinksWrapper.classList.add('hidden');
                 contactContentPanel.classList.remove('active');
                 synopsisContentPanel.classList.add('active');
-                // Reset scroll so the panel always starts at the top (fixes mid-scroll + one-way swipe)
                 requestAnimationFrame(() => {
                     navOverlay.scrollTop = 0;
                 });
@@ -1348,7 +1394,7 @@
         const cubeBtn = document.querySelector('.hero-actions a.cube');
         if (cubeBtn) {
             cubeBtn.addEventListener('mouseenter', () => setTagline(taglineMap.cube.text, taglineMap.cube.color));
-            cubeBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
+            buyBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor)); // safe fallback
         }
         const patchBtn = document.getElementById('patchNotesBtn');
         if (patchBtn) {
