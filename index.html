@@ -102,7 +102,7 @@
             left: 0;
             width: 100%;
             height: 14px;
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="20" height="14" viewBox="0 0 20 14"><polygon points="0,0 10,14 20,0" fill="%23070707"/></svg>');
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='14' viewBox='0 0 20 14'%3E%3Cpolygon points='0,0 10,14 20,0' fill='%23070707'/%3E%3C/svg%3E");
             background-repeat: repeat-x;
             background-size: 20px 14px;
             pointer-events: none;
@@ -746,6 +746,13 @@
             }
         }
 
+        @media (max-width: 520px) {
+            #countdownTimer {
+                font-size: 10px;
+                letter-spacing: 0px;
+            }
+        }
+
         @media (max-width: 700px) {
             .top-nav-bar {
                 padding-left: max(12px, env(safe-area-inset-left));
@@ -847,12 +854,6 @@
             }
             .intro-text {
                 font-size: 13px;
-            }
-        }
-
-        @media (max-width: 520px) {
-            #countdownTimer {
-                display: none;
             }
         }
 
