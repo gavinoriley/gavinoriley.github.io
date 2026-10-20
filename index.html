@@ -3,8 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="theme-color" content="#070707">
+    <meta name="color-scheme" content="dark">
     <title>Hamachi the Psychotic Killer</title>
-    <meta name="description" content="HAMACHI THE PSYCHOTIC KILLER: The platformer game where you can play as the BAD GUY.">
+    <meta name="description" content="HAMACHI THE PSYCHOTIC KILLER: The platformer game where you can play as the bad guy.">
     <meta name="keywords" content="Hamachi the Psychotic Killer, video game, indie game, action game, 2d game, platformer">
     <meta property="og:title" content="Hamachi the Psychotic Killer">
     <meta property="og:description" content="HAMACHI THE PSYCHOTIC KILLER: The platformer game where you can play as the bad guy.">
@@ -26,11 +28,7 @@
     <link rel="preconnect" href="https://store.steampowered.com">
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.23/dist/lenis.css">
 
-    <script>
-        if (/^((?!chrome|android).)*safari/i.test(navigator.userAgent)) {
-            document.documentElement.classList.add('is-safari');
-        }
-    </script>
+    <script>document.documentElement.classList.add('landing-intro-active');</script>
 
     <style>
         @font-face {
@@ -91,7 +89,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            gap: 16px;
             animation: swipeUpwards 0.85s cubic-bezier(0.7, 0, 0.3, 1) 0.35s forwards;
         }
 
@@ -114,15 +111,6 @@
             height: auto;
             display: block;
             object-fit: contain;
-        }
-
-        .intro-text {
-            color: #ffffff;
-            font-size: 15px;
-            letter-spacing: 1.2px;
-            text-align: center;
-            text-shadow: 0 2px 8px rgba(0,0,0,0.8);
-            padding: 0 20px;
         }
 
         @keyframes swipeUpwards {
@@ -152,8 +140,6 @@
         /* MENU */
         .menu-toggle {
             position: relative;
-            top: auto;
-            left: auto;
             width: 22px;
             height: 16px;
             background: none;
@@ -162,7 +148,6 @@
             flex-direction: column;
             justify-content: space-between;
             z-index: 210;
-            cursor: pointer;
             flex-shrink: 0;
         }
         .menu-toggle span {
@@ -193,7 +178,6 @@
             pointer-events: none;
             transition: opacity 0.4s ease, visibility 0.4s ease;
             overflow-y: auto;
-            -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
         }
         .nav-overlay.open {
@@ -288,7 +272,6 @@
             padding: 10px 20px;
             font-size: 15px;
             letter-spacing: 1px;
-            cursor: pointer;
             margin-top: 20px;
             transition: border-color 0.2s, color 0.2s;
         }
@@ -298,23 +281,14 @@
             color: #fff;
         }
 
-        /* SOCIALS & COUNTDOWN */
+        /* SOCIALS */
         .hero-socials {
             position: relative;
-            top: auto;
-            right: auto;
             display: flex;
             gap: 14px;
             z-index: 210;
             align-items: center;
             flex-shrink: 0;
-        }
-
-        #countdownTimer {
-            color: #aaa;
-            font-size: 13px;
-            letter-spacing: 0.5px;
-            white-space: nowrap;
         }
 
         .hero-socials a,
@@ -333,7 +307,6 @@
             background: none;
             border: none;
             padding: 0;
-            cursor: pointer;
         }
         .share-trigger-btn svg {
             width: 22px;
@@ -395,7 +368,6 @@
             border: 1px solid transparent;
             transition: color 0.2s, border-color 0.2s;
             background: none;
-            cursor: pointer;
             width: 100%;
             text-align: left;
         }
@@ -424,9 +396,7 @@
             z-index: 10;
             width: 100vw;
             left: 50%;
-            right: 50%;
             margin-left: -50vw;
-            margin-right: -50vw;
             min-height: 100vh;
             min-height: 100dvh;
             display: flex;
@@ -528,7 +498,6 @@
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
             transition: color 0.2s, border-color 0.2s, background 0.2s;
-            cursor: pointer;
         }
         .hero-actions a:hover {
             color: #fff;
@@ -551,9 +520,7 @@
             z-index: 1;
             width: 100vw;
             left: 50%;
-            right: 50%;
             margin-left: -50vw;
-            margin-right: -50vw;
             max-width: none;
             padding: 0;
         }
@@ -667,7 +634,6 @@
             border: none;
             color: #888;
             font-size: 28px;
-            cursor: pointer;
         }
         .modal-close-btn:hover,
         .patch-modal-close-btn:hover { color: #ccc; }
@@ -682,7 +648,6 @@
             overflow-y: scroll;
             overflow-x: hidden;
             position: relative;
-            -webkit-overflow-scrolling: touch;
             overscroll-behavior: contain;
             touch-action: pan-y;
             pointer-events: auto;
@@ -740,19 +705,6 @@
         }
 
         /* MOBILE RESPONSIVE ADAPTATIONS */
-        @media (max-width: 768px) {
-            #countdownTimer {
-                font-size: 11px;
-            }
-        }
-
-        @media (max-width: 520px) {
-            #countdownTimer {
-                font-size: 10px;
-                letter-spacing: 0px;
-            }
-        }
-
         @media (max-width: 700px) {
             .top-nav-bar {
                 padding-left: max(12px, env(safe-area-inset-left));
@@ -852,9 +804,6 @@
                 right: 14px;
                 font-size: 26px;
             }
-            .intro-text {
-                font-size: 13px;
-            }
         }
 
         @media (max-width: 480px) {
@@ -877,6 +826,321 @@
             .copy-email-btn {
                 width: 100%;
             }
+        }
+    </style>
+
+    <style id="landing-intro-styles">
+        /* ===================================================================
+           LANDING INTRO
+           A full-screen intro that fades away on scroll, with drifting circles
+           behind it, after which the main site fades in. Scroll progress is
+           driven by the script at the bottom of the page.
+           Only active when JS is running (class set in <head>), otherwise the
+           page falls back to the normal site.
+           =================================================================== */
+
+        /* The menu / modal code sets body{overflow:hidden} inline, which would turn
+           <body> into a scroll container and break position:sticky on the pinned
+           hero below. <html> already clips horizontal overflow, so body doesn't need to. */
+        body { overflow: visible !important; }
+
+        :root { --intro-scroll: 150vh; } /* how much scrolling the intro transition takes */
+
+        .landing-intro { display: none; }
+
+        .landing-intro-active .landing-intro {
+            display: block;
+            position: fixed;
+            inset: 0;
+            z-index: 120; /* above the page, below the nav overlay (150) and nav bar (200) */
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        /* main site starts hidden and is faded in by the script */
+        .landing-intro-active #wrapper {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* pin the main hero in place while the intro fades out and the site fades in */
+        .landing-intro-active .hero-pin-zone {
+            position: relative;
+            width: 100vw;
+            left: 50%;
+            margin-left: -50vw;
+            height: calc(100vh + var(--intro-scroll));
+            height: calc(100dvh + var(--intro-scroll));
+        }
+        .landing-intro-active .hero-pin-zone .title-section {
+            position: sticky;
+            top: 0;
+            left: 0;
+            width: 100%;
+            margin-left: 0;
+            will-change: transform;
+        }
+
+        /* floating circles */
+        .landing-particles {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.55;
+            pointer-events: none;
+        }
+
+        .landing-intro-content {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            will-change: opacity, transform;
+        }
+
+        .landing-hero {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 80px 20px 70px 20px;
+        }
+
+        .landing-tagline {
+            margin-bottom: 18px;
+            font-size: 16px;
+            letter-spacing: 1px;
+            text-align: center;
+            color: #c8c8d0;
+            text-shadow: 0 0 12px rgba(220, 220, 230, 0);
+            filter: brightness(1);
+            /* fade-out when the cursor leaves: still smooth, a little quicker than the build-up */
+            transition: color 1s cubic-bezier(0.4, 0, 0.2, 1),
+                        text-shadow 1s cubic-bezier(0.4, 0, 0.2, 1),
+                        filter 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .landing-tagline.is-lit {
+            color: #f0f0f5;
+            text-shadow: 0 0 12px rgba(220, 220, 230, 0.5);
+            filter: brightness(1.2);
+            /* slow, heavy build-up to the full glow */
+            transition: color 1.8s cubic-bezier(0.5, 0, 0.2, 1),
+                        text-shadow 1.8s cubic-bezier(0.5, 0, 0.2, 1),
+                        filter 1.8s cubic-bezier(0.5, 0, 0.2, 1);
+        }
+
+        .landing-video-wrapper {
+            position: relative;
+            /* 920px max, shrinks on short screens so everything fits without clipping */
+            width: max(280px, min(90vw, 920px, calc((100vh - 290px) * 1.7778)));
+            width: max(280px, min(90vw, 920px, calc((100dvh - 290px) * 1.7778)));
+        }
+
+        .landing-video-window {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 16 / 9;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(180, 180, 190, 0.18);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .landing-video-window video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            /* brightening back up when the cursor leaves: smooth, a little quicker than the dim */
+            transition: filter 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+            will-change: filter;
+        }
+        .landing-video-window.is-dimmed video {
+            filter: brightness(0.4) saturate(0.7);
+            /* slow, heavy dim, same timing as the tagline glow and button aura */
+            transition: filter 1.8s cubic-bezier(0.5, 0, 0.2, 1), opacity 1.8s cubic-bezier(0.5, 0, 0.2, 1);
+        }
+
+        .landing-center-logo {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 65%;
+            max-width: 520px;
+            height: auto;
+            pointer-events: none;
+            z-index: 60;
+            filter: drop-shadow(0 10px 25px rgba(0, 0, 0, 0.9));
+        }
+
+        .landing-side-text {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: calc(100% + 18px);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%;
+            color: #666;
+            font-weight: bold;
+            font-size: 16px;
+            line-height: 1;
+            text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+            user-select: none;
+            pointer-events: none;
+        }
+        .landing-side-text .landing-side-space { height: 1em; }
+
+        .landing-action-row {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 24px;
+            margin-top: 35px;
+            z-index: 70;
+            flex-wrap: wrap;
+        }
+
+        .landing-pill-btn {
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 14px 32px;
+            border-radius: 50px;
+            background: rgba(255, 255, 255, 0.04);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            color: #ddd;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-decoration: none;
+            border: 1px solid rgba(180, 180, 190, 0.22);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+            /* fade-out when the cursor leaves: smooth, a little quicker than the build-up */
+            transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+                        color 1s cubic-bezier(0.4, 0, 0.2, 1);
+            isolation: isolate;
+            text-align: center;
+            -webkit-appearance: none;
+            appearance: none;
+        }
+        .landing-pill-btn:hover {
+            color: #fff;
+            border-color: rgba(220, 220, 230, 0.55);
+            background: rgba(255, 255, 255, 0.1);
+            /* slow, heavy build-up to the full aura */
+            transition: background-color 1.6s cubic-bezier(0.5, 0, 0.2, 1),
+                        border-color 1.6s cubic-bezier(0.5, 0, 0.2, 1),
+                        color 1.6s cubic-bezier(0.5, 0, 0.2, 1);
+        }
+
+        /* "aura" glow behind the button. Two soft layers that only fade in opacity, so it
+           swells up slowly and heavily instead of snapping on. The wide halo is the slower
+           of the two, so the glow keeps growing right up to its climax. */
+        .landing-pill-btn::before,
+        .landing-pill-btn::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: -1;
+            opacity: 0;
+            will-change: opacity;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* wide, diffuse halo */
+        .landing-pill-btn::before {
+            box-shadow: 0 10px 60px 14px rgba(170, 170, 215, 0.20),
+                        0 18px 130px 36px rgba(150, 150, 205, 0.14);
+        }
+        /* tighter, brighter core hugging the button */
+        .landing-pill-btn::after {
+            box-shadow: 0 0 22px 3px rgba(215, 215, 235, 0.30),
+                        0 6px 46px 8px rgba(190, 190, 225, 0.20);
+        }
+        .landing-pill-btn:hover::before {
+            opacity: 1;
+            transition: opacity 2.2s cubic-bezier(0.5, 0, 0.2, 1);
+        }
+        .landing-pill-btn:hover::after {
+            opacity: 1;
+            transition: opacity 1.6s cubic-bezier(0.5, 0, 0.2, 1);
+        }
+
+        .landing-scroll-hint {
+            position: absolute;
+            bottom: 25px;
+            left: 0;
+            right: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        .landing-scroll-hint span {
+            font-size: 13px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #bbb;
+            font-weight: bold;
+        }
+        .landing-scroll-arrow {
+            width: 14px;
+            height: 14px;
+            border-right: 2px solid #bbb;
+            border-bottom: 2px solid #bbb;
+            transform: rotate(45deg);
+            animation: landingBounce 2s infinite;
+        }
+        @keyframes landingBounce {
+            0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(45deg); }
+            40% { transform: translateY(6px) rotate(45deg); }
+            60% { transform: translateY(3px) rotate(45deg); }
+        }
+
+        @media (max-width: 1100px) {
+            .landing-side-text { display: none; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            body::before,
+            .carousel-inner,
+            .landing-scroll-arrow { animation: none; }
+            .intro-swipe { animation-duration: 0.01s; animation-delay: 0s; }
+        }
+
+        @media (max-width: 700px) {
+            .landing-hero { padding: 70px 16px 60px 16px; }
+            .landing-tagline { font-size: 14px; margin-bottom: 14px; }
+            .landing-action-row {
+                gap: 12px;
+                flex-direction: column;
+                width: 100%;
+                max-width: 340px;
+            }
+            .landing-pill-btn {
+                width: 100%;
+                padding: 12px 20px;
+                font-size: 13px;
+            }
+            .landing-scroll-hint { bottom: 15px; }
+            .landing-scroll-hint span { font-size: 11px; }
         }
     </style>
 
@@ -906,7 +1170,6 @@
 <body>
     <div class="intro-swipe">
         <img src="https://gavinoriley.github.io/assets/whitehamaface.png" alt="Hamachi" class="intro-logo">
-        <div class="intro-text">in the night this is home, this is where the outcasts roam</div>
     </div>
 
     <div class="top-nav-bar">
@@ -917,13 +1180,12 @@
         </button>
 
         <div class="hero-socials">
-            <span id="countdownTimer">Sep 3rd 2035: --</span>
             <div class="x-hover-wrapper" style="position:relative;">
                 <a href="https://x.com/imgavinoriley" target="_blank" rel="noopener noreferrer" aria-label="X">
                     <img src="https://gavinoriley.github.io/assets/whitex.png" alt="X">
                 </a>
                 <div class="x-hover-card">
-                    <a href="https://x.com/search?q=%23hamachithepsychotickiller&src=hashtag_click" target="_blank" class="share-opt-link">#hamachithepsychotickiller</a>
+                    <a href="https://x.com/search?q=%23hamachithepsychotickiller&src=hashtag_click" target="_blank" rel="noopener noreferrer" class="share-opt-link">#hamachithepsychotickiller</a>
                 </div>
             </div>
             <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank" rel="noopener noreferrer">
@@ -948,7 +1210,7 @@
                         <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2zm0 4l8 5 8-5V6l-8 5-8-5v2z"/></svg>
                         email
                     </button>
-                    <a href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fhamachithepsychotickiller.com%2F" target="_blank" class="share-opt-link">
+                    <a href="https://twitter.com/intent/tweet?text=https%3A%2F%2Fhamachithepsychotickiller.com%2F" target="_blank" rel="noopener noreferrer" class="share-opt-link">
                         <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
                         share on x
                     </a>
@@ -960,8 +1222,8 @@
     <nav class="nav-overlay" id="mainNavOverlay">
         <div class="nav-links-wrapper" id="menuLinksWrapper">
             <a href="https://hamachithepsychotickiller.com/about/" class="menu-link">game info</a>
-            <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" class="menu-link">play demo</a>
-            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" class="menu-link">steam page</a>
+            <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" rel="noopener noreferrer" class="menu-link">play demo</a>
+            <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="menu-link">steam page</a>
             <a href="https://hamachithepsychotickiller.com/devroom/" class="menu-link">dev room</a>
             <a href="#" class="menu-link" id="contactTriggerBtn">contact</a>
             <a href="#" class="menu-link" id="synopsisTriggerBtn">synopsis</a>
@@ -1070,8 +1332,47 @@
         </div>
     </div>
 
+    <!-- LANDING INTRO: fades away as the user scrolls, then the main site fades in -->
+    <div class="landing-intro" id="landingIntro">
+        <canvas class="landing-particles" id="landingParticles"></canvas>
+
+        <div class="landing-intro-content" id="landingIntroContent">
+            <div class="landing-hero">
+                <p class="landing-tagline" id="landingTagline">the platformer game where you can play as the bad guy</p>
+
+                <div class="landing-video-wrapper">
+                    <div class="landing-video-window" id="landingVideoWindow">
+                        <video autoplay muted loop playsinline disablePictureInPicture preload="auto">
+                            <source src="https://gavinoriley.github.io/assets/HamachiCommercialCut.mp4" type="video/mp4">
+                        </video>
+                        <img src="https://gavinoriley.github.io/assets/Z4ow1Dt.png" alt="Hamachi the Psychotic Killer" class="landing-center-logo">
+                    </div>
+                    <div class="landing-side-text" id="landingSideText" aria-hidden="true">
+                        <span>d</span><span>e</span><span>m</span><span>o</span><span>n</span><span>s</span>
+                        <div class="landing-side-space"></div>
+                        <span>d</span><span>e</span><span>m</span><span>o</span><span>n</span><span>s</span>
+                        <div class="landing-side-space"></div>
+                        <span>.</span><span>.</span><span>.</span><span>!</span>
+                    </div>
+                </div>
+
+                <div class="landing-action-row">
+                    <button type="button" class="landing-pill-btn" id="landingSynopsisBtn">synopsis</button>
+                    <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="landing-pill-btn" id="landingSteamBtn">steam page</a>
+                    <button type="button" class="landing-pill-btn" id="landingTrailerBtn">watch trailer</button>
+                </div>
+            </div>
+
+            <div class="landing-scroll-hint" aria-hidden="true">
+                <span>Scroll</span>
+                <div class="landing-scroll-arrow"></div>
+            </div>
+        </div>
+    </div>
+
     <div id="wrapper">
         <main>
+            <div class="hero-pin-zone" id="heroPinZone">
             <section class="title-section">
                 <div class="hero-video-container">
                     <div class="video-background">
@@ -1088,13 +1389,14 @@
 
                     <div class="hero-actions">
                         <a href="#" class="watch" id="watchTrailerBtn">watch trailer</a>
-                        <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" class="demo" id="playDemoBtn">play demo</a>
-                        <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" class="buy">buy game</a>
-                        <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank" class="cube">hamachi cube</a>
+                        <a href="https://itch.io/embed-upload/16876356?color=333333" target="_blank" rel="noopener noreferrer" class="demo" id="playDemoBtn">play demo</a>
+                        <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="buy">buy game</a>
+                        <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank" rel="noopener noreferrer" class="cube">hamachi cube</a>
                         <a href="#" class="patch" id="patchNotesBtn">patch notes</a>
                     </div>
                 </div>
             </section>
+            </div><!-- /hero-pin-zone -->
 
             <div class="image-sequence">
                 <div class="carousel">
@@ -1138,9 +1440,9 @@
 
         <footer id="footer-contents">
             <div class="footer-links">
-                <a href="https://x.com/imgavinoriley" target="_blank">x</a>
-                <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank">youtube</a>
-                <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank">hamachi cube</a>
+                <a href="https://x.com/imgavinoriley" target="_blank" rel="noopener noreferrer">x</a>
+                <a href="https://www.youtube.com/@hamachithepsychotickiller" target="_blank" rel="noopener noreferrer">youtube</a>
+                <a href="https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/3355690/manuals/4d24f19e6c5b25a41f86c5655abce55091d9eebc/hamachicube.pdf?t=1746692821" target="_blank" rel="noopener noreferrer">hamachi cube</a>
                 <a href="#" id="footerContactTrigger">contact</a>
             </div>
             <p>© 2026 hamachi the psychotic killer. all rights reserved.</p>
@@ -1153,41 +1455,13 @@
             lerp: 0.08,
             wheelMultiplier: 1.0,
             touchMultiplier: 1.5,
-            smoothWheel: true,
-            smoothTouch: false,
+            smoothWheel: !window.matchMedia('(prefers-reduced-motion: reduce)').matches,
             autoRaf: true,
             autoToggle: true,
             anchors: true,
             allowNestedScroll: true,
             stopInertiaOnNavigate: true
         });
-
-        // COUNTDOWN TIMER (Pacific Time)
-        function updateCountdown() {
-            const targetDate = new Date(Date.UTC(2035, 8, 3, 7, 0, 0)); // Sep 3rd 2035 00:00:00 PDT
-            const now = new Date();
-            const pacificString = now.toLocaleString("en-US", { timeZone: "America/Los_Angeles" });
-            const pacificNow = new Date(pacificString);
-            const diff = targetDate - pacificNow;
-            
-            const timerElement = document.getElementById("countdownTimer");
-            if (!timerElement) return;
-
-            if (diff <= 0) {
-                timerElement.textContent = "Sep 3rd 2035: 0d 0h 0m 0s";
-                return;
-            }
-            
-            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
-            
-            timerElement.textContent = `Sep 3rd 2035: ${days}d ${hours}h ${minutes}m ${seconds}s`;
-        }
-
-        setInterval(updateCountdown, 1000);
-        updateCountdown();
 
         // MENU CONTROLS
         const menuToggle = document.getElementById('menuToggleBtn');
@@ -1363,13 +1637,8 @@
         const heroLabel = document.querySelector('.hero-label');
         const defaultTagline = 'the platformer game where you can play as the bad guy';
         const defaultColor = '#c0c0c0';
-        const taglineMap = {
-            'watchTrailerBtn': { text: 'the platformer game where you can play as the bad guy', color: '#ff4444' },
-            'playDemoBtn':     { text: 'the platformer game where you can play as the good guy', color: '#44ff66' },
-            'buy':             { text: 'the platformer game where you can play as the bad guy', color: '#44aaff' },
-            'cube':            { text: 'the platformer game where you can play as the good guy', color: '#ffee44' },
-            'patchNotesBtn':   { text: 'the platformer game where you can play as the bad guy', color: '#ff4444' }
-        };
+        const badGuy = 'the platformer game where you can play as the bad guy';
+        const goodGuy = 'the platformer game where you can play as the good guy';
 
         function setTagline(text, color) {
             if (!heroLabel) return;
@@ -1377,31 +1646,18 @@
             heroLabel.style.color = color;
         }
 
-        const watchBtn = document.getElementById('watchTrailerBtn');
-        if (watchBtn) {
-            watchBtn.addEventListener('mouseenter', () => setTagline(taglineMap.watchTrailerBtn.text, taglineMap.watchTrailerBtn.color));
-            watchBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
-        }
-        const demoBtn = document.getElementById('playDemoBtn');
-        if (demoBtn) {
-            demoBtn.addEventListener('mouseenter', () => setTagline(taglineMap.playDemoBtn.text, taglineMap.playDemoBtn.color));
-            demoBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
-        }
-        const buyBtn = document.querySelector('.hero-actions a.buy');
-        if (buyBtn) {
-            buyBtn.addEventListener('mouseenter', () => setTagline(taglineMap.buy.text, taglineMap.buy.color));
-            buyBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
-        }
-        const cubeBtn = document.querySelector('.hero-actions a.cube');
-        if (cubeBtn) {
-            cubeBtn.addEventListener('mouseenter', () => setTagline(taglineMap.cube.text, taglineMap.cube.color));
-            buyBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor)); // safe fallback
-        }
-        const patchBtn = document.getElementById('patchNotesBtn');
-        if (patchBtn) {
-            patchBtn.addEventListener('mouseenter', () => setTagline(taglineMap.patchNotesBtn.text, taglineMap.patchNotesBtn.color));
-            patchBtn.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
-        }
+        [
+            { selector: '#watchTrailerBtn',     text: badGuy,  color: '#ff4444' },
+            { selector: '#playDemoBtn',         text: goodGuy, color: '#44ff66' },
+            { selector: '.hero-actions a.buy',  text: badGuy,  color: '#44aaff' },
+            { selector: '.hero-actions a.cube', text: goodGuy, color: '#ffee44' },
+            { selector: '#patchNotesBtn',       text: badGuy,  color: '#ff4444' }
+        ].forEach(({ selector, text, color }) => {
+            const el = document.querySelector(selector);
+            if (!el) return;
+            el.addEventListener('mouseenter', () => setTagline(text, color));
+            el.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
+        });
 
         // SHARE DROPDOWN
         const shareEngineTrigger = document.getElementById('shareEngineTrigger');
@@ -1442,6 +1698,214 @@
                 openContactPanel(e);
             });
         }
+    </script>
+
+    <!-- LANDING INTRO SCRIPT -->
+    <script>
+    (function () {
+        'use strict';
+        var root = document.documentElement;
+
+        // if anything below goes wrong, fall back to showing the normal site
+        function bailOut() {
+            root.classList.remove('landing-intro-active');
+            var w = document.getElementById('wrapper');
+            if (w) { w.style.opacity = ''; w.style.visibility = ''; }
+        }
+
+        try {
+            var intro      = document.getElementById('landingIntro');
+            var content    = document.getElementById('landingIntroContent');
+            var canvas     = document.getElementById('landingParticles');
+            var pinZone    = document.getElementById('heroPinZone');
+            var pinnedHero = pinZone.querySelector('.title-section');
+            var site       = document.getElementById('wrapper');
+            var ctx        = canvas.getContext('2d');
+
+            function clamp(v) { return Math.min(1, Math.max(0, v)); }
+
+            /* ---------- floating circles ---------- */
+            var CIRCLE_COUNT = 18;
+            var circles = [];
+            var viewW = 0, viewH = 0;
+            var rafId = 0, lastTime = 0, running = false;
+
+            function sizeCanvas() {
+                var dpr = Math.min(window.devicePixelRatio || 1, 2);
+                viewW = intro.clientWidth || window.innerWidth;
+                viewH = intro.clientHeight || window.innerHeight;
+                canvas.width = Math.round(viewW * dpr);
+                canvas.height = Math.round(viewH * dpr);
+                ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+                circles.forEach(function (c) {
+                    c.x = Math.min(c.x, viewW);
+                    c.y = Math.min(c.y, viewH);
+                });
+            }
+
+            function makeCircles() {
+                circles = [];
+                for (var i = 0; i < CIRCLE_COUNT; i++) {
+                    circles.push({
+                        x: Math.random() * viewW,
+                        y: Math.random() * viewH,
+                        vx: (Math.random() - 0.5) * 0.35,
+                        vy: (Math.random() - 0.5) * 0.35,
+                        r: 2.5 + Math.random() * 4.5
+                    });
+                }
+            }
+
+            function paint(step) {
+                ctx.clearRect(0, 0, viewW, viewH);
+                ctx.fillStyle = 'rgba(220, 220, 230, 0.22)';
+                for (var i = 0; i < circles.length; i++) {
+                    var c = circles[i];
+                    if (step) {
+                        c.x += c.vx * step;
+                        c.y += c.vy * step;
+                        if (c.x < 0 || c.x > viewW) c.vx *= -1;
+                        if (c.y < 0 || c.y > viewH) c.vy *= -1;
+                    }
+                    ctx.beginPath();
+                    ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
+                    ctx.fill();
+                }
+            }
+
+            function drawFrame(now) {
+                // time-based so it moves at the same speed on 60Hz and 120Hz screens
+                var step = lastTime ? Math.min(3, (now - lastTime) / 16.667) : 1;
+                lastTime = now;
+                paint(step);
+                rafId = requestAnimationFrame(drawFrame);
+            }
+
+            // visitors who ask for reduced motion get still circles
+            var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+            function setCirclesRunning(on) {
+                if (reduceMotion) return;
+                if (on && !running) {
+                    running = true;
+                    lastTime = 0;
+                    rafId = requestAnimationFrame(drawFrame);
+                } else if (!on && running) {
+                    running = false;
+                    cancelAnimationFrame(rafId);
+                }
+            }
+
+            sizeCanvas();
+            makeCircles();
+            paint(0);
+
+            /* ---------- scroll-driven fade ---------- */
+            // progress 0 -> 1 across the pinned scroll distance
+            var OUT_END    = 0.40;  // intro content fully gone
+            var IN_START   = 0.45;  // main site starts fading in
+            var IN_END     = 0.90;  // main site fully visible
+            var DOTS_START = 0.40;  // circles start dissolving
+            var DOTS_END   = 0.75;  // circles gone
+
+            function update() {
+                var scrollable = Math.max(1, pinZone.offsetHeight - pinnedHero.offsetHeight);
+                var p = clamp(-pinZone.getBoundingClientRect().top / scrollable);
+
+                // phase 1: intro content fades out and eases back slightly
+                var out = clamp(p / OUT_END);
+                content.style.opacity = (1 - out).toFixed(3);
+                content.style.transform = 'scale(' + (1 - out * 0.08).toFixed(3) + ')';
+                content.style.pointerEvents = out < 0.8 ? 'auto' : 'none';
+                content.style.visibility = out >= 1 ? 'hidden' : '';
+
+                // circles keep drifting a little longer, then dissolve
+                var dots = clamp((p - DOTS_START) / (DOTS_END - DOTS_START));
+                canvas.style.opacity = (0.55 * (1 - dots)).toFixed(3);
+                intro.style.visibility = dots >= 1 ? 'hidden' : '';
+                setCirclesRunning(dots < 1);
+
+                // phase 2: main website fades in
+                var inn = clamp((p - IN_START) / (IN_END - IN_START));
+                site.style.opacity = inn.toFixed(3);
+                site.style.visibility = inn > 0 ? 'visible' : 'hidden';
+                pinnedHero.style.transform = inn < 1 ? 'scale(' + (0.96 + 0.04 * inn).toFixed(3) + ')' : '';
+            }
+
+            window.addEventListener('scroll', update, { passive: true });
+            window.addEventListener('resize', function () { sizeCanvas(); paint(0); update(); });
+            window.addEventListener('load', update);
+            update();
+
+            /* ---------- intro buttons reuse the existing menu / trailer code ---------- */
+            function press(id) {
+                var el = document.getElementById(id);
+                if (el) el.click();
+            }
+
+            document.getElementById('landingSynopsisBtn').addEventListener('click', function () {
+                var overlay = document.getElementById('mainNavOverlay');
+                if (overlay && !overlay.classList.contains('open')) press('menuToggleBtn');
+                press('synopsisTriggerBtn');
+            });
+            document.getElementById('landingTrailerBtn').addEventListener('click', function () {
+                press('watchTrailerBtn');
+            });
+
+            // hovering a button dims the video and lights up the tagline
+            // (the vertical "demons demons...!" text intentionally does not glow)
+            var videoWindow = document.getElementById('landingVideoWindow');
+            var glowTargets = [document.getElementById('landingTagline')];
+            document.querySelectorAll('.landing-pill-btn').forEach(function (btn) {
+                btn.addEventListener('mouseenter', function () {
+                    videoWindow.classList.add('is-dimmed');
+                    glowTargets.forEach(function (el) { el.classList.add('is-lit'); });
+                });
+                btn.addEventListener('mouseleave', function () {
+                    videoWindow.classList.remove('is-dimmed');
+                    glowTargets.forEach(function (el) { el.classList.remove('is-lit'); });
+                });
+            });
+        } catch (err) {
+            if (window.console) console.error('Landing intro disabled:', err);
+            bailOut();
+        }
+
+        /* ---------- small site-wide extras ---------- */
+        try {
+            var menuBtn = document.getElementById('menuToggleBtn');
+            var menuOverlay = document.getElementById('mainNavOverlay');
+            var isOpen = function (id) {
+                var el = document.getElementById(id);
+                return !!el && el.classList.contains('open');
+            };
+            var clickEl = function (id) {
+                var el = document.getElementById(id);
+                if (el) el.click();
+            };
+
+            // menu button tells assistive tech whether the menu is open
+            menuBtn.setAttribute('aria-controls', 'mainNavOverlay');
+            var syncMenuState = function () {
+                menuBtn.setAttribute('aria-expanded', menuOverlay.classList.contains('open') ? 'true' : 'false');
+            };
+            new MutationObserver(syncMenuState).observe(menuOverlay, { attributes: true, attributeFilter: ['class'] });
+            syncMenuState();
+
+            // Esc closes whatever is on top, using each piece's own close handler
+            document.addEventListener('keydown', function (e) {
+                if (e.key !== 'Escape') return;
+                var share = document.getElementById('shareDropdownPanel');
+                if (isOpen('mobileDemoModal')) clickEl('mobileDemoModal');
+                else if (isOpen('trailerLightbox')) clickEl('closeTrailerBtn');
+                else if (isOpen('patchNotesModal')) clickEl('closePatchBtn');
+                else if (isOpen('mainNavOverlay')) clickEl('menuToggleBtn');
+                else if (share && share.classList.contains('active')) share.classList.remove('active');
+            });
+        } catch (err) {
+            if (window.console) console.error('Site extras disabled:', err);
+        }
+    })();
     </script>
 </body>
 </html>
