@@ -92,6 +92,12 @@
             animation: swipeUpwards 0.85s cubic-bezier(0.7, 0, 0.3, 1) 0.35s forwards;
         }
 
+        /* Zigzag bottom edge of the swipe curtain.
+           Drawn with a pure-CSS conic-gradient instead of an inline SVG image, so the
+           triangles are always painted in the curtain colour (#070707) and can't be
+           re-coloured by mobile browsers. Each 20x14 tile is one downward-pointing
+           triangle: its apex sits at the bottom-centre of the tile and it spans
+           +/-35.54deg (atan(10/14)) either side of straight up. */
         .intro-swipe::after {
             content: '';
             position: absolute;
@@ -99,7 +105,10 @@
             left: 0;
             width: 100%;
             height: 14px;
-            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='14' viewBox='0 0 20 14'%3E%3Cpolygon points='0,0 10,14 20,0' fill='%23070707'/%3E%3C/svg%3E");
+            background-color: transparent;
+            background-image: conic-gradient(from -35.54deg at 50% 100%,
+                #070707 0deg, #070707 70.9deg,
+                rgba(7, 7, 7, 0) 71.4deg, rgba(7, 7, 7, 0) 360deg);
             background-repeat: repeat-x;
             background-size: 20px 14px;
             pointer-events: none;
@@ -241,6 +250,7 @@
             text-transform: uppercase;
         }
         .panel p { margin-bottom: 16px; }
+        .panel .panel-subhead { color: #777; }
         .panel ul { list-style: none; margin: 16px 0; }
         .panel li {
             position: relative;
@@ -844,7 +854,12 @@
            hero below. <html> already clips horizontal overflow, so body doesn't need to. */
         body { overflow: visible !important; }
 
-        :root { --intro-scroll: 150vh; } /* how much scrolling the intro transition takes */
+        :root {
+            --intro-scroll: 150vh; /* how much scrolling the intro transition takes */
+            --intro-fade: 0;       /* light backdrop strength (0 = dark intro, 1 = fully light) */
+            --nav-fade: 0;         /* light nav bar strength */
+            --theme-fade: 1;       /* sun / moon button visibility (1 on the intro, 0 once scrolled away) */
+        }
 
         .landing-intro { display: none; }
 
@@ -928,10 +943,10 @@
             color: #f0f0f5;
             text-shadow: 0 0 12px rgba(220, 220, 230, 0.5);
             filter: brightness(1.2);
-            /* slow, heavy build-up to the full glow */
-            transition: color 1.8s cubic-bezier(0.5, 0, 0.2, 1),
-                        text-shadow 1.8s cubic-bezier(0.5, 0, 0.2, 1),
-                        filter 1.8s cubic-bezier(0.5, 0, 0.2, 1);
+            /* slow, heavy build-up to the full glow (nudged slightly quicker: 1.8s -> 1.5s) */
+            transition: color 1.5s cubic-bezier(0.5, 0, 0.2, 1),
+                        text-shadow 1.5s cubic-bezier(0.5, 0, 0.2, 1),
+                        filter 1.5s cubic-bezier(0.5, 0, 0.2, 1);
         }
 
         .landing-video-wrapper {
@@ -964,8 +979,8 @@
         }
         .landing-video-window.is-dimmed video {
             filter: brightness(0.4) saturate(0.7);
-            /* slow, heavy dim, same timing as the tagline glow and button aura */
-            transition: filter 1.8s cubic-bezier(0.5, 0, 0.2, 1), opacity 1.8s cubic-bezier(0.5, 0, 0.2, 1);
+            /* slow, heavy dim, same timing as the tagline glow and button aura (1.8s -> 1.5s) */
+            transition: filter 1.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 1.5s cubic-bezier(0.5, 0, 0.2, 1);
         }
 
         .landing-center-logo {
@@ -1041,10 +1056,10 @@
             color: #fff;
             border-color: rgba(220, 220, 230, 0.55);
             background: rgba(255, 255, 255, 0.1);
-            /* slow, heavy build-up to the full aura */
-            transition: background-color 1.6s cubic-bezier(0.5, 0, 0.2, 1),
-                        border-color 1.6s cubic-bezier(0.5, 0, 0.2, 1),
-                        color 1.6s cubic-bezier(0.5, 0, 0.2, 1);
+            /* slow, heavy build-up to the full aura (1.6s -> 1.35s) */
+            transition: background-color 1.35s cubic-bezier(0.5, 0, 0.2, 1),
+                        border-color 1.35s cubic-bezier(0.5, 0, 0.2, 1),
+                        color 1.35s cubic-bezier(0.5, 0, 0.2, 1);
         }
 
         /* "aura" glow behind the button. Two soft layers that only fade in opacity, so it
@@ -1074,11 +1089,11 @@
         }
         .landing-pill-btn:hover::before {
             opacity: 1;
-            transition: opacity 2.2s cubic-bezier(0.5, 0, 0.2, 1);
+            transition: opacity 1.85s cubic-bezier(0.5, 0, 0.2, 1); /* was 2.2s */
         }
         .landing-pill-btn:hover::after {
             opacity: 1;
-            transition: opacity 1.6s cubic-bezier(0.5, 0, 0.2, 1);
+            transition: opacity 1.35s cubic-bezier(0.5, 0, 0.2, 1); /* was 1.6s */
         }
 
         .landing-scroll-hint {
@@ -1142,6 +1157,216 @@
             .landing-scroll-hint { bottom: 15px; }
             .landing-scroll-hint span { font-size: 11px; }
         }
+
+        /* ===================================================================
+           LIGHT MODE (intro screen only)
+           The intro follows the visitor's computer / phone appearance setting until
+           they click the sun / moon button in the nav bar, which then forces the
+           intro into light or dark mode. The script does two things:
+             - toggles html.intro-light while the intro should be light
+             - animates --intro-fade / --nav-fade (0 = dark, 1 = light), which are
+               also scaled by how far the intro has scrolled away, so the light
+               backdrop and light nav bar fade out together with the intro content.
+           The rest of the site stays dark.
+           =================================================================== */
+
+        /* light backdrop behind the intro content and circles */
+        .landing-intro-active .landing-intro::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: #f3f3f6;
+            opacity: var(--intro-fade, 0);
+            pointer-events: none;
+        }
+
+        /* elements that had no colour transition get a short one so switching modes
+           crossfades instead of snapping */
+        .landing-video-window { transition: box-shadow 0.5s ease; }
+        .landing-side-text { transition: color 0.5s ease, text-shadow 0.5s ease; }
+        .landing-scroll-hint span { transition: color 0.5s ease; }
+        .landing-scroll-arrow { transition: border-color 0.5s ease; }
+
+        html.intro-light .landing-tagline {
+            color: #4a4a55;
+            text-shadow: 0 0 12px rgba(70, 70, 110, 0);
+        }
+        html.intro-light .landing-tagline.is-lit {
+            color: #0b0b12;
+            text-shadow: 0 0 12px rgba(70, 70, 110, 0.42);
+            filter: brightness(0.9);
+        }
+
+        html.intro-light .landing-video-window {
+            box-shadow: 0 20px 50px rgba(20, 20, 40, 0.30), 0 0 0 1px rgba(40, 40, 60, 0.18);
+        }
+
+        html.intro-light .landing-side-text {
+            color: #8b8b96;
+            text-shadow: 0 2px 6px rgba(255, 255, 255, 0.8);
+        }
+
+        html.intro-light .landing-pill-btn {
+            background: rgba(0, 0, 0, 0.035);
+            color: #26262e;
+            border-color: rgba(50, 50, 70, 0.28);
+            box-shadow: 0 4px 18px rgba(20, 20, 40, 0.12);
+        }
+        html.intro-light .landing-pill-btn:hover {
+            color: #000;
+            border-color: rgba(30, 30, 50, 0.60);
+            background: rgba(0, 0, 0, 0.075);
+        }
+        /* the aura becomes a soft, cool-toned shadow-glow on the light backdrop */
+        html.intro-light .landing-pill-btn::before {
+            box-shadow: 0 10px 60px 14px rgba(60, 60, 120, 0.16),
+                        0 18px 130px 36px rgba(50, 50, 110, 0.11);
+        }
+        html.intro-light .landing-pill-btn::after {
+            box-shadow: 0 0 22px 3px rgba(40, 40, 80, 0.22),
+                        0 6px 46px 8px rgba(50, 50, 100, 0.15);
+        }
+
+        html.intro-light .landing-scroll-hint span { color: #4f4f59; }
+        html.intro-light .landing-scroll-arrow {
+            border-right-color: #4f4f59;
+            border-bottom-color: #4f4f59;
+        }
+
+        /* top nav bar: turns light (and its white icons turn dark) while the
+           light intro is on screen, then fades back to the dark bar */
+        .landing-intro-active .top-nav-bar::before {
+            content: '';
+            position: absolute;
+            /* bottom: -1px so the layer also covers the bar's 1px border strip
+               (otherwise the dark bar colour shows through it as a dark line) */
+            inset: 0 0 -1px 0;
+            z-index: -1;
+            pointer-events: none;
+            background: rgba(243, 243, 246, 0.85);
+            /* subtle, light hairline */
+            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+            opacity: var(--nav-fade, 0);
+            transition: opacity 0.25s ease;
+        }
+        /* while the bar is light, fade out its own dark tint, border and drop-shadow
+           so only the light layer (and its hairline) shows; they return as it goes dark */
+        .landing-intro-active .top-nav-bar {
+            background: rgba(10, 10, 10, calc(0.55 * (1 - var(--nav-fade, 0))));
+            border-bottom-color: rgba(255, 255, 255, calc(0.06 * (1 - var(--nav-fade, 0))));
+            box-shadow: 0 1px 0 rgba(0, 0, 0, calc(0.35 * (1 - var(--nav-fade, 0))));
+            transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+        }
+        .landing-intro-active .hero-socials img,
+        .landing-intro-active .share-trigger-btn svg {
+            filter: invert(var(--nav-fade, 0));
+            transition: filter 0.25s ease;
+        }
+        html.intro-light.landing-intro-active .menu-toggle span { background: #666; }
+
+        /* dropdown cards under the nav icons (X hashtag / share menu) turn light
+           too while the bar is light */
+        html.nav-light .share-card,
+        html.nav-light .x-hover-card {
+            background: rgba(250, 250, 252, 0.97);
+            border-color: rgba(0, 0, 0, 0.12);
+            box-shadow: 0 10px 30px rgba(20, 20, 40, 0.14);
+        }
+        html.nav-light .share-opt-link { color: #55555e; }
+        html.nav-light .share-opt-link:hover {
+            color: #0b0b12;
+            border-color: rgba(0, 0, 0, 0.18);
+        }
+
+        /* ===================================================================
+           SUN / MOON BUTTON (nav bar, left of the X icon)
+           Shows the mode you will switch TO: a sun while the intro is dark,
+           a moon while it is light. Fades away as the intro scrolls out of view
+           (--theme-fade) and fades back in when scrolling back up.
+           =================================================================== */
+        .theme-toggle-btn {
+            display: none;
+            position: relative;
+            width: 22px;
+            height: 22px;
+            padding: 0;
+            background: none;
+            border: none;
+            flex-shrink: 0;
+            opacity: calc(0.55 * var(--theme-fade, 1));
+            transition: opacity 0.2s ease;
+        }
+        .landing-intro-active .theme-toggle-btn { display: block; }
+        .theme-toggle-btn:hover { opacity: var(--theme-fade, 1); }
+        .theme-toggle-btn:focus-visible {
+            outline: 1px solid rgba(170, 170, 180, 0.8);
+            outline-offset: 4px;
+        }
+        .theme-toggle-btn svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            stroke: #fff;
+            fill: none;
+            stroke-width: 1.6;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: opacity 0.4s ease, transform 0.5s cubic-bezier(0.4, 0, 0.2, 1), filter 0.25s ease;
+        }
+        /* white on the dark bar, dark on the light bar (same trick as the other nav icons) */
+        .landing-intro-active .theme-toggle-btn svg { filter: invert(var(--nav-fade, 0)); }
+        .theme-toggle-btn .icon-moon { opacity: 0; transform: rotate(-60deg) scale(0.5); }
+        html.intro-light .theme-toggle-btn .icon-sun { opacity: 0; transform: rotate(60deg) scale(0.5); }
+        html.intro-light .theme-toggle-btn .icon-moon { opacity: 1; transform: none; }
+
+        @media (max-width: 700px) {
+            .theme-toggle-btn { width: 20px; height: 20px; }
+        }
+        @media (max-width: 480px) {
+            .theme-toggle-btn { width: 18px; height: 18px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .theme-toggle-btn svg { transition: none; }
+        }
+
+        /* ===================================================================
+           LIGHT MENU (hamburger menu opened on the light intro)
+           The script adds html.menu-light when the menu is opened while the light
+           intro is on screen. It keeps the same frosted-glass look as dark mode
+           (translucent tint + the overlay's backdrop blur), just with a light tint,
+           and every menu / panel colour is switched to a version that reads on light.
+           If the menu is opened further down the (dark) site it stays dark.
+           =================================================================== */
+        html.menu-light .nav-overlay {
+            background: rgba(243, 243, 246, 0.72);
+        }
+        html.menu-light .nav-overlay a { color: #4a4a55; }
+        html.menu-light .nav-overlay a:nth-child(1):hover { color: #b02a2a; }
+        html.menu-light .nav-overlay a:nth-child(2):hover { color: #2a7a38; }
+        html.menu-light .nav-overlay a:nth-child(3):hover { color: #2a5a9a; }
+        html.menu-light .nav-overlay a:nth-child(4):hover { color: #9a7410; }
+        html.menu-light .nav-overlay a:nth-child(5):hover { color: #b02a2a; }
+        html.menu-light .nav-overlay a:nth-child(6):hover { color: #2a7a38; }
+        html.menu-light .nav-overlay a:nth-child(7):hover { color: #2a5a9a; }
+        html.menu-light .nav-overlay a:nth-child(8):hover { color: #9a7410; }
+
+        html.menu-light .panel { color: #2c2c35; }
+        html.menu-light .panel h2 { color: #5f5f6a; }
+        html.menu-light .panel .panel-subhead { color: #70707b; }
+        html.menu-light .panel li { color: #43434d; }
+        html.menu-light .panel li::before { color: #85858f; }
+        html.menu-light .meta-line { color: #5f5f6a; }
+        html.menu-light .meta-line strong { color: #2c2c35; }
+        html.menu-light .copy-email-btn {
+            border-color: rgba(0, 0, 0, 0.32);
+            color: #3a3a44;
+        }
+        html.menu-light .copy-email-btn:hover,
+        html.menu-light .copy-email-btn.copied {
+            border-color: #1a1a22;
+            color: #000;
+        }
     </style>
 
     <script type="application/ld+json">
@@ -1180,6 +1405,10 @@
         </button>
 
         <div class="hero-socials">
+            <button type="button" class="theme-toggle-btn" id="themeToggleBtn" aria-label="switch intro to light mode" title="switch intro to light mode">
+                <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.3M12 19.2v2.3M2.5 12h2.3M19.2 12h2.3M5.3 5.3l1.6 1.6M17.1 17.1l1.6 1.6M5.3 18.7l1.6-1.6M17.1 6.9l1.6-1.6"/></svg>
+                <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
             <div class="x-hover-wrapper" style="position:relative;">
                 <a href="https://x.com/imgavinoriley" target="_blank" rel="noopener noreferrer" aria-label="X">
                     <img src="https://gavinoriley.github.io/assets/whitex.png" alt="X">
@@ -1234,7 +1463,7 @@
         <div class="panel" id="synopsisContentPanel">
             <h2>synopsis</h2>
             <p>In this platformer, you control a piece of tofu named Hamachi, who unexpectedly falls into the possession of Demon Queen Deity, an evil fiend who intends to use him as a vessel to conquer the world through mass murder.</p>
-            <p style="color:#777;font-size:14px;margin-top:20px;">features</p>
+            <p class="panel-subhead" style="font-size:14px;margin-top:20px;">features</p>
             <ul>
                 <li>Play as the villain: Choose to kill, spare, or ignore every civilian.</li>
                 <li>Three distinct routes: Pacifist, Neutral, and Genocide, each with its own ending.</li>
@@ -1722,6 +1951,60 @@
             var site       = document.getElementById('wrapper');
             var ctx        = canvas.getContext('2d');
 
+            /* ---------- light / dark appearance (intro screen only) ---------- */
+            var lightQuery = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+            var themeOverride = null;   // null = follow the device; 'light' / 'dark' = chosen with the nav button
+            function isLight() {
+                if (themeOverride) return themeOverride === 'light';
+                return !!(lightQuery && lightQuery.matches);
+            }
+            var themeBtn = document.getElementById('themeToggleBtn');
+            var themeMix = isLight() ? 1 : 0;   // animated 0 (dark) -> 1 (light)
+            var lightAmt = themeMix;            // themeMix scaled by how much of the intro is still on screen
+            var mixRaf = 0, mixLast = 0;
+            var MIX_MS = 550;                   // how long the light <-> dark crossfade takes
+
+            function syncThemeButton() {
+                if (!themeBtn) return;
+                var label = isLight() ? 'switch intro to dark mode' : 'switch intro to light mode';
+                themeBtn.setAttribute('aria-label', label);
+                themeBtn.setAttribute('title', label);
+            }
+
+            function stepMix(now) {
+                var target = isLight() ? 1 : 0;
+                var dt = mixLast ? Math.min(64, now - mixLast) : 16.667;
+                mixLast = now;
+                var delta = dt / MIX_MS;
+                themeMix = themeMix < target ? Math.min(target, themeMix + delta) : Math.max(target, themeMix - delta);
+                update();
+                if (themeMix !== target) {
+                    mixRaf = requestAnimationFrame(stepMix);
+                } else {
+                    mixRaf = 0;
+                    mixLast = 0;
+                }
+            }
+
+            function startMix() {
+                if (reduceMotion) {
+                    themeMix = isLight() ? 1 : 0;
+                    update();
+                    return;
+                }
+                if (!mixRaf) {
+                    mixLast = 0;
+                    mixRaf = requestAnimationFrame(stepMix);
+                }
+            }
+            var introFade  = 1;      // 1 at the very top of the page, 0 once the intro content is gone
+            var swipeDone  = false;  // browser UI colour waits for the black swipe to finish
+            var themeMeta  = document.querySelector('meta[name="theme-color"]');
+            var lastTheme  = '';
+            var navOverlay = document.getElementById('mainNavOverlay');
+            var menuLight  = false;  // menu was opened on the light intro, so it uses its light look
+            var menuWasOpen = false;
+
             function clamp(v) { return Math.min(1, Math.max(0, v)); }
 
             /* ---------- floating circles ---------- */
@@ -1756,9 +2039,20 @@
                 }
             }
 
+            // dark mode: pale circles. light mode: dark circles that ease back to the pale
+            // ones as the intro fades into the dark site, so they never vanish mid-transition.
+            function dotColor() {
+                var t = lightAmt;
+                var r = Math.round(220 + (55 - 220) * t);
+                var g = Math.round(220 + (55 - 220) * t);
+                var b = Math.round(230 + (75 - 230) * t);
+                var a = (0.22 + (0.30 - 0.22) * t).toFixed(3);
+                return 'rgba(' + r + ', ' + g + ', ' + b + ', ' + a + ')';
+            }
+
             function paint(step) {
                 ctx.clearRect(0, 0, viewW, viewH);
-                ctx.fillStyle = 'rgba(220, 220, 230, 0.22)';
+                ctx.fillStyle = dotColor();
                 for (var i = 0; i < circles.length; i++) {
                     var c = circles[i];
                     if (step) {
@@ -1814,6 +2108,9 @@
 
                 // phase 1: intro content fades out and eases back slightly
                 var out = clamp(p / OUT_END);
+                introFade = 1 - out;
+                var mixE = themeMix * themeMix * (3 - 2 * themeMix);   // eased light <-> dark mix
+                lightAmt = introFade * mixE;
                 content.style.opacity = (1 - out).toFixed(3);
                 content.style.transform = 'scale(' + (1 - out * 0.08).toFixed(3) + ')';
                 content.style.pointerEvents = out < 0.8 ? 'auto' : 'none';
@@ -1824,6 +2121,35 @@
                 canvas.style.opacity = (0.55 * (1 - dots)).toFixed(3);
                 intro.style.visibility = dots >= 1 ? 'hidden' : '';
                 setCirclesRunning(dots < 1);
+
+                // light mode: fade the light backdrop / nav bar with the intro content
+                var menuOpen = !!navOverlay && navOverlay.classList.contains('open');
+                root.style.setProperty('--intro-fade', lightAmt.toFixed(3));
+                // decide the menu's look once, at the moment it opens: light while the light intro is
+                // on screen, otherwise dark like the rest of the site (no flipping while it is open)
+                if (menuOpen && !menuWasOpen) menuLight = isLight() && introFade > 0.5;
+                menuWasOpen = menuOpen;
+                var navFade = (menuOpen ? (menuLight ? 1 : 0) : introFade) * mixE;
+                root.style.setProperty('--nav-fade', navFade.toFixed(3));
+                root.classList.toggle('intro-light', isLight());
+                root.classList.toggle('menu-light', menuLight && isLight());
+                root.classList.toggle('nav-light', isLight() && navFade > 0.5);
+
+                // sun / moon button: fades out with the intro, fades back in on the way up
+                root.style.setProperty('--theme-fade', introFade.toFixed(3));
+                if (themeBtn) {
+                    themeBtn.style.visibility = introFade < 0.02 ? 'hidden' : '';
+                    themeBtn.style.pointerEvents = introFade < 0.3 ? 'none' : '';
+                }
+
+                if (!running && dots < 1) paint(0);
+                if (themeMeta) {
+                    var themeColor = (swipeDone && isLight() && introFade > 0.5) ? '#f3f3f6' : '#070707';
+                    if (themeColor !== lastTheme) {
+                        lastTheme = themeColor;
+                        themeMeta.setAttribute('content', themeColor);
+                    }
+                }
 
                 // phase 2: main website fades in
                 var inn = clamp((p - IN_START) / (IN_END - IN_START));
@@ -1836,6 +2162,37 @@
             window.addEventListener('resize', function () { sizeCanvas(); paint(0); update(); });
             window.addEventListener('load', update);
             update();
+
+            // sun / moon button in the nav bar: forces the intro into light or dark mode
+            if (themeBtn) {
+                themeBtn.addEventListener('click', function () {
+                    themeOverride = isLight() ? 'dark' : 'light';
+                    menuWasOpen = false;   // lets an open menu pick its look again
+                    syncThemeButton();
+                    startMix();
+                    update();
+                });
+                syncThemeButton();
+            }
+
+            // switching the computer / phone between light and dark mode updates the intro live
+            // (unless the visitor has already chosen a mode with the button)
+            function onSchemeChange() { menuWasOpen = false; syncThemeButton(); startMix(); paint(0); update(); }
+            if (lightQuery) {
+                if (lightQuery.addEventListener) lightQuery.addEventListener('change', onSchemeChange);
+                else if (lightQuery.addListener) lightQuery.addListener(onSchemeChange);
+            }
+
+            // opening / closing the menu switches the nav bar between its light and dark look
+            if (navOverlay && window.MutationObserver) {
+                new MutationObserver(update).observe(navOverlay, { attributes: true, attributeFilter: ['class'] });
+            }
+
+            // once the black swipe has lifted, the browser's toolbar colour can match the intro
+            var swipeEl = document.querySelector('.intro-swipe');
+            function swipeFinished() { if (!swipeDone) { swipeDone = true; update(); } }
+            if (swipeEl) swipeEl.addEventListener('animationend', swipeFinished);
+            setTimeout(swipeFinished, 1800);
 
             /* ---------- intro buttons reuse the existing menu / trailer code ---------- */
             function press(id) {
