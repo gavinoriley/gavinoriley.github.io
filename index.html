@@ -933,7 +933,7 @@
             text-align: center;
             color: #c8c8d0;
             text-shadow: 0 0 12px rgba(220, 220, 230, 0);
-            filter: brightness(1);
+            filter: brightness(1) invert(0) hue-rotate(0deg);
             /* fade-out when the cursor leaves: still smooth, a little quicker than the build-up */
             transition: color 1s cubic-bezier(0.4, 0, 0.2, 1),
                         text-shadow 1s cubic-bezier(0.4, 0, 0.2, 1),
@@ -942,7 +942,7 @@
         .landing-tagline.is-lit {
             color: #f0f0f5;
             text-shadow: 0 0 12px rgba(220, 220, 230, 0.5);
-            filter: brightness(1.2);
+            filter: brightness(1.2) invert(0) hue-rotate(0deg);
             /* slow, heavy build-up to the full glow (nudged slightly quicker: 1.8s -> 1.5s) */
             transition: color 1.5s cubic-bezier(0.5, 0, 0.2, 1),
                         text-shadow 1.5s cubic-bezier(0.5, 0, 0.2, 1),
@@ -1162,75 +1162,62 @@
            LIGHT MODE (intro screen only)
            The intro follows the visitor's computer / phone appearance setting until
            they click the sun / moon button in the nav bar, which then forces the
-           intro into light or dark mode. The script does two things:
-             - toggles html.intro-light while the intro should be light
-             - animates --intro-fade / --nav-fade (0 = dark, 1 = light), which are
-               also scaled by how far the intro has scrolled away, so the light
-               backdrop and light nav bar fade out together with the intro content.
+           intro into light or dark mode.
+
+           Why it is built from flipped dark colours:
+           browsers outside Safari (Chrome, Brave, Samsung Internet ... with
+           "dark mode for web content" / night mode) re-colour anything that is
+           written as a light colour, so a light intro came out dark gray with
+           unreadable text and icons. They do not touch CSS filters, and they leave
+           dark backgrounds / light text alone. So every light-mode colour here is
+           the dark-mode colour run through filter: invert(1) hue-rotate(180deg),
+           which gives the same light result in every browser.
+             - html.intro-light is toggled by the script while the intro is light
+             - --intro-fade / --nav-fade (0 = dark, 1 = light) are animated by the
+               script and also scaled by how far the intro has scrolled away, so the
+               light backdrop and light nav bar fade out with the intro content.
            The rest of the site stays dark.
            =================================================================== */
 
-        /* light backdrop behind the intro content and circles */
+        /* light backdrop behind the intro content and circles
+           (#0c0c09 flipped by the filter = #f3f3f6) */
         .landing-intro-active .landing-intro::before {
             content: '';
             position: absolute;
             inset: 0;
-            background: #f3f3f6;
+            background: #0c0c09;
+            filter: invert(1);
             opacity: var(--intro-fade, 0);
             pointer-events: none;
         }
 
-        /* elements that had no colour transition get a short one so switching modes
-           crossfades instead of snapping */
+        /* short transitions so switching modes crossfades instead of snapping
+           (the tagline already has its own) */
         .landing-video-window { transition: box-shadow 0.5s ease; }
-        .landing-side-text { transition: color 0.5s ease, text-shadow 0.5s ease; }
-        .landing-scroll-hint span { transition: color 0.5s ease; }
-        .landing-scroll-arrow { transition: border-color 0.5s ease; }
+        .landing-side-text,
+        .landing-scroll-hint,
+        .landing-action-row { transition: filter 0.5s ease; }
 
+        /* the flip: same elements, same dark-mode colours, run through the filter.
+           The video and the centre logo are NOT flipped, so they keep their colours. */
         html.intro-light .landing-tagline {
-            color: #4a4a55;
-            text-shadow: 0 0 12px rgba(70, 70, 110, 0);
+            filter: brightness(1) invert(1) hue-rotate(180deg);
         }
         html.intro-light .landing-tagline.is-lit {
-            color: #0b0b12;
-            text-shadow: 0 0 12px rgba(70, 70, 110, 0.42);
-            filter: brightness(0.9);
+            filter: brightness(1.2) invert(1) hue-rotate(180deg);
+        }
+        html.intro-light .landing-side-text,
+        html.intro-light .landing-scroll-hint,
+        html.intro-light .landing-action-row {
+            filter: invert(1) hue-rotate(180deg);
         }
 
         html.intro-light .landing-video-window {
             box-shadow: 0 20px 50px rgba(20, 20, 40, 0.30), 0 0 0 1px rgba(40, 40, 60, 0.18);
         }
-
-        html.intro-light .landing-side-text {
-            color: #8b8b96;
-            text-shadow: 0 2px 6px rgba(255, 255, 255, 0.8);
-        }
-
+        /* soft dark drop shadow under the pills once flipped */
         html.intro-light .landing-pill-btn {
-            background: rgba(0, 0, 0, 0.035);
-            color: #26262e;
-            border-color: rgba(50, 50, 70, 0.28);
-            box-shadow: 0 4px 18px rgba(20, 20, 40, 0.12);
-        }
-        html.intro-light .landing-pill-btn:hover {
-            color: #000;
-            border-color: rgba(30, 30, 50, 0.60);
-            background: rgba(0, 0, 0, 0.075);
-        }
-        /* the aura becomes a soft, cool-toned shadow-glow on the light backdrop */
-        html.intro-light .landing-pill-btn::before {
-            box-shadow: 0 10px 60px 14px rgba(60, 60, 120, 0.16),
-                        0 18px 130px 36px rgba(50, 50, 110, 0.11);
-        }
-        html.intro-light .landing-pill-btn::after {
-            box-shadow: 0 0 22px 3px rgba(40, 40, 80, 0.22),
-                        0 6px 46px 8px rgba(50, 50, 100, 0.15);
-        }
-
-        html.intro-light .landing-scroll-hint span { color: #4f4f59; }
-        html.intro-light .landing-scroll-arrow {
-            border-right-color: #4f4f59;
-            border-bottom-color: #4f4f59;
+            box-shadow: 0 4px 18px rgba(235, 235, 215, 0.12);
         }
 
         /* top nav bar: turns light (and its white icons turn dark) while the
@@ -1243,9 +1230,10 @@
             inset: 0 0 -1px 0;
             z-index: -1;
             pointer-events: none;
-            background: rgba(243, 243, 246, 0.85);
-            /* subtle, light hairline */
-            box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.07);
+            /* flipped by the filter: rgba(243, 243, 246, 0.85) with a subtle dark hairline */
+            background: rgba(12, 12, 9, 0.85);
+            box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.07);
+            filter: invert(1);
             opacity: var(--nav-fade, 0);
             transition: opacity 0.25s ease;
         }
@@ -1264,18 +1252,11 @@
         }
         html.intro-light.landing-intro-active .menu-toggle span { background: #666; }
 
-        /* dropdown cards under the nav icons (X hashtag / share menu) turn light
-           too while the bar is light */
+        /* dropdown cards under the nav icons (X hashtag / share menu): the dark card,
+           flipped to light while the bar is light */
         html.nav-light .share-card,
         html.nav-light .x-hover-card {
-            background: rgba(250, 250, 252, 0.97);
-            border-color: rgba(0, 0, 0, 0.12);
-            box-shadow: 0 10px 30px rgba(20, 20, 40, 0.14);
-        }
-        html.nav-light .share-opt-link { color: #55555e; }
-        html.nav-light .share-opt-link:hover {
-            color: #0b0b12;
-            border-color: rgba(0, 0, 0, 0.18);
+            filter: invert(1) hue-rotate(180deg);
         }
 
         /* ===================================================================
@@ -1333,40 +1314,41 @@
         /* ===================================================================
            LIGHT MENU (hamburger menu opened on the light intro)
            The script adds html.menu-light when the menu is opened while the light
-           intro is on screen. It keeps the same frosted-glass look as dark mode
-           (translucent tint + the overlay's backdrop blur), just with a light tint,
-           and every menu / panel colour is switched to a version that reads on light.
-           If the menu is opened further down the (dark) site it stays dark.
+           intro is on screen. Same idea as the intro: the light wash is its own
+           layer (.menu-tint, a dark colour flipped by a filter) sitting just under
+           the blurred menu overlay, and the menu text is the normal dark-menu
+           styling run through filter: invert(1). If the menu is opened further down
+           the (dark) site it stays dark.
            =================================================================== */
-        html.menu-light .nav-overlay {
-            background: rgba(243, 243, 246, 0.72);
+        .menu-tint {
+            position: fixed;
+            inset: 0;
+            z-index: 149;
+            background: #0c0c09;
+            filter: invert(1);
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            transition: opacity 0.4s ease, visibility 0.4s ease;
         }
-        html.menu-light .nav-overlay a { color: #4a4a55; }
-        html.menu-light .nav-overlay a:nth-child(1):hover { color: #b02a2a; }
-        html.menu-light .nav-overlay a:nth-child(2):hover { color: #2a7a38; }
-        html.menu-light .nav-overlay a:nth-child(3):hover { color: #2a5a9a; }
-        html.menu-light .nav-overlay a:nth-child(4):hover { color: #9a7410; }
-        html.menu-light .nav-overlay a:nth-child(5):hover { color: #b02a2a; }
-        html.menu-light .nav-overlay a:nth-child(6):hover { color: #2a7a38; }
-        html.menu-light .nav-overlay a:nth-child(7):hover { color: #2a5a9a; }
-        html.menu-light .nav-overlay a:nth-child(8):hover { color: #9a7410; }
+        html.menu-light .nav-overlay { background: transparent; }
+        html.menu-light .nav-overlay.open + .menu-tint {
+            opacity: 0.72;
+            visibility: visible;
+        }
 
-        html.menu-light .panel { color: #2c2c35; }
-        html.menu-light .panel h2 { color: #5f5f6a; }
-        html.menu-light .panel .panel-subhead { color: #70707b; }
-        html.menu-light .panel li { color: #43434d; }
-        html.menu-light .panel li::before { color: #85858f; }
-        html.menu-light .meta-line { color: #5f5f6a; }
-        html.menu-light .meta-line strong { color: #2c2c35; }
-        html.menu-light .copy-email-btn {
-            border-color: rgba(0, 0, 0, 0.32);
-            color: #3a3a44;
-        }
-        html.menu-light .copy-email-btn:hover,
-        html.menu-light .copy-email-btn.copied {
-            border-color: #1a1a22;
-            color: #000;
-        }
+        html.menu-light .nav-links-wrapper,
+        html.menu-light .panel { filter: invert(1); }
+
+        /* hover colours, written as the inverse of the colour that should show */
+        html.menu-light .nav-overlay a:nth-child(1):hover { color: #4fd5d5; } /* shows #b02a2a */
+        html.menu-light .nav-overlay a:nth-child(2):hover { color: #d585c7; } /* shows #2a7a38 */
+        html.menu-light .nav-overlay a:nth-child(3):hover { color: #d5a565; } /* shows #2a5a9a */
+        html.menu-light .nav-overlay a:nth-child(4):hover { color: #7599f7; } /* shows #8a6608 */
+        html.menu-light .nav-overlay a:nth-child(5):hover { color: #4fd5d5; }
+        html.menu-light .nav-overlay a:nth-child(6):hover { color: #d585c7; }
+        html.menu-light .nav-overlay a:nth-child(7):hover { color: #d5a565; }
+        html.menu-light .nav-overlay a:nth-child(8):hover { color: #7599f7; }
     </style>
 
     <script type="application/ld+json">
@@ -1489,6 +1471,7 @@
             <button class="copy-email-btn" id="copyEmailBtn">copy email</button>
         </div>
     </nav>
+    <div class="menu-tint" aria-hidden="true"></div>
 
     <div class="modal-overlay" id="trailerLightbox">
         <div class="modal-box" onclick="event.stopPropagation()">
