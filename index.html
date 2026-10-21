@@ -28,7 +28,11 @@
     <link rel="preconnect" href="https://store.steampowered.com">
     <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.23/dist/lenis.css">
 
-    <script>document.documentElement.classList.add('landing-intro-active');</script>
+    <script>
+        document.documentElement.classList.add('landing-intro-active', 'intro-seq-pending');
+        // the intro buttons can't be hovered / clicked while they are still fading in
+        setTimeout(function () { document.documentElement.classList.remove('intro-seq-pending'); }, 4400);
+    </script>
 
     <style>
         @font-face {
@@ -1349,6 +1353,257 @@
         html.menu-light .nav-overlay a:nth-child(6):hover { color: #d585c7; }
         html.menu-light .nav-overlay a:nth-child(7):hover { color: #d5a565; }
         html.menu-light .nav-overlay a:nth-child(8):hover { color: #7599f7; }
+
+        /* ===================================================================
+           INTRO AURA  (a heavy ball of light that drifts after the cursor)
+           Lives inside .landing-intro, so it only exists on the intro screen. It sits
+           above the backdrop and below the circles, the video player and all the content.
+           The position is driven by the script at the bottom of the page (translate3d on
+           .aura-glow); everything else is plain CSS.
+
+           Like the rest of the light mode, every colour here is written as its INVERSE and
+           run through filter: invert(1), so browsers with forced "dark mode for web
+           content" can't re-colour the glow. (65, 65, 20) -> (190, 190, 235) lavender,
+           (0, 0, 0) -> white.
+           =================================================================== */
+        :root {
+            --theme-mix: 0;           /* 0 = dark intro, 1 = light intro (set by the script) */
+            --aura-size: clamp(640px, 82vmax, 1350px);  /* diameter of the light */
+            --aura-dark: 0.17;        /* peak strength of the glow on the dark intro  */
+            --aura-light: 0.90;       /* peak strength of the glow on the light intro */
+        }
+
+        .landing-aura {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            pointer-events: none;
+            /* opacity is set by the script: fades away with the rest of the intro on scroll */
+        }
+        .aura-enter {
+            position: absolute;
+            inset: 0;
+            animation: seqLightsUp 2.4s cubic-bezier(0.45, 0, 0.2, 1) backwards;
+            animation-delay: var(--seq-t0);
+        }
+        .aura-glow {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: var(--aura-size);
+            height: var(--aura-size);
+            will-change: transform;
+            transform: translate3d(-9999px, 0, 0); /* parked off screen until the script places it */
+        }
+        .aura-layer {
+            position: absolute;
+            inset: 0;
+            filter: invert(1);
+        }
+        /* soft falloff (roughly gaussian) so there's no visible edge or banding ring */
+        .aura-dark {
+            opacity: calc(1 - var(--theme-mix));
+            background: radial-gradient(circle closest-side,
+                rgba(65, 65, 20, calc(var(--aura-dark) * 1.00)) 0%,
+                rgba(65, 65, 20, calc(var(--aura-dark) * 0.95)) 12%,
+                rgba(65, 65, 20, calc(var(--aura-dark) * 0.78)) 25%,
+                rgba(65, 65, 20, calc(var(--aura-dark) * 0.52)) 40%,
+                rgba(65, 65, 20, calc(var(--aura-dark) * 0.30)) 55%,
+                rgba(65, 65, 20, calc(var(--aura-dark) * 0.14)) 70%,
+                rgba(65, 65, 20, calc(var(--aura-dark) * 0.04)) 85%,
+                rgba(65, 65, 20, 0) 100%);
+        }
+        .aura-light {
+            opacity: var(--theme-mix);
+            background: radial-gradient(circle closest-side,
+                rgba(0, 0, 0, calc(var(--aura-light) * 1.00)) 0%,
+                rgba(0, 0, 0, calc(var(--aura-light) * 0.95)) 12%,
+                rgba(0, 0, 0, calc(var(--aura-light) * 0.78)) 25%,
+                rgba(0, 0, 0, calc(var(--aura-light) * 0.52)) 40%,
+                rgba(0, 0, 0, calc(var(--aura-light) * 0.30)) 55%,
+                rgba(0, 0, 0, calc(var(--aura-light) * 0.14)) 70%,
+                rgba(0, 0, 0, calc(var(--aura-light) * 0.04)) 85%,
+                rgba(0, 0, 0, 0) 100%);
+        }
+        /* light mode only: a very faint shading toward the edges of the screen, so the white
+           glow has something to light up against (white on a near-white page is invisible) */
+        .aura-shade {
+            position: absolute;
+            inset: 0;
+            filter: invert(1);
+            opacity: var(--theme-mix);
+            background: radial-gradient(ellipse 85% 85% at 50% 48%,
+                rgba(160, 160, 125, 0) 30%,
+                rgba(160, 160, 125, 0.13) 100%);
+        }
+
+        /* ---- video player edge glow ----
+           Two rings hugging the border of the player, lit by a radial gradient that is centred
+           on the aura (--ex / --ey are set by the script). So the border only brightens on the
+           side the light is drifting past, and falls back to nothing when it moves away.
+           .edge-line = crisp 1.5px border, .edge-bloom = soft blurred spill inside and outside.
+           One set for dark mode, one for light mode, cross-faded with --theme-mix. */
+        .landing-video-edge {
+            position: absolute;
+            inset: 0;
+            border-radius: 12px;
+            pointer-events: none;
+            --ex: -9999px;
+            --ey: -9999px;
+            animation: seqWindowIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+            animation-delay: calc(var(--seq-t0) + 0.1s);
+        }
+        .edge-set { position: absolute; inset: 0; border-radius: inherit; }
+        .edge-set.is-dark  { opacity: calc(1 - var(--theme-mix)); }
+        .edge-set.is-light { opacity: var(--theme-mix); }
+        .edge-line,
+        .edge-bloom {
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+            -webkit-mask-composite: xor;
+                    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+        }
+        .edge-line  { padding: 1.5px; filter: invert(1); }
+        .edge-bloom { padding: 3px;   filter: invert(1) blur(9px); }
+
+        /* dark mode: pale lavender, (30, 30, 5) inverts to (225, 225, 250) */
+        .is-dark .edge-line {
+            background: radial-gradient(circle min(420px, 62vw) at var(--ex) var(--ey),
+                rgba(30, 30, 5, 0.85) 0%, rgba(30, 30, 5, 0.50) 35%,
+                rgba(30, 30, 5, 0.16) 70%, rgba(30, 30, 5, 0) 100%);
+        }
+        .is-dark .edge-bloom {
+            background: radial-gradient(circle min(460px, 68vw) at var(--ex) var(--ey),
+                rgba(65, 65, 20, 0.55) 0%, rgba(65, 65, 20, 0.28) 40%,
+                rgba(65, 65, 20, 0.08) 75%, rgba(65, 65, 20, 0) 100%);
+        }
+        /* light mode: the thin rim stays pale, because it sits on the dark edge of the player
+           and a pale line is what reads there. The bloom is a soft indigo that spills onto the
+           light page: (125, 125, 40) inverts to (130, 130, 215) */
+        .is-light .edge-line {
+            background: radial-gradient(circle min(420px, 62vw) at var(--ex) var(--ey),
+                rgba(30, 30, 5, 0.80) 0%, rgba(30, 30, 5, 0.46) 35%,
+                rgba(30, 30, 5, 0.14) 70%, rgba(30, 30, 5, 0) 100%);
+        }
+        .is-light .edge-bloom {
+            background: radial-gradient(circle min(460px, 68vw) at var(--ex) var(--ey),
+                rgba(125, 125, 40, 0.62) 0%, rgba(125, 125, 40, 0.32) 40%,
+                rgba(125, 125, 40, 0.09) 75%, rgba(125, 125, 40, 0) 100%);
+        }
+
+        /* ===================================================================
+           INTRO SEQUENCE  (plays once, right after the black swipe lifts off)
+           Light comes up first, then the player, the player's screen powers on, the logo
+           pulls into focus, the tagline settles, "demons demons...!" ignites letter by
+           letter, and the three buttons fade in last.
+
+           --seq-t0 is the moment the swipe has left the screen. It must match .intro-swipe:
+           0.35s delay + 0.85s duration = 1.2s. Change both together.
+
+           Only opacity / transform are animated on anything that already has a filter
+           (tagline, side text, button row), because the light mode flips those with
+           filter: invert(). Every animation uses fill-mode "backwards", so afterwards the
+           elements simply return to their normal styles (no leftover inline state).
+           =================================================================== */
+        :root { --seq-t0: 1.2s; }
+
+        @keyframes seqLightsUp {
+            from { opacity: 0; }
+            to   { opacity: 1; }
+        }
+        @keyframes seqWindowIn {
+            from { opacity: 0; transform: scale(0.955); }
+            to   { opacity: 1; transform: scale(1); }
+        }
+        @keyframes seqScreenOn {
+            from { opacity: 1; }
+            to   { opacity: 0; }
+        }
+        @keyframes seqLogoIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(1.08);
+                filter: blur(14px) drop-shadow(0 10px 25px rgba(0, 0, 0, 0));
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+                filter: blur(0px) drop-shadow(0 10px 25px rgba(0, 0, 0, 0.9));
+            }
+        }
+        @keyframes seqRise {
+            from { opacity: 0; transform: translateY(10px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes seqLetter {
+            0%   { opacity: 0; transform: translateY(-6px); color: #fff; }
+            45%  { opacity: 1; transform: translateY(0);    color: #e6e6ee; }
+            100% { opacity: 1; transform: translateY(0);    color: #666; }
+        }
+        @keyframes seqHint {
+            from { opacity: 0; }
+            to   { opacity: 0.7; }
+        }
+
+        /* 1. the player settles into place... */
+        .landing-video-window {
+            animation: seqWindowIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+            animation-delay: calc(var(--seq-t0) + 0.1s);
+        }
+        /* 2. ...and its screen powers on (a black cover lifting off the video) */
+        .landing-video-window::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            z-index: 50;           /* above the video, below the logo (60) */
+            background: #000;
+            opacity: 0;
+            pointer-events: none;
+            animation: seqScreenOn 1.4s cubic-bezier(0.4, 0, 0.2, 1) backwards;
+            animation-delay: calc(var(--seq-t0) + 0.5s);
+        }
+        /* 3. logo pulls into focus */
+        .landing-center-logo {
+            animation: seqLogoIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
+            animation-delay: calc(var(--seq-t0) + 0.9s);
+        }
+        /* 4. tagline */
+        .landing-tagline {
+            animation: seqRise 1.1s cubic-bezier(0.22, 0.8, 0.2, 1) backwards;
+            animation-delay: calc(var(--seq-t0) + 1.3s);
+        }
+        /* 5. "demons demons...!" ignites one letter at a time, top to bottom */
+        .landing-side-text span {
+            animation: seqLetter 0.9s ease-out backwards;
+            animation-delay: calc(var(--seq-t0) + 1.5s + var(--i, 0) * 0.045s);
+        }
+        /* 6. buttons fade up one after another */
+        .landing-pill-btn {
+            animation: seqRise 1s cubic-bezier(0.3, 0, 0.2, 1) backwards;
+            animation-delay: calc(var(--seq-t0) + 1.9s + var(--i, 0) * 0.17s);
+        }
+        /* 7. scroll hint, last */
+        .landing-scroll-hint {
+            animation: seqHint 1s ease-out backwards;
+            animation-delay: calc(var(--seq-t0) + 2.9s);
+        }
+
+        html.intro-seq-pending .landing-action-row { pointer-events: none; }
+
+        @media (prefers-reduced-motion: reduce) {
+            .aura-enter,
+            .landing-video-edge,
+            .landing-video-window,
+            .landing-video-window::after,
+            .landing-center-logo,
+            .landing-tagline,
+            .landing-side-text span,
+            .landing-pill-btn,
+            .landing-scroll-hint { animation: none; }
+            html.intro-seq-pending .landing-action-row { pointer-events: auto; }
+        }
     </style>
 
     <script type="application/ld+json">
@@ -1546,6 +1801,17 @@
 
     <!-- LANDING INTRO: fades away as the user scrolls, then the main site fades in -->
     <div class="landing-intro" id="landingIntro">
+        <!-- aura: heavy light that drifts after the cursor (behind everything else in the intro) -->
+        <div class="landing-aura" id="landingAura" aria-hidden="true">
+            <div class="aura-enter">
+                <div class="aura-shade"></div>
+                <div class="aura-glow" id="landingAuraGlow">
+                    <div class="aura-layer aura-dark"></div>
+                    <div class="aura-layer aura-light"></div>
+                </div>
+            </div>
+        </div>
+
         <canvas class="landing-particles" id="landingParticles"></canvas>
 
         <div class="landing-intro-content" id="landingIntroContent">
@@ -1559,19 +1825,23 @@
                         </video>
                         <img src="https://gavinoriley.github.io/assets/Z4ow1Dt.png" alt="Hamachi the Psychotic Killer" class="landing-center-logo">
                     </div>
+                    <div class="landing-video-edge" id="landingVideoEdge" aria-hidden="true">
+                        <div class="edge-set is-dark"><div class="edge-bloom"></div><div class="edge-line"></div></div>
+                        <div class="edge-set is-light"><div class="edge-bloom"></div><div class="edge-line"></div></div>
+                    </div>
                     <div class="landing-side-text" id="landingSideText" aria-hidden="true">
-                        <span>d</span><span>e</span><span>m</span><span>o</span><span>n</span><span>s</span>
+                        <span style="--i:0">d</span><span style="--i:1">e</span><span style="--i:2">m</span><span style="--i:3">o</span><span style="--i:4">n</span><span style="--i:5">s</span>
                         <div class="landing-side-space"></div>
-                        <span>d</span><span>e</span><span>m</span><span>o</span><span>n</span><span>s</span>
+                        <span style="--i:6">d</span><span style="--i:7">e</span><span style="--i:8">m</span><span style="--i:9">o</span><span style="--i:10">n</span><span style="--i:11">s</span>
                         <div class="landing-side-space"></div>
-                        <span>.</span><span>.</span><span>.</span><span>!</span>
+                        <span style="--i:12">.</span><span style="--i:13">.</span><span style="--i:14">.</span><span style="--i:15">!</span>
                     </div>
                 </div>
 
                 <div class="landing-action-row">
-                    <button type="button" class="landing-pill-btn" id="landingSynopsisBtn">synopsis</button>
-                    <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="landing-pill-btn" id="landingSteamBtn">steam page</a>
-                    <button type="button" class="landing-pill-btn" id="landingTrailerBtn">watch trailer</button>
+                    <button type="button" class="landing-pill-btn" id="landingSynopsisBtn" style="--i:0">synopsis</button>
+                    <a href="https://store.steampowered.com/app/3355690/Hamachi_the_Psychotic_Killer/" target="_blank" rel="noopener noreferrer" class="landing-pill-btn" id="landingSteamBtn" style="--i:1">steam page</a>
+                    <button type="button" class="landing-pill-btn" id="landingTrailerBtn" style="--i:2">watch trailer</button>
                 </div>
             </div>
 
@@ -2077,6 +2347,85 @@
             makeCircles();
             paint(0);
 
+            /* ---------- aura: a heavy ball of light that drifts after the cursor ---------- */
+            var auraEl   = document.getElementById('landingAura');
+            var auraGlow = document.getElementById('landingAuraGlow');
+            var edgeEl   = document.getElementById('landingVideoEdge');
+
+            // How heavy the light feels. Two stages of smoothing are chained: an invisible "lead"
+            // point chases the cursor, and the light chases the lead point. That gives it a soft
+            // start (it doesn't leap off the moment the mouse moves) and a long, settling tail.
+            // Bigger numbers = heavier / slower. (milliseconds; frame-rate independent)
+            var AURA_LEAD_MS = 160;
+            var AURA_DRAG_MS = 300;
+            var EDGE_REACH   = 460;   // px: matches the radius of the player's edge glow
+
+            var auraHalf   = 0;
+            var auraTarget = { x: 0, y: 0 };   // where the cursor is
+            var auraLead   = { x: 0, y: 0 };
+            var auraPos    = { x: 0, y: 0 };   // where the light is
+            var auraRaf = 0, auraLast = 0, auraLive = true, auraHasPointer = false;
+
+            function paintAura() {
+                auraGlow.style.transform = 'translate3d(' + (auraPos.x - auraHalf).toFixed(1) + 'px,' +
+                                           (auraPos.y - auraHalf).toFixed(1) + 'px,0)';
+                if (!edgeEl) return;
+                // aim the player's edge glow at the light (in the player's own coordinates)
+                var r = edgeEl.getBoundingClientRect();
+                if (!r.width || !r.height) return;
+                if (auraPos.x < r.left - EDGE_REACH || auraPos.x > r.right + EDGE_REACH ||
+                    auraPos.y < r.top - EDGE_REACH  || auraPos.y > r.bottom + EDGE_REACH) return;
+                edgeEl.style.setProperty('--ex', ((auraPos.x - r.left) * edgeEl.offsetWidth / r.width).toFixed(1) + 'px');
+                edgeEl.style.setProperty('--ey', ((auraPos.y - r.top) * edgeEl.offsetHeight / r.height).toFixed(1) + 'px');
+            }
+
+            function auraTick(now) {
+                auraRaf = 0;
+                var dt = auraLast ? Math.min(64, now - auraLast) : 16.667;
+                auraLast = now;
+                var k1 = 1 - Math.exp(-dt / AURA_LEAD_MS);
+                var k2 = 1 - Math.exp(-dt / AURA_DRAG_MS);
+                auraLead.x += (auraTarget.x - auraLead.x) * k1;
+                auraLead.y += (auraTarget.y - auraLead.y) * k1;
+                auraPos.x  += (auraLead.x - auraPos.x) * k2;
+                auraPos.y  += (auraLead.y - auraPos.y) * k2;
+                paintAura();
+                var settled = Math.abs(auraTarget.x - auraPos.x) < 0.15 && Math.abs(auraTarget.y - auraPos.y) < 0.15 &&
+                              Math.abs(auraLead.x - auraPos.x) < 0.15   && Math.abs(auraLead.y - auraPos.y) < 0.15;
+                if (settled || !auraLive) { auraLast = 0; return; }
+                auraRaf = requestAnimationFrame(auraTick);
+            }
+
+            function kickAura() {
+                if (!auraRaf && auraLive && !reduceMotion) auraRaf = requestAnimationFrame(auraTick);
+            }
+
+            // until the visitor moves the mouse, the light rests in the middle of the screen
+            function restAura() {
+                auraHalf = auraGlow.offsetWidth / 2;
+                if (!auraHasPointer) {
+                    auraTarget.x = auraLead.x = auraPos.x = viewW / 2;
+                    auraTarget.y = auraLead.y = auraPos.y = viewH / 2;
+                }
+                paintAura();
+            }
+            restAura();
+
+            window.addEventListener('pointermove', function (e) {
+                auraHasPointer = true;
+                auraTarget.x = e.clientX;
+                auraTarget.y = e.clientY;
+                kickAura();
+            }, { passive: true });
+            window.addEventListener('pointerdown', function (e) {
+                auraHasPointer = true;
+                auraTarget.x = e.clientX;
+                auraTarget.y = e.clientY;
+                kickAura();
+            }, { passive: true });
+            window.addEventListener('resize', restAura);
+            window.addEventListener('load', restAura);
+
             /* ---------- scroll-driven fade ---------- */
             // progress 0 -> 1 across the pinned scroll distance
             var OUT_END    = 0.40;  // intro content fully gone
@@ -2105,9 +2454,18 @@
                 intro.style.visibility = dots >= 1 ? 'hidden' : '';
                 setCirclesRunning(dots < 1);
 
+                // aura: fades out with the intro backdrop, and its loop sleeps while the intro is off screen
+                if (auraEl) auraEl.style.opacity = introFade.toFixed(3);
+                var auraShouldRun = dots < 1;
+                if (auraShouldRun !== auraLive) {
+                    auraLive = auraShouldRun;
+                    if (auraLive) kickAura();
+                }
+
                 // light mode: fade the light backdrop / nav bar with the intro content
                 var menuOpen = !!navOverlay && navOverlay.classList.contains('open');
                 root.style.setProperty('--intro-fade', lightAmt.toFixed(3));
+                root.style.setProperty('--theme-mix', mixE.toFixed(3));   // drives the aura + player edge glow colours
                 // decide the menu's look once, at the moment it opens: light while the light intro is
                 // on screen, otherwise dark like the rest of the site (no flipping while it is open)
                 if (menuOpen && !menuWasOpen) menuLight = isLight() && introFade > 0.5;
