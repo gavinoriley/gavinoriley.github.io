@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -26,7 +26,11 @@
     <link rel="preload" href="/assets/FSEX300.woff2" as="font" type="font/woff2" crossorigin>
     <link rel="preconnect" href="https://www.youtube.com">
     <link rel="preconnect" href="https://store.steampowered.com">
-    <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.23/dist/lenis.css">
+    <link rel="preconnect" href="https://gavinoriley.github.io" crossorigin>
+    <link rel="preconnect" href="https://unpkg.com" crossorigin>
+    <link rel="preload" as="image" href="https://gavinoriley.github.io/assets/whitehamaface.png">
+    <link rel="stylesheet" href="https://unpkg.com/lenis@1.3.23/dist/lenis.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://unpkg.com/lenis@1.3.23/dist/lenis.css"></noscript>
 
     <script>
         document.documentElement.classList.add('landing-intro-active', 'intro-seq-pending');
@@ -65,23 +69,28 @@
             min-height: 100vh;
         }
 
-        body::before {
+        /* two dot layers moved with transform (compositor only) instead of animating background-position (repaint every frame) */
+        body::before, body::after {
             content: '';
             position: fixed;
-            inset: 0;
-            background-image:
-                radial-gradient(circle at 15% 25%, rgba(0, 140, 70, 0.025) 1px, transparent 1px),
-                radial-gradient(circle at 75% 65%, rgba(160, 30, 90, 0.02) 1px, transparent 1px);
-            background-size: 52px 52px, 78px 78px;
-            animation: drift 100s linear infinite;
             pointer-events: none;
             z-index: 0;
+            will-change: transform;
         }
-
-        @keyframes drift {
-            0% { background-position: 0 0, 0 0; }
-            100% { background-position: 52px 52px, -78px 78px; }
+        body::before {
+            inset: -52px 0 0 -52px;
+            background-image: radial-gradient(circle at 15% 25%, rgba(0, 140, 70, 0.025) 1px, transparent 1px);
+            background-size: 52px 52px;
+            animation: drift1 100s linear infinite;
         }
+        body::after {
+            inset: -78px -78px 0 0;
+            background-image: radial-gradient(circle at 75% 65%, rgba(160, 30, 90, 0.02) 1px, transparent 1px);
+            background-size: 78px 78px;
+            animation: drift2 100s linear infinite;
+        }
+        @keyframes drift1 { to { transform: translate3d(52px, 52px, 0); } }
+        @keyframes drift2 { to { transform: translate3d(-78px, 78px, 0); } }
 
         .intro-swipe {
             position: fixed;
@@ -508,9 +517,7 @@
             letter-spacing: 0.6px;
             border: 1px solid rgba(255,255,255,0.18);
             padding: 10px 18px;
-            background: rgba(0,0,0,0.35);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(0,0,0,0.5);
             transition: color 0.2s, border-color 0.2s, background 0.2s;
         }
         .hero-actions a:hover {
@@ -551,6 +558,7 @@
 
         .carousel {
             width: 100vw;
+            contain: layout paint;
             height: calc(100vw * 3 / 16);
             overflow: hidden;
             position: relative;
@@ -561,6 +569,7 @@
             display: flex;
             height: 100%;
             animation: scroll 40s linear infinite;
+            will-change: transform;
         }
         .carousel-inner img {
             width: calc(100vw / 3);
@@ -1038,8 +1047,6 @@
             padding: 14px 32px;
             border-radius: 50px;
             background: rgba(255, 255, 255, 0.04);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
             color: #ddd;
             font-size: 15px;
             font-weight: 700;
@@ -1606,6 +1613,39 @@
         }
     </style>
 
+    <style id="perf-overrides">
+        /* no CSS transitions while the browser cross-fades the theme (view transition) */
+        html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after { transition: none !important; }
+        ::view-transition-group(root) { animation-duration: 0.45s; animation-timing-function: ease-in-out; }
+        .intro-swipe { will-change: transform; }
+        /* "bad guy" twitches once, a moment after the tagline settles, then returns to normal.
+           transform + a tiny text-shadow on 7 glyphs, stepped (snaps instead of tweening), so it is nearly free. */
+        .bad-guy {
+            display: inline-block;
+            white-space: nowrap;
+            transform-origin: 50% 75%;
+            animation: badGuyGrumble 1.4s steps(1, end) calc(var(--seq-t0) + 2.7s) 1 both;
+        }
+        @keyframes badGuyGrumble {
+            0%   { transform: none; text-shadow: 0 0 0 rgba(224, 64, 64, 0); }
+            6%   { transform: translate(-1px, 1px) rotate(-2deg) skewX(-6deg); text-shadow: 0 0 9px rgba(224, 64, 64, 0.9); }
+            12%  { transform: translate(2px, -1px) rotate(1.5deg) scale(1.06); text-shadow: 0 0 9px rgba(224, 64, 64, 0.9); }
+            18%  { transform: translate(-2px, 0) rotate(-1deg) skewX(6deg); text-shadow: 0 0 0 rgba(224, 64, 64, 0); }
+            24%  { transform: translate(1px, 1px) rotate(2deg) scale(1.04); text-shadow: 0 0 9px rgba(224, 64, 64, 0.9); }
+            30%  { transform: translate(-1px, -1px) rotate(-2deg); text-shadow: 0 0 0 rgba(224, 64, 64, 0); }
+            36%  { transform: translate(2px, 0) rotate(1deg) skewX(-5deg) scale(1.05); text-shadow: 0 0 9px rgba(224, 64, 64, 0.9); }
+            44%  { transform: none; text-shadow: 0 0 0 rgba(224, 64, 64, 0); }
+            56%  { transform: translate(-1px, 1px) rotate(-1.5deg) skewX(4deg); text-shadow: 0 0 7px rgba(224, 64, 64, 0.8); }
+            62%  { transform: translate(1px, -1px) rotate(1.5deg) scale(1.04); text-shadow: 0 0 0 rgba(224, 64, 64, 0); }
+            70%  { transform: translate(-1px, 0) rotate(-1deg); text-shadow: 0 0 7px rgba(224, 64, 64, 0.8); }
+            78%  { transform: translate(1px, 1px) rotate(0.5deg) skewX(-3deg); text-shadow: 0 0 0 rgba(224, 64, 64, 0); }
+            88%  { transform: translate(-1px, 0) rotate(-0.5deg); text-shadow: 0 0 5px rgba(224, 64, 64, 0.6); }
+            94%, 100% { transform: none; text-shadow: 0 0 0 rgba(224, 64, 64, 0); }
+        }
+        @media (prefers-reduced-motion: reduce) { .bad-guy { animation: none; } }
+        .carousel.paused .carousel-inner { animation-play-state: paused; }
+        @media (prefers-reduced-motion: reduce) { body::after { animation: none; } }
+    </style>
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -1631,7 +1671,7 @@
 </head>
 <body>
     <div class="intro-swipe">
-        <img src="https://gavinoriley.github.io/assets/whitehamaface.png" alt="Hamachi" class="intro-logo">
+        <img src="https://gavinoriley.github.io/assets/whitehamaface.png" alt="Hamachi" class="intro-logo" fetchpriority="high" decoding="sync">
     </div>
 
     <div class="top-nav-bar">
@@ -1816,11 +1856,11 @@
 
         <div class="landing-intro-content" id="landingIntroContent">
             <div class="landing-hero">
-                <p class="landing-tagline" id="landingTagline">the platformer game where you can play as the bad guy</p>
+                <p class="landing-tagline" id="landingTagline">the platformer game where you can play as the <span class="bad-guy">bad guy</span></p>
 
                 <div class="landing-video-wrapper">
                     <div class="landing-video-window" id="landingVideoWindow">
-                        <video autoplay muted loop playsinline disablePictureInPicture preload="auto">
+                        <video id="introBgVideo" muted loop playsinline disablePictureInPicture preload="auto">
                             <source src="https://gavinoriley.github.io/assets/HamachiCommercialCut.mp4" type="video/mp4">
                         </video>
                         <img src="https://gavinoriley.github.io/assets/Z4ow1Dt.png" alt="Hamachi the Psychotic Killer" class="landing-center-logo">
@@ -1858,7 +1898,7 @@
             <section class="title-section">
                 <div class="hero-video-container">
                     <div class="video-background">
-                        <video autoplay muted loop playsinline disablePictureInPicture preload="auto">
+                        <video id="heroBgVideo" muted loop playsinline disablePictureInPicture preload="metadata">
                             <source src="https://gavinoriley.github.io/assets/HamachiCommercialCut.mp4" type="video/mp4">
                         </video>
                     </div>
@@ -1883,40 +1923,40 @@
             <div class="image-sequence">
                 <div class="carousel">
                     <div class="carousel-inner">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara10.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/finalcara11.jpg" alt="">
-                        <img src="https://gavinoriley.github.io/assets/stendscreendemogame.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/finalcara1.jpg" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara2.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara3.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/finalcara4.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara5.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/stnewfinalcara6.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/finalcara7.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara8.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara9.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara10.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/finalcara11.jpg" alt="">
-                        <img src="https://gavinoriley.github.io/assets/stendscreendemogame.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/finalcara1.jpg" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara2.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara3.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/finalcara4.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara5.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/stnewfinalcara6.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/finalcara7.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara8.png" alt="">
-                        <img src="https://gavinoriley.github.io/assets/newfinalcara9.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara10.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/finalcara11.jpg" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/stendscreendemogame.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/finalcara1.jpg" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara2.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara3.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/finalcara4.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara5.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/stnewfinalcara6.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/finalcara7.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara8.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara9.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara10.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/finalcara11.jpg" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/stendscreendemogame.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/finalcara1.jpg" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara2.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara3.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/finalcara4.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara5.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/stnewfinalcara6.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/finalcara7.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara8.png" alt="">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/newfinalcara9.png" alt="">
                     </div>
                 </div>
 
                 <a href="https://hamachithepsychotickiller.com/publishingpartnerships/">
-                    <img src="https://gavinoriley.github.io/assets/sleekCorPubOp3.png" alt="Publishing Opportunity">
+                    <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/sleekCorPubOp3.png" alt="Publishing Opportunity">
                 </a>
-                <img src="https://gavinoriley.github.io/assets/4BLOCkRESTHAMACHI.png" alt="Roadblock and gameplay features">
-                <img src="https://gavinoriley.github.io/assets/FinalIntroduction.png" alt="Introduction">
-                <img src="https://gavinoriley.github.io/assets/FinalCharacters.png" alt="Characters">
-                <img src="https://gavinoriley.github.io/assets/FinalWorlds2.png" alt="Worlds">
+                <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/4BLOCkRESTHAMACHI.png" alt="Roadblock and gameplay features">
+                <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalIntroduction.png" alt="Introduction">
+                <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalCharacters.png" alt="Characters">
+                <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalWorlds2.png" alt="Worlds">
             </div>
         </main>
 
@@ -2193,6 +2233,7 @@
             root.classList.remove('landing-intro-active');
             var w = document.getElementById('wrapper');
             if (w) { w.style.opacity = ''; w.style.visibility = ''; }
+            ['introBgVideo', 'heroBgVideo'].forEach(function (id) { var v = document.getElementById(id); if (v && v.play) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } });
         }
 
         try {
@@ -2214,9 +2255,7 @@
             var themeBtn = document.getElementById('themeToggleBtn');
             var themeMix = isLight() ? 1 : 0;   // animated 0 (dark) -> 1 (light)
             var lightAmt = themeMix;            // themeMix scaled by how much of the intro is still on screen
-            var mixRaf = 0, mixLast = 0;
-            var MIX_MS = 550;                   // how long the light <-> dark crossfade takes
-
+            
             function syncThemeButton() {
                 if (!themeBtn) return;
                 var label = isLight() ? 'switch intro to dark mode' : 'switch intro to light mode';
@@ -2224,31 +2263,15 @@
                 themeBtn.setAttribute('title', label);
             }
 
-            function stepMix(now) {
-                var target = isLight() ? 1 : 0;
-                var dt = mixLast ? Math.min(64, now - mixLast) : 16.667;
-                mixLast = now;
-                var delta = dt / MIX_MS;
-                themeMix = themeMix < target ? Math.min(target, themeMix + delta) : Math.max(target, themeMix - delta);
-                update();
-                if (themeMix !== target) {
-                    mixRaf = requestAnimationFrame(stepMix);
-                } else {
-                    mixRaf = 0;
-                    mixLast = 0;
-                }
-            }
-
             function startMix() {
-                if (reduceMotion) {
-                    themeMix = isLight() ? 1 : 0;
-                    update();
-                    return;
-                }
-                if (!mixRaf) {
-                    mixLast = 0;
-                    mixRaf = requestAnimationFrame(stepMix);
-                }
+                var t = isLight() ? 1 : 0;
+                var apply = function () { themeMix = t; update(); };
+                if (themeMix === t) { update(); return; }
+                if (reduceMotion || !document.startViewTransition) { apply(); return; }
+                root.classList.add('theme-switching');
+                var done = function () { root.classList.remove('theme-switching'); };
+                try { document.startViewTransition(apply).finished.then(done, done); }
+                catch (err) { apply(); done(); }
             }
             var introFade  = 1;      // 1 at the very top of the page, 0 once the intro content is gone
             var swipeDone  = false;  // browser UI colour waits for the black swipe to finish
@@ -2366,17 +2389,27 @@
             var auraPos    = { x: 0, y: 0 };   // where the light is
             var auraRaf = 0, auraLast = 0, auraLive = true, auraHasPointer = false;
 
+            var edgeR = null, edgeRAt = 0, edgeOW = 1, edgeOH = 1, lastEx = '', lastEy = '';
+            function edgeRect() {
+                var t = performance.now();
+                if (!edgeR || t - edgeRAt > 300) {
+                    edgeR = edgeEl.getBoundingClientRect(); edgeOW = edgeEl.offsetWidth; edgeOH = edgeEl.offsetHeight; edgeRAt = t;
+                }
+                return edgeR;
+            }
             function paintAura() {
                 auraGlow.style.transform = 'translate3d(' + (auraPos.x - auraHalf).toFixed(1) + 'px,' +
                                            (auraPos.y - auraHalf).toFixed(1) + 'px,0)';
                 if (!edgeEl) return;
                 // aim the player's edge glow at the light (in the player's own coordinates)
-                var r = edgeEl.getBoundingClientRect();
+                var r = edgeRect();
                 if (!r.width || !r.height) return;
                 if (auraPos.x < r.left - EDGE_REACH || auraPos.x > r.right + EDGE_REACH ||
                     auraPos.y < r.top - EDGE_REACH  || auraPos.y > r.bottom + EDGE_REACH) return;
-                edgeEl.style.setProperty('--ex', ((auraPos.x - r.left) * edgeEl.offsetWidth / r.width).toFixed(1) + 'px');
-                edgeEl.style.setProperty('--ey', ((auraPos.y - r.top) * edgeEl.offsetHeight / r.height).toFixed(1) + 'px');
+                var ex = ((auraPos.x - r.left) * edgeOW / r.width).toFixed(0) + 'px';
+                var ey = ((auraPos.y - r.top) * edgeOH / r.height).toFixed(0) + 'px';
+                if (ex !== lastEx) { lastEx = ex; edgeEl.style.setProperty('--ex', ex); }
+                if (ey !== lastEy) { lastEy = ey; edgeEl.style.setProperty('--ey', ey); }
             }
 
             function auraTick(now) {
@@ -2434,9 +2467,30 @@
             var DOTS_START = 0.40;  // circles start dissolving
             var DOTS_END   = 0.75;  // circles gone
 
+            var pinTop = 0, pinScrollable = 1;
+            function measure() {
+                pinTop = pinZone.getBoundingClientRect().top + (window.pageYOffset || 0);
+                pinScrollable = Math.max(1, pinZone.offsetHeight - pinnedHero.offsetHeight);
+                edgeR = null;
+            }
+            var navBarEl = document.querySelector('.top-nav-bar');
+            var varCache = {};
+            function setVar(el, name, val) { if (varCache[name] !== val) { varCache[name] = val; el.style.setProperty(name, val); } }
+            var introVideo = document.getElementById('introBgVideo');
+            var heroVideo  = document.getElementById('heroBgVideo');
+            var heroVisible = true;
+            function setVideo(v, on) {
+                if (!v || v._on === on) return;
+                v._on = on;
+                if (on) { var pr = v.play(); if (pr && pr.catch) pr.catch(function () {}); } else { v.pause(); }
+            }
+            if ('IntersectionObserver' in window) {
+                new IntersectionObserver(function (e) { heroVisible = e[0].isIntersecting; update(); }).observe(pinZone);
+            }
+            document.addEventListener('visibilitychange', function () { update(); });
+
             function update() {
-                var scrollable = Math.max(1, pinZone.offsetHeight - pinnedHero.offsetHeight);
-                var p = clamp(-pinZone.getBoundingClientRect().top / scrollable);
+                var p = clamp(((window.pageYOffset || 0) - pinTop) / pinScrollable);
 
                 // phase 1: intro content fades out and eases back slightly
                 var out = clamp(p / OUT_END);
@@ -2453,6 +2507,8 @@
                 canvas.style.opacity = (0.55 * (1 - dots)).toFixed(3);
                 intro.style.visibility = dots >= 1 ? 'hidden' : '';
                 setCirclesRunning(dots < 1);
+                setVideo(introVideo, dots < 1 && swipeDone && !document.hidden);
+                setVideo(heroVideo, p > 0.12 && heroVisible && !document.hidden);
 
                 // aura: fades out with the intro backdrop, and its loop sleeps while the intro is off screen
                 if (auraEl) auraEl.style.opacity = introFade.toFixed(3);
@@ -2464,20 +2520,20 @@
 
                 // light mode: fade the light backdrop / nav bar with the intro content
                 var menuOpen = !!navOverlay && navOverlay.classList.contains('open');
-                root.style.setProperty('--intro-fade', lightAmt.toFixed(3));
-                root.style.setProperty('--theme-mix', mixE.toFixed(3));   // drives the aura + player edge glow colours
+                setVar(intro, '--intro-fade', lightAmt.toFixed(3));
+                setVar(intro, '--theme-mix', mixE.toFixed(3));   // drives the aura + player edge glow colours
                 // decide the menu's look once, at the moment it opens: light while the light intro is
                 // on screen, otherwise dark like the rest of the site (no flipping while it is open)
                 if (menuOpen && !menuWasOpen) menuLight = isLight() && introFade > 0.5;
                 menuWasOpen = menuOpen;
                 var navFade = (menuOpen ? (menuLight ? 1 : 0) : introFade) * mixE;
-                root.style.setProperty('--nav-fade', navFade.toFixed(3));
+                setVar(navBarEl, '--nav-fade', navFade.toFixed(3));
                 root.classList.toggle('intro-light', isLight());
                 root.classList.toggle('menu-light', menuLight && isLight());
                 root.classList.toggle('nav-light', isLight() && navFade > 0.5);
 
                 // sun / moon button: fades out with the intro, fades back in on the way up
-                root.style.setProperty('--theme-fade', introFade.toFixed(3));
+                setVar(navBarEl, '--theme-fade', introFade.toFixed(3));
                 if (themeBtn) {
                     themeBtn.style.visibility = introFade < 0.02 ? 'hidden' : '';
                     themeBtn.style.pointerEvents = introFade < 0.3 ? 'none' : '';
@@ -2499,9 +2555,14 @@
                 pinnedHero.style.transform = inn < 1 ? 'scale(' + (0.96 + 0.04 * inn).toFixed(3) + ')' : '';
             }
 
-            window.addEventListener('scroll', update, { passive: true });
-            window.addEventListener('resize', function () { sizeCanvas(); paint(0); update(); });
-            window.addEventListener('load', update);
+            var scrollTick = 0;
+            window.addEventListener('scroll', function () {
+                edgeR = null;
+                if (!scrollTick) scrollTick = requestAnimationFrame(function () { scrollTick = 0; update(); });
+            }, { passive: true });
+            window.addEventListener('resize', function () { measure(); sizeCanvas(); paint(0); update(); });
+            window.addEventListener('load', function () { measure(); update(); });
+            measure();
             update();
 
             // sun / moon button in the nav bar: forces the intro into light or dark mode
@@ -2511,14 +2572,13 @@
                     menuWasOpen = false;   // lets an open menu pick its look again
                     syncThemeButton();
                     startMix();
-                    update();
                 });
                 syncThemeButton();
             }
 
             // switching the computer / phone between light and dark mode updates the intro live
             // (unless the visitor has already chosen a mode with the button)
-            function onSchemeChange() { menuWasOpen = false; syncThemeButton(); startMix(); paint(0); update(); }
+            function onSchemeChange() { menuWasOpen = false; syncThemeButton(); startMix(); }
             if (lightQuery) {
                 if (lightQuery.addEventListener) lightQuery.addEventListener('change', onSchemeChange);
                 else if (lightQuery.addListener) lightQuery.addListener(onSchemeChange);
@@ -2532,7 +2592,7 @@
             // once the black swipe has lifted, the browser's toolbar colour can match the intro
             var swipeEl = document.querySelector('.intro-swipe');
             function swipeFinished() { if (!swipeDone) { swipeDone = true; update(); } }
-            if (swipeEl) swipeEl.addEventListener('animationend', swipeFinished);
+            if (swipeEl) swipeEl.addEventListener('animationend', function () { swipeEl.style.display = 'none'; swipeFinished(); });
             setTimeout(swipeFinished, 1800);
 
             /* ---------- intro buttons reuse the existing menu / trailer code ---------- */
@@ -2604,6 +2664,14 @@
             if (window.console) console.error('Site extras disabled:', err);
         }
     })();
+    </script>
+    <script>
+        (function () {
+            var c = document.querySelector('.carousel');
+            if (!c || !('IntersectionObserver' in window)) return;
+            c.classList.add('paused');
+            new IntersectionObserver(function (e) { c.classList.toggle('paused', !e[0].isIntersecting); }).observe(c);
+        })();
     </script>
 </body>
 </html>
