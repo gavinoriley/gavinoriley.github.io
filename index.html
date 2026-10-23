@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -538,6 +538,46 @@
             border: 0;
             line-height: 0;
         }
+
+        /* CHARACTERS: clickable character stills laid over FinalCharacters.png.
+           Positions are percentages of the 3360x2969 source image, so the overlays stay locked
+           to the stills at every screen width. */
+        .image-sequence .characters-stage {
+            position: relative;
+            display: block;
+            width: 100%;
+            line-height: 0;
+        }
+        .image-sequence .characters-stage > img {
+            display: block;
+            width: 100%;
+            height: auto;
+        }
+        .characters-stage .char-hit {
+            position: absolute;
+            display: block;
+            margin: 0;
+            padding: 0;
+            border: 0;
+            background: none;
+            cursor: pointer;
+            line-height: 0;
+            font: inherit;
+            appearance: none;
+            -webkit-appearance: none;
+            -webkit-tap-highlight-color: transparent;
+            transition: filter 0.12s ease;
+        }
+        .image-sequence .characters-stage .char-hit img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        .characters-stage .char-hit:hover { filter: brightness(1.15); }
+        .characters-stage .char-hit:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
 
         .carousel {
             width: 100vw;
@@ -1953,7 +1993,33 @@
                 </a>
                 <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/4BLOCkRESTHAMACHI.png" alt="Roadblock and gameplay features">
                 <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalIntroduction.png" alt="Introduction">
-                <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalCharacters.png" alt="Characters">
+                <div class="characters-stage">
+                    <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalCharacters.png" alt="Characters" width="3360" height="2969">
+                    <button type="button" class="char-hit" data-character="hamachi" aria-label="Hamachi" style="left:39.6131%;top:48.97272%;width:8.09524%;height:8.58875%;">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/abouthamachibox.png" alt="" draggable="false">
+                    </button>
+                    <button type="button" class="char-hit" data-character="demonqueen" aria-label="Demon Queen Deity" style="left:51.19048%;top:45.87403%;width:10.83333%;height:14.21354%;">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/aboutdemonqueenbox.png" alt="" draggable="false">
+                    </button>
+                    <button type="button" class="char-hit" data-character="blooze" aria-label="Blooze" style="left:65.20833%;top:47.99596%;width:8.60119%;height:9.7676%;">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/aboutbloozebox.png" alt="" draggable="false">
+                    </button>
+                    <button type="button" class="char-hit" data-character="lanternspawn" aria-label="Lantern Spawn" style="left:76.60714%;top:47.15392%;width:8.27381%;height:11.01381%;">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/aboutlanterspawnbox.png" alt="" draggable="false">
+                    </button>
+                    <button type="button" class="char-hit" data-character="pink" aria-label="Penelope Pom Pom Pink" style="left:85.02976%;top:44.18996%;width:13.89881%;height:15.62816%;">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/aboutpinkbox.png" alt="" draggable="false">
+                    </button>
+                    <button type="button" class="char-hit" data-character="observer" aria-label="Observer" style="left:26.69643%;top:48.97272%;width:9.88095%;height:8.58875%;">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/aboutobserverbox.png" alt="" draggable="false">
+                    </button>
+                    <button type="button" class="char-hit" data-character="royalblood" aria-label="Royal Blood" style="left:16.22024%;top:48.56854%;width:8.54167%;height:9.02661%;">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/aboutroyalbloodbox.png" alt="" draggable="false">
+                    </button>
+                    <button type="button" class="char-hit" data-character="punni" aria-label="Punni" style="left:4.67262%;top:44.32469%;width:8.48214%;height:13.47255%;">
+                        <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/aboutpunnibox.png" alt="" draggable="false">
+                    </button>
+                </div>
                 <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalWorlds2.png" alt="Worlds">
             </div>
         </main>
@@ -2687,6 +2753,21 @@
             c.classList.add('paused');
             new IntersectionObserver(function (e) { c.classList.toggle('paused', !e[0].isIntersecting); }).observe(c);
         })();
+    </script>
+    <script>
+        // CHARACTER BUTTONS (overlays on the characters image)
+        // Each button carries data-character="<id>": hamachi, demonqueen, blooze, lanternspawn,
+        // pink, observer, royalblood, punni. Put your click behaviour in onCharacterClick.
+        function onCharacterClick(id, button) {
+            // TODO: open that character's info panel / page here.
+        }
+        document.querySelectorAll('.characters-stage .char-hit').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var id = btn.getAttribute('data-character');
+                onCharacterClick(id, btn);
+                document.dispatchEvent(new CustomEvent('characterselect', { detail: { id: id } }));
+            });
+        });
     </script>
 </body>
 </html>
