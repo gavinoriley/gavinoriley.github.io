@@ -566,7 +566,10 @@
             appearance: none;
             -webkit-appearance: none;
             -webkit-tap-highlight-color: transparent;
-            transition: filter 0.12s ease;
+            /* springy, smooth grow on hover / shrink on release */
+            transition: transform 0.24s cubic-bezier(0.34, 1.4, 0.64, 1), filter 0.15s ease;
+            transform-origin: 50% 50%;
+            --rest: 1;                /* the size the button settles at (changes on hover) */
         }
         .image-sequence .characters-stage .char-hit img {
             display: block;
@@ -576,8 +579,119 @@
             user-select: none;
             -webkit-user-drag: none;
         }
-        .characters-stage .char-hit:hover { filter: brightness(1.15); }
-        .characters-stage .char-hit:focus-visible { outline: 2px solid #fff; outline-offset: 2px; }
+        /* HOVER: the button grows a little (mouse / trackpad only, so touch screens don't get a stuck-open look) */
+        @media (hover: hover) and (pointer: fine) {
+            .characters-stage .char-hit:hover { transform: scale(1.08); filter: brightness(1.15); z-index: 2; --rest: 1.08; }
+        }
+        .characters-stage .char-hit:focus-visible { outline: 2px solid #fff; outline-offset: 2px; z-index: 2; }
+        /* PRESS: it sinks in like a physical button while held down... */
+        .characters-stage .char-hit:active {
+            transform: scale(0.9) translateY(1px);
+            filter: brightness(0.85);
+            transition-duration: 0.06s;
+        }
+        /* ...and springs back with a little bounce when it is clicked / tapped / activated with the keyboard */
+        .characters-stage .char-hit.is-clicked { animation: charPress 0.32s ease-out; }
+        @keyframes charPress {
+            0%   { transform: scale(0.9) translateY(1px); filter: brightness(0.85); }
+            50%  { transform: scale(1.07); }
+            100% { transform: scale(var(--rest, 1)); }
+        }
+
+        /* ---- character info panel ----
+           Frosted page (same recipe as the hamburger menu: dark 55% wash + 24px blur), the pressed
+           character's enlarged art on the left, name + description on the right. */
+        .char-panel {
+            position: fixed;
+            inset: 0;
+            z-index: 400;              /* above everything, including the nav bar (200) and menu (150) */
+            background: rgba(7, 7, 7, 0.55);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            overflow-y: auto;
+            overscroll-behavior: contain;
+            opacity: 0;
+            visibility: hidden;
+            pointer-events: none;
+            /* fade OUT: opacity first, then switch visibility off once it has faded */
+            transition: opacity 0.4s ease, visibility 0s linear 0.4s;
+            outline: none;
+            cursor: pointer;
+        }
+        .char-panel.open {
+            opacity: 1;
+            visibility: visible;
+            pointer-events: auto;
+            transition: opacity 0.4s ease, visibility 0s;
+        }
+        .char-panel-inner {
+            min-height: 100%;
+            width: 100%;
+            max-width: 1500px;
+            margin: 0 auto;
+            padding: 84px clamp(20px, 4vw, 64px) 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: clamp(24px, 5vw, 80px);
+        }
+        .char-panel-art {
+            flex: 0 0 44%;
+            height: min(78vh, 900px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: translateX(-28px) scale(0.96);
+            transition: opacity 0.5s ease 0.05s, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.05s;
+        }
+        .char-panel-art img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: pixelated;        /* enlarged pixel art stays crisp instead of blurry */
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        .char-panel-text {
+            flex: 1 1 0;
+            max-width: 600px;
+            color: #d0d0d0;
+            opacity: 0;
+            transform: translateX(28px);
+            transition: opacity 0.5s ease 0.12s, transform 0.55s cubic-bezier(0.16, 1, 0.3, 1) 0.12s;
+        }
+        .char-panel.open .char-panel-art,
+        .char-panel.open .char-panel-text { opacity: 1; transform: none; }
+        .char-panel-title {
+            font-size: clamp(24px, 3vw, 40px);
+            font-weight: normal;
+            letter-spacing: 2px;
+            line-height: 1.2;
+            text-align: center;                /* title: middle centre of the text column */
+            color: #fff;
+            margin-bottom: 26px;
+        }
+        .char-panel-body p {
+            font-size: clamp(15px, 1.35vw, 19px);
+            line-height: 1.7;
+            letter-spacing: 0.4px;
+            text-align: left;                  /* description: directly underneath the title */
+        }
+        .char-panel-body p + p { margin-top: 1em; }
+
+        @media (max-width: 800px) {
+            .char-panel-inner { flex-direction: column; justify-content: flex-start; gap: 22px; padding-top: 76px; }
+            .char-panel-art { flex: 0 0 auto; width: 100%; height: 34vh; transform: translateY(-20px) scale(0.96); }
+            .char-panel-text { flex: 0 0 auto; width: 100%; transform: translateY(20px); }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            .characters-stage .char-hit { transition: none; }
+            .characters-stage .char-hit.is-clicked { animation: none; }
+            .char-panel, .char-panel.open { transition: none; }
+            .char-panel-art, .char-panel-text { transition: none; transform: none; }
+        }
 
         .carousel {
             width: 100vw;
@@ -2035,6 +2149,18 @@
         </footer>
     </div>
 
+    <!-- CHARACTER INFO PANEL: frosted page + enlarged art (left) + name and description (right).
+         Filled in by the script at the bottom of the page. Clicking anywhere on it fades it away. -->
+    <div class="char-panel" id="charPanel" role="dialog" aria-modal="true" aria-labelledby="charPanelTitle" aria-hidden="true" tabindex="-1" data-lenis-prevent>
+        <div class="char-panel-inner">
+            <div class="char-panel-art"><img id="charPanelImg" alt="" draggable="false"></div>
+            <div class="char-panel-text">
+                <h2 class="char-panel-title" id="charPanelTitle"></h2>
+                <div class="char-panel-body" id="charPanelBody"></div>
+            </div>
+        </div>
+    </div>
+
     <script src="https://unpkg.com/lenis@1.3.23/dist/lenis.min.js"></script>
     <script>
         const lenis = new Lenis({
@@ -2755,19 +2881,158 @@
         })();
     </script>
     <script>
-        // CHARACTER BUTTONS (overlays on the characters image)
+        // CHARACTER BUTTONS (overlays on the characters image) + INFO PANEL
         // Each button carries data-character="<id>": hamachi, demonqueen, blooze, lanternspawn,
-        // pink, observer, royalblood, punni. Put your click behaviour in onCharacterClick.
-        function onCharacterClick(id, button) {
-            // TODO: open that character's info panel / page here.
-        }
-        document.querySelectorAll('.characters-stage .char-hit').forEach(function (btn) {
-            btn.addEventListener('click', function () {
-                var id = btn.getAttribute('data-character');
-                onCharacterClick(id, btn);
-                document.dispatchEvent(new CustomEvent('characterselect', { detail: { id: id } }));
+        // pink, observer, royalblood, punni. Clicking one opens the frosted panel with that character's
+        // enlarged art and text; clicking anywhere (or pressing Esc) fades it away again.
+        (function () {
+            var ART_BASE = 'https://gavinoriley.github.io/assets/';
+            // To edit a character's text, change it here. "art" is only needed when the enlarged
+            // picture should be a different file from the button's own picture (Hamachi's is).
+            var CHARACTERS = {
+                hamachi: {
+                    title: 'About Hamachi',
+                    art: ART_BASE + '2v7MbOl.png',
+                    text: [
+                        'Hamachi was once an innocent bystander in Riches Reef, but after finding himself in the wrong place at the wrong time, he fell into the possession of the evil Demon Queen Deity. Remaining conscious as he loses all autonomy over his own body to the Demon Queen, he watches in horror as he himself is forced to take innocent lives.'
+                    ]
+                },
+                demonqueen: {
+                    title: 'About Demon Queen Deity',
+                    text: [
+                        'The sadistic and all-powerful Queen of the Underworld, Demon Queen Deity is the enemy of Hamachi and all living beings.',
+                        'She is known to have two forms. Her first form is a floating, frightening human head that allows her to glide through the air with ease. When provoked, she can unleash a funnel of demonic magic from her mouth.',
+                        'If you’re (un)lucky enough to witness her second form, she takes on a human appearance, revealing her true, perfect (and beautiful) self.',
+                        'Rumor has it that a third, even more dangerous form exists, but she only reveals it in times of desperation, when she doesn\'t get what she wants.'
+                    ]
+                },
+                blooze: {
+                    title: 'About Blooze',
+                    text: [
+                        'This blob of sentient Purin knows just how sweet and delicious it is, and loves going out of its way to deliberately jump into others in hopes of sharing its rich, creamy taste.',
+                        'Unfortunately, with a brain made of custard, Blooze doesn\'t realize that hurling itself at people isn\'t the best way to share a treat. It just wants to be tasted, no matter the cost.'
+                    ]
+                },
+                lanternspawn: {
+                    title: 'About Lantern Spawn',
+                    text: [
+                        'By night, this living lantern wanders around, providing light for nearby residents. By day, it rests in a dormant state, remaining sensitive to disturbances. If awakened prematurely, it reacts with sudden aggression.'
+                    ]
+                },
+                pink: {
+                    title: 'About Penelope Pom Pom Pink',
+                    text: [
+                        'A quiet sushi chef with unknown intentions, Penelope Pom Pom Pink is the only one to have witnessed Hamachi’s demonic possession. Her role is questionable, her motives uncertain, and she remains neutral toward Hamachi for now.'
+                    ]
+                },
+                observer: {
+                    title: 'About Observer',
+                    text: [
+                        'Native to Riches Reef, these little beings call themselves Observers. They lack arms and hands, but possess two sharp, metallic points on each side of their bodies! Despite their unusual design, they seem happy.',
+                        'I wonder how they eat?'
+                    ]
+                },
+                royalblood: {
+                    title: 'About Royal Blood',
+                    text: [
+                        'Royal Blood is a respected battle chest known for defending the land of Riches Reef. Many envy these royals for their rare and valuable cuboidal forms.'
+                    ]
+                },
+                punni: {
+                    title: 'About Punni',
+                    text: [
+                        'me like to go boing, boing, boing'
+                    ]
+                }
+            };
+
+            var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+            var panel   = document.getElementById('charPanel');
+            var artImg  = document.getElementById('charPanelImg');
+            var titleEl = document.getElementById('charPanelTitle');
+            var bodyEl  = document.getElementById('charPanelBody');
+            var stage   = document.querySelector('.characters-stage');
+            var buttons = document.querySelectorAll('.characters-stage .char-hit');
+            var openTimer = 0, openedAt = 0, opener = null;
+
+            function setScroll(on) {
+                document.body.style.overflow = on ? '' : 'hidden';
+                try { if (typeof lenis !== 'undefined') { on ? lenis.start() : lenis.stop(); } } catch (e) {}
+            }
+
+            function show(id, btn) {
+                var data = CHARACTERS[id];
+                if (!data || !panel) return;
+                opener = btn;
+                // enlarged art: the button's own picture, unless this character has a special one
+                var own = btn.querySelector('img');
+                artImg.src = data.art || (own ? (own.currentSrc || own.src) : '');
+                titleEl.textContent = data.title;
+                bodyEl.textContent = '';
+                data.text.forEach(function (t) {
+                    var p = document.createElement('p');
+                    p.textContent = t;
+                    bodyEl.appendChild(p);
+                });
+                panel.scrollTop = 0;
+                panel.classList.add('open');
+                panel.setAttribute('aria-hidden', 'false');
+                setScroll(false);
+                openedAt = performance.now();
+                try { panel.focus({ preventScroll: true }); } catch (e) { panel.focus(); }
+            }
+
+            function hide() {
+                clearTimeout(openTimer);
+                if (!panel.classList.contains('open')) return;
+                panel.classList.remove('open');           // CSS fades the whole panel (art + text) out
+                panel.setAttribute('aria-hidden', 'true');
+                setScroll(true);
+                if (opener) { try { opener.focus({ preventScroll: true }); } catch (e) {} }
+            }
+
+            function onCharacterClick(id, btn) {
+                // button "press" bounce, then open the panel just after, so the press is seen
+                btn.classList.remove('is-clicked');
+                void btn.offsetWidth;                      // restart the animation if clicked again quickly
+                btn.classList.add('is-clicked');
+                clearTimeout(openTimer);
+                openTimer = setTimeout(function () { show(id, btn); }, reduceMotion ? 0 : 140);
+            }
+
+            buttons.forEach(function (btn) {
+                btn.addEventListener('animationend', function () { btn.classList.remove('is-clicked'); });
+                btn.addEventListener('click', function () {
+                    var id = btn.getAttribute('data-character');
+                    onCharacterClick(id, btn);
+                    document.dispatchEvent(new CustomEvent('characterselect', { detail: { id: id } }));
+                });
             });
-        });
+
+            if (panel) {
+                // clicking anywhere on the panel (the art, the text, the empty space) closes it;
+                // the short guard stops a double-tap from closing it the instant it opens
+                panel.addEventListener('click', function () { if (performance.now() - openedAt > 250) hide(); });
+                document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+            }
+
+            // Hamachi's big picture is a separate (larger) file: fetch it a little before it is needed
+            // so it is already there when the panel opens
+            var warmed = false;
+            function warm() {
+                if (warmed) return;
+                warmed = true;
+                var im = new Image();
+                im.src = CHARACTERS.hamachi.art;
+            }
+            if (stage && 'IntersectionObserver' in window) {
+                new IntersectionObserver(function (e, o) {
+                    if (e[0].isIntersecting) { warm(); o.disconnect(); }
+                }, { rootMargin: '800px 0px' }).observe(stage);
+            } else {
+                buttons.forEach(function (b) { b.addEventListener('pointerenter', warm, { once: true }); });
+            }
+        })();
     </script>
 </body>
 </html>
