@@ -69,7 +69,10 @@
             min-height: 100vh;
         }
 
-        /* two dot layers moved with transform (compositor only) instead of animating background-position (repaint every frame) */
+        /* two dot layers moved with transform (compositor only) instead of animating background-position (repaint every frame).
+           PERF: the drift is stepped in whole 1px hops (one hop every ~1.9s) instead of a continuous linear move.
+           The motion is only ~0.5px per second, so it looks identical, but a smooth animation forced the browser to
+           redraw the whole screen 60 times a second forever; a stepped one lets the GPU sit idle between hops. */
         body::before, body::after {
             content: '';
             position: fixed;
@@ -81,13 +84,13 @@
             inset: -52px 0 0 -52px;
             background-image: radial-gradient(circle at 15% 25%, rgba(0, 140, 70, 0.025) 1px, transparent 1px);
             background-size: 52px 52px;
-            animation: drift1 100s linear infinite;
+            animation: drift1 100s steps(52) infinite;
         }
         body::after {
             inset: -78px -78px 0 0;
             background-image: radial-gradient(circle at 75% 65%, rgba(160, 30, 90, 0.02) 1px, transparent 1px);
             background-size: 78px 78px;
-            animation: drift2 100s linear infinite;
+            animation: drift2 100s steps(78) infinite;
         }
         @keyframes drift1 { to { transform: translate3d(52px, 52px, 0); } }
         @keyframes drift2 { to { transform: translate3d(-78px, 78px, 0); } }
@@ -102,29 +105,9 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            animation: swipeUpwards 0.85s cubic-bezier(0.7, 0, 0.3, 1) 0.35s forwards;
-        }
-
-        /* Zigzag bottom edge of the swipe curtain.
-           Drawn with a pure-CSS conic-gradient instead of an inline SVG image, so the
-           triangles are always painted in the curtain colour (#070707) and can't be
-           re-coloured by mobile browsers. Each 20x14 tile is one downward-pointing
-           triangle: its apex sits at the bottom-centre of the tile and it spans
-           +/-35.54deg (atan(10/14)) either side of straight up. */
-        .intro-swipe::after {
-            content: '';
-            position: absolute;
-            top: calc(100% - 1px);
-            left: 0;
-            width: 100%;
-            height: 14px;
-            background-color: transparent;
-            background-image: conic-gradient(from -35.54deg at 50% 100%,
-                #070707 0deg, #070707 70.9deg,
-                rgba(7, 7, 7, 0) 71.4deg, rgba(7, 7, 7, 0) 360deg);
-            background-repeat: repeat-x;
-            background-size: 20px 14px;
-            pointer-events: none;
+            /* the curtain never moves: it holds the whole screen for a beat (0.6s),
+               then it and the logo on it fade out together (0.9s) to reveal the site */
+            animation: introFadeOut 0.9s ease-in-out 0.6s forwards;
         }
 
         .intro-logo {
@@ -135,9 +118,9 @@
             object-fit: contain;
         }
 
-        @keyframes swipeUpwards {
-            0% { transform: translateY(0); }
-            100% { transform: translateY(calc(-100% - 20px)); }
+        @keyframes introFadeOut {
+            0%   { opacity: 1; visibility: visible; }
+            100% { opacity: 0; visibility: hidden; }
         }
 
         /* FROSTED TOP NAV BAR */
@@ -1444,6 +1427,19 @@
                 rgba(160, 160, 125, 0.13) 100%);
         }
 
+        /* PERF: the intro is either dark or light, never both. The layer for the appearance that
+           is NOT showing is removed from rendering (display: none) instead of being kept at
+           opacity 0, so the browser doesn't allocate / draw a second 1350px glow, a second shade
+           and a second pair of masked + blurred player rings. html.intro-light is toggled by the
+           script in the same step as the theme switch. */
+        html:not(.intro-light) .aura-light,
+        html:not(.intro-light) .aura-shade,
+        html:not(.intro-light) .edge-set.is-light,
+        html.intro-light .aura-dark,
+        html.intro-light .edge-set.is-dark { display: none; }
+        /* PERF: the scroll-hint arrow bounces forever; stop it once the intro is scrolled away */
+        html.intro-off .landing-scroll-arrow { animation: none; }
+
         /* ---- video player edge glow ----
            Two rings hugging the border of the player, lit by a radial gradient that is centred
            on the aura (--ex / --ey are set by the script). So the border only brightens on the
@@ -1501,13 +1497,15 @@
         }
 
         /* ===================================================================
-           INTRO SEQUENCE  (plays once, right after the black swipe lifts off)
+           INTRO SEQUENCE  (plays once, as the black curtain fades away)
            Light comes up first, then the player, the player's screen powers on, the logo
            pulls into focus, the tagline settles, "demons demons...!" ignites letter by
            letter, and the three buttons fade in last.
 
-           --seq-t0 is the moment the swipe has left the screen. It must match .intro-swipe:
-           0.35s delay + 0.85s duration = 1.2s. Change both together.
+           --seq-t0 is the moment the curtain is mostly gone. It is tied to .intro-swipe:
+           0.6s hold + 0.9s fade = 1.5s to fully clear, and the sequence starts a little
+           before that (1.2s) so the site's own elements fade in as the curtain fades out.
+           Change them together.
 
            Only opacity / transform are animated on anything that already has a filter
            (tagline, side text, button row), because the light mode flips those with
@@ -1617,7 +1615,7 @@
         /* no CSS transitions while the browser cross-fades the theme (view transition) */
         html.theme-switching *, html.theme-switching *::before, html.theme-switching *::after { transition: none !important; }
         ::view-transition-group(root) { animation-duration: 0.45s; animation-timing-function: ease-in-out; }
-        .intro-swipe { will-change: transform; }
+        .intro-swipe { will-change: opacity; }
         /* "bad guy" twitches once, a moment after the tagline settles, then returns to normal.
            transform + a tiny text-shadow on 7 glyphs, stepped (snaps instead of tweening), so it is nearly free. */
         .bad-guy {
@@ -2274,7 +2272,7 @@
                 catch (err) { apply(); done(); }
             }
             var introFade  = 1;      // 1 at the very top of the page, 0 once the intro content is gone
-            var swipeDone  = false;  // browser UI colour waits for the black swipe to finish
+            var swipeDone  = false;  // browser UI colour waits for the black curtain to finish fading
             var themeMeta  = document.querySelector('meta[name="theme-color"]');
             var lastTheme  = '';
             var navOverlay = document.getElementById('mainNavOverlay');
@@ -2290,7 +2288,7 @@
             var rafId = 0, lastTime = 0, running = false;
 
             function sizeCanvas() {
-                var dpr = Math.min(window.devicePixelRatio || 1, 2);
+                var dpr = Math.min(window.devicePixelRatio || 1, 1.5);   // PERF: was 2 (soft 3-7px dots don't need it; ~44% fewer pixels on retina screens)
                 viewW = intro.clientWidth || window.innerWidth;
                 viewH = intro.clientHeight || window.innerHeight;
                 canvas.width = Math.round(viewW * dpr);
@@ -2329,6 +2327,8 @@
             function paint(step) {
                 ctx.clearRect(0, 0, viewW, viewH);
                 ctx.fillStyle = dotColor();
+                // PERF: all circles go into ONE path and ONE fill() call (was 18 separate fills)
+                ctx.beginPath();
                 for (var i = 0; i < circles.length; i++) {
                     var c = circles[i];
                     if (step) {
@@ -2337,18 +2337,22 @@
                         if (c.x < 0 || c.x > viewW) c.vx *= -1;
                         if (c.y < 0 || c.y > viewH) c.vy *= -1;
                     }
-                    ctx.beginPath();
+                    ctx.moveTo(c.x + c.r, c.y);
                     ctx.arc(c.x, c.y, c.r, 0, Math.PI * 2);
-                    ctx.fill();
                 }
+                ctx.fill();
             }
 
+            // PERF: the circles redraw at ~30fps at most (they drift ~10px/s, so it is not visible),
+            // which halves the canvas work on 60Hz screens and cuts it by 4x on 120Hz screens
+            var CIRCLE_MIN_MS = 29;
             function drawFrame(now) {
+                rafId = requestAnimationFrame(drawFrame);
+                if (lastTime && now - lastTime < CIRCLE_MIN_MS) return;
                 // time-based so it moves at the same speed on 60Hz and 120Hz screens
                 var step = lastTime ? Math.min(3, (now - lastTime) / 16.667) : 1;
                 lastTime = now;
                 paint(step);
-                rafId = requestAnimationFrame(drawFrame);
             }
 
             // visitors who ask for reduced motion get still circles
@@ -2389,6 +2393,10 @@
             var auraPos    = { x: 0, y: 0 };   // where the light is
             var auraRaf = 0, auraLast = 0, auraLive = true, auraHasPointer = false;
 
+            // PERF: the player's edge glow is the expensive part (changing --ex / --ey repaints a masked,
+            // blurred ring), so it is refreshed at most every 32ms (~30fps); the light itself still
+            // moves at full frame rate, and the final resting position is always written (forceEdge)
+            var EDGE_MIN_MS = 32, edgeWriteAt = 0;
             var edgeR = null, edgeRAt = 0, edgeOW = 1, edgeOH = 1, lastEx = '', lastEy = '';
             function edgeRect() {
                 var t = performance.now();
@@ -2397,15 +2405,17 @@
                 }
                 return edgeR;
             }
-            function paintAura() {
+            function paintAura(forceEdge) {
                 auraGlow.style.transform = 'translate3d(' + (auraPos.x - auraHalf).toFixed(1) + 'px,' +
                                            (auraPos.y - auraHalf).toFixed(1) + 'px,0)';
                 if (!edgeEl) return;
+                if (!forceEdge && performance.now() - edgeWriteAt < EDGE_MIN_MS) return;
                 // aim the player's edge glow at the light (in the player's own coordinates)
                 var r = edgeRect();
                 if (!r.width || !r.height) return;
                 if (auraPos.x < r.left - EDGE_REACH || auraPos.x > r.right + EDGE_REACH ||
                     auraPos.y < r.top - EDGE_REACH  || auraPos.y > r.bottom + EDGE_REACH) return;
+                edgeWriteAt = performance.now();
                 var ex = ((auraPos.x - r.left) * edgeOW / r.width).toFixed(0) + 'px';
                 var ey = ((auraPos.y - r.top) * edgeOH / r.height).toFixed(0) + 'px';
                 if (ex !== lastEx) { lastEx = ex; edgeEl.style.setProperty('--ex', ex); }
@@ -2422,9 +2432,9 @@
                 auraLead.y += (auraTarget.y - auraLead.y) * k1;
                 auraPos.x  += (auraLead.x - auraPos.x) * k2;
                 auraPos.y  += (auraLead.y - auraPos.y) * k2;
-                paintAura();
                 var settled = Math.abs(auraTarget.x - auraPos.x) < 0.15 && Math.abs(auraTarget.y - auraPos.y) < 0.15 &&
                               Math.abs(auraLead.x - auraPos.x) < 0.15   && Math.abs(auraLead.y - auraPos.y) < 0.15;
+                paintAura(settled || !auraLive);
                 if (settled || !auraLive) { auraLast = 0; return; }
                 auraRaf = requestAnimationFrame(auraTick);
             }
@@ -2440,7 +2450,7 @@
                     auraTarget.x = auraLead.x = auraPos.x = viewW / 2;
                     auraTarget.y = auraLead.y = auraPos.y = viewH / 2;
                 }
-                paintAura();
+                paintAura(true);
             }
             restAura();
 
@@ -2507,12 +2517,17 @@
                 canvas.style.opacity = (0.55 * (1 - dots)).toFixed(3);
                 intro.style.visibility = dots >= 1 ? 'hidden' : '';
                 setCirclesRunning(dots < 1);
-                setVideo(introVideo, dots < 1 && swipeDone && !document.hidden);
+                // PERF: the intro video is paused as soon as the intro content is fully faded out (out >= 1, scroll 40%),
+                // not 35% of scroll later: between those points it was still decoding video nobody could see
+                setVideo(introVideo, out < 1 && swipeDone && !document.hidden);
                 setVideo(heroVideo, p > 0.12 && heroVisible && !document.hidden);
 
                 // aura: fades out with the intro backdrop, and its loop sleeps while the intro is off screen
-                if (auraEl) auraEl.style.opacity = introFade.toFixed(3);
-                var auraShouldRun = dots < 1;
+                // PERF: the aura is fully invisible once the intro content is gone (introFade 0), so its animation
+                // loop sleeps and it is hidden from that point (it used to keep running until the circles ended too)
+                if (auraEl) { auraEl.style.opacity = introFade.toFixed(3); auraEl.style.visibility = introFade <= 0 ? 'hidden' : ''; }
+                var auraShouldRun = out < 1;
+                root.classList.toggle('intro-off', dots >= 1);
                 if (auraShouldRun !== auraLive) {
                     auraLive = auraShouldRun;
                     if (auraLive) kickAura();
@@ -2589,11 +2604,11 @@
                 new MutationObserver(update).observe(navOverlay, { attributes: true, attributeFilter: ['class'] });
             }
 
-            // once the black swipe has lifted, the browser's toolbar colour can match the intro
+            // once the black curtain has faded away, the browser's toolbar colour can match the intro
             var swipeEl = document.querySelector('.intro-swipe');
             function swipeFinished() { if (!swipeDone) { swipeDone = true; update(); } }
             if (swipeEl) swipeEl.addEventListener('animationend', function () { swipeEl.style.display = 'none'; swipeFinished(); });
-            setTimeout(swipeFinished, 1800);
+            setTimeout(swipeFinished, 2000);
 
             /* ---------- intro buttons reuse the existing menu / trailer code ---------- */
             function press(id) {
