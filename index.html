@@ -732,6 +732,50 @@
             100% { transform: translateX(calc(-100vw * 12 / 3)); }
         }
 
+        /* FINAL MEMORIAL (lily + two candles, sits between the Worlds image and the footer line) */
+        /* full-bleed band: pure black where it meets the Worlds image, easing into the page colour (#070707) toward the footer */
+        .memorial-band {
+            position: relative;
+            z-index: 1;
+            isolation: isolate;
+            width: 100vw;
+            left: 50%;
+            margin-left: -50vw;
+            padding: clamp(72px, 12vw, 150px) 28px 16px; /* bottom padding keeps the lowered candles inside the band */
+            background: linear-gradient(to bottom, #000 0%, #000 45%, #070707 100%);
+        }
+        .memorial {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: minmax(0, 1.5fr) minmax(0, 4fr) minmax(0, 1.5fr);
+            align-items: center;
+            line-height: 0;
+        }
+        .memorial img {
+            display: block;
+            height: auto;
+            max-width: none;
+            user-select: none;
+            -webkit-user-drag: none;
+            pointer-events: none;
+        }
+        .memorial-lily {
+            grid-column: 2;
+            width: 100%;
+            justify-self: center;
+        }
+        .memorial-light {
+            width: 100%;
+            /* candle PNG has a pure-black backdrop; "lighten" drops it onto the page colour so only the flame shows */
+            mix-blend-mode: lighten;
+            transform: translateY(25%); /* nudge candles slightly lower; adjust % to taste */
+        }
+        .memorial-light.left  { grid-column: 1; justify-self: start; }
+        .memorial-light.right { grid-column: 3; justify-self: end; transform: translateY(25%) scaleX(-1); } /* mirrored so the flames lean in opposite directions; keep the translateY in sync with .memorial-light */
+
         #footer-contents {
             margin-top: 90px;
             padding-top: 28px;
@@ -939,6 +983,16 @@
             }
             #wrapper {
                 padding: 0 16px 60px;
+            }
+            .memorial-band {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            .memorial {
+                grid-template-columns: minmax(0, 1.1fr) minmax(0, 3fr) minmax(0, 1.1fr);
+            }
+            .memorial-light {
+                width: 125%;
             }
             #footer-contents {
                 padding-left: 18px;
@@ -1782,6 +1836,14 @@
                 </div>
             </div>
         </main>
+
+        <div class="memorial-band">
+            <section class="memorial" aria-label="In memoriam">
+                <img class="memorial-light left" loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/funerallight.png" alt="" width="1190" height="1215" draggable="false">
+                <img class="memorial-lily" loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/funerallilly.png" alt="Lilies" width="2946" height="2056" draggable="false">
+                <img class="memorial-light right" loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/funerallight.png" alt="" width="1190" height="1215" draggable="false">
+            </section>
+        </div>
 
         <footer id="footer-contents">
             <div class="footer-links">
