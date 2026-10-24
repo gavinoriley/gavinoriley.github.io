@@ -998,6 +998,16 @@
                 width: 100%;
             }
         }
+
+        @media (hover: none) and (pointer: coarse) {
+            #footer-contents {
+                color: #bbb;
+                border-top-color: #e5e5e5;
+                filter: invert(1);
+            }
+            .footer-links a { color: #999; }
+            .footer-links a:hover { color: #555; }
+        }
     </style>
 
     <style id="landing-intro-styles">
