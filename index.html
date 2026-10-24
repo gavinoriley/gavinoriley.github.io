@@ -689,7 +689,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 72px 16px 24px;
+            padding: 28px 16px;          /* same space above and below, so the window sits dead centre */
             background: rgba(7, 7, 7, 0.55);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
@@ -706,12 +706,16 @@
             transition: opacity 0.4s ease, visibility 0s;
         }
         .video-panel-window {
-            /* as large as fits: up to 1100px wide, never wider than the screen or taller than the space under the nav bar */
-            width: min(1100px, 100%, calc((100vh - 96px) * 16 / 9));
-            aspect-ratio: 16 / 9;
+            /* The window has exactly the same shape as the video (--vr = width / height, set by the script
+               for each video; the game footage is 16:10), so YouTube has no spare room to fill with black
+               bars. As large as fits: up to 1100px wide, never wider than the screen or taller than it. */
+            --vr: 1.6;
+            width: min(1100px, 100%, calc((100vh - 56px) * var(--vr)));
+            width: min(1100px, 100%, calc((100dvh - 56px) * var(--vr)));
+            aspect-ratio: var(--vr);
             background: #000;
-            border: 1px solid #333;
-            box-shadow: 0 24px 70px rgba(0, 0, 0, 0.6);
+            /* thin outline drawn as a shadow (not a border) so it takes no space from the video */
+            box-shadow: 0 0 0 1px #333, 0 24px 70px rgba(0, 0, 0, 0.6);
             transform: scale(0.96);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
         }
@@ -3104,6 +3108,9 @@
                 dd: 'prWQdnQguiQ',   // Desolate Demise
                 pp: 'UHKTqlpdTbY'    // Pink Paradise
             };
+            // Shape of each video (width / height). The game footage is 16:10 = 1.6. If a video is ever
+            // re-uploaded in another shape (16:9 = 1.7778), change its number here.
+            var WORLD_RATIOS = { rr: 1.6, dd: 1.6, pp: 1.6 };
             var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             var panel  = document.getElementById('worldVideoPanel');
             var frame  = document.getElementById('worldVideoIframe');
@@ -3120,6 +3127,7 @@
                 var vid = WORLD_VIDEOS[id];
                 if (!vid) return;
                 opener = btn;
+                win.style.setProperty('--vr', WORLD_RATIOS[id] || 1.6);
                 frame.style.visibility = '';
                 frame.src = 'https://www.youtube.com/embed/' + vid + '?autoplay=1&modestbranding=1&rel=0&playsinline=1';
                 frame.title = (btn.getAttribute('aria-label') || 'World video').replace(': watch video', '') + ' video';
