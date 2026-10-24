@@ -1544,105 +1544,28 @@
         html.menu-light .nav-overlay a:nth-child(8):hover { color: #7599f7; }
 
         /* ===================================================================
-           INTRO AURA  (a heavy ball of light that drifts after the cursor)
-           Lives inside .landing-intro, so it only exists on the intro screen. It sits
-           above the backdrop and below the circles, the video player and all the content.
-           The position is driven by the script at the bottom of the page (translate3d on
-           .aura-glow); everything else is plain CSS.
-
-           Like the rest of the light mode, every colour here is written as its INVERSE and
-           run through filter: invert(1), so browsers with forced "dark mode for web
-           content" can't re-colour the glow. (65, 65, 20) -> (190, 190, 235) lavender,
-           (0, 0, 0) -> white.
+           CURSOR LIGHT -> PLAYER EDGE GLOW
+           The visible ball of light that used to drift after the cursor has been removed.
+           What remains is its effect: the cursor (smoothed by the script at the bottom of
+           the page) still lights up the border of the video player, exactly as before.
            =================================================================== */
         :root {
             --theme-mix: 0;           /* 0 = dark intro, 1 = light intro (set by the script) */
-            --aura-size: clamp(640px, 82vmax, 1350px);  /* diameter of the light */
-            --aura-dark: 0.17;        /* peak strength of the glow on the dark intro  */
-            --aura-light: 0.90;       /* peak strength of the glow on the light intro */
         }
 
-        .landing-aura {
-            position: absolute;
-            inset: 0;
-            overflow: hidden;
-            pointer-events: none;
-            /* opacity is set by the script: fades away with the rest of the intro on scroll */
-        }
-        .aura-enter {
-            position: absolute;
-            inset: 0;
-            animation: seqLightsUp 2.4s cubic-bezier(0.45, 0, 0.2, 1) backwards;
-            animation-delay: var(--seq-t0);
-        }
-        .aura-glow {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: var(--aura-size);
-            height: var(--aura-size);
-            will-change: transform;
-            transform: translate3d(-9999px, 0, 0); /* parked off screen until the script places it */
-        }
-        .aura-layer {
-            position: absolute;
-            inset: 0;
-            filter: invert(1);
-        }
-        /* soft falloff (roughly gaussian) so there's no visible edge or banding ring */
-        .aura-dark {
-            opacity: calc(1 - var(--theme-mix));
-            background: radial-gradient(circle closest-side,
-                rgba(65, 65, 20, calc(var(--aura-dark) * 1.00)) 0%,
-                rgba(65, 65, 20, calc(var(--aura-dark) * 0.95)) 12%,
-                rgba(65, 65, 20, calc(var(--aura-dark) * 0.78)) 25%,
-                rgba(65, 65, 20, calc(var(--aura-dark) * 0.52)) 40%,
-                rgba(65, 65, 20, calc(var(--aura-dark) * 0.30)) 55%,
-                rgba(65, 65, 20, calc(var(--aura-dark) * 0.14)) 70%,
-                rgba(65, 65, 20, calc(var(--aura-dark) * 0.04)) 85%,
-                rgba(65, 65, 20, 0) 100%);
-        }
-        .aura-light {
-            opacity: var(--theme-mix);
-            background: radial-gradient(circle closest-side,
-                rgba(0, 0, 0, calc(var(--aura-light) * 1.00)) 0%,
-                rgba(0, 0, 0, calc(var(--aura-light) * 0.95)) 12%,
-                rgba(0, 0, 0, calc(var(--aura-light) * 0.78)) 25%,
-                rgba(0, 0, 0, calc(var(--aura-light) * 0.52)) 40%,
-                rgba(0, 0, 0, calc(var(--aura-light) * 0.30)) 55%,
-                rgba(0, 0, 0, calc(var(--aura-light) * 0.14)) 70%,
-                rgba(0, 0, 0, calc(var(--aura-light) * 0.04)) 85%,
-                rgba(0, 0, 0, 0) 100%);
-        }
-        /* light mode only: a very faint shading toward the edges of the screen, so the white
-           glow has something to light up against (white on a near-white page is invisible) */
-        .aura-shade {
-            position: absolute;
-            inset: 0;
-            filter: invert(1);
-            opacity: var(--theme-mix);
-            background: radial-gradient(ellipse 85% 85% at 50% 48%,
-                rgba(160, 160, 125, 0) 30%,
-                rgba(160, 160, 125, 0.13) 100%);
-        }
-
-        /* PERF: the intro is either dark or light, never both. The layer for the appearance that
-           is NOT showing is removed from rendering (display: none) instead of being kept at
-           opacity 0, so the browser doesn't allocate / draw a second 1350px glow, a second shade
-           and a second pair of masked + blurred player rings. html.intro-light is toggled by the
-           script in the same step as the theme switch. */
-        html:not(.intro-light) .aura-light,
-        html:not(.intro-light) .aura-shade,
+        /* PERF: the intro is either dark or light, never both. The ring set for the appearance
+           that is NOT showing is removed from rendering (display: none) instead of being kept at
+           opacity 0, so the browser doesn't draw a second pair of masked + blurred player rings.
+           html.intro-light is toggled by the script in the same step as the theme switch. */
         html:not(.intro-light) .edge-set.is-light,
-        html.intro-light .aura-dark,
         html.intro-light .edge-set.is-dark { display: none; }
         /* PERF: the scroll-hint arrow bounces forever; stop it once the intro is scrolled away */
         html.intro-off .landing-scroll-arrow { animation: none; }
 
         /* ---- video player edge glow ----
            Two rings hugging the border of the player, lit by a radial gradient that is centred
-           on the aura (--ex / --ey are set by the script). So the border only brightens on the
-           side the light is drifting past, and falls back to nothing when it moves away.
+           on the cursor (--ex / --ey are set by the script). So the border only brightens on the
+           side the cursor is passing, and falls back to nothing when it moves away.
            .edge-line = crisp 1.5px border, .edge-bloom = soft blurred spill inside and outside.
            One set for dark mode, one for light mode, cross-faded with --theme-mix. */
         .landing-video-edge {
@@ -1797,7 +1720,6 @@
         html.intro-seq-pending .landing-action-row { pointer-events: none; }
 
         @media (prefers-reduced-motion: reduce) {
-            .aura-enter,
             .landing-video-edge,
             .landing-video-window,
             .landing-video-window::after,
@@ -2038,17 +1960,6 @@
 
     <!-- LANDING INTRO: fades away as the user scrolls, then the main site fades in -->
     <div class="landing-intro" id="landingIntro">
-        <!-- aura: heavy light that drifts after the cursor (behind everything else in the intro) -->
-        <div class="landing-aura" id="landingAura" aria-hidden="true">
-            <div class="aura-enter">
-                <div class="aura-shade"></div>
-                <div class="aura-glow" id="landingAuraGlow">
-                    <div class="aura-layer aura-dark"></div>
-                    <div class="aura-layer aura-light"></div>
-                </div>
-            </div>
-        </div>
-
         <canvas class="landing-particles" id="landingParticles"></canvas>
 
         <div class="landing-intro-content" id="landingIntroContent">
@@ -2631,28 +2542,26 @@
             makeCircles();
             paint(0);
 
-            /* ---------- aura: a heavy ball of light that drifts after the cursor ---------- */
-            var auraEl   = document.getElementById('landingAura');
-            var auraGlow = document.getElementById('landingAuraGlow');
+            /* ---------- cursor -> player edge glow (the visible light itself has been removed) ---------- */
             var edgeEl   = document.getElementById('landingVideoEdge');
 
-            // How heavy the light feels. Two stages of smoothing are chained: an invisible "lead"
-            // point chases the cursor, and the light chases the lead point. That gives it a soft
-            // start (it doesn't leap off the moment the mouse moves) and a long, settling tail.
+            // The border glow follows an invisible point that trails the cursor. Two stages of smoothing
+            // are chained: an invisible "lead" point chases the cursor, and the glow point chases the
+            // lead point. That gives the same soft start and long, settling tail as before.
             // Bigger numbers = heavier / slower. (milliseconds; frame-rate independent)
+            // To make the border react to the cursor instantly instead, set both to 1.
             var AURA_LEAD_MS = 160;
             var AURA_DRAG_MS = 300;
             var EDGE_REACH   = 460;   // px: matches the radius of the player's edge glow
 
-            var auraHalf   = 0;
             var auraTarget = { x: 0, y: 0 };   // where the cursor is
             var auraLead   = { x: 0, y: 0 };
-            var auraPos    = { x: 0, y: 0 };   // where the light is
+            var auraPos    = { x: 0, y: 0 };   // the (invisible) point the border glow is aimed at
             var auraRaf = 0, auraLast = 0, auraLive = true, auraHasPointer = false;
 
-            // PERF: the player's edge glow is the expensive part (changing --ex / --ey repaints a masked,
-            // blurred ring), so it is refreshed at most every 32ms (~30fps); the light itself still
-            // moves at full frame rate, and the final resting position is always written (forceEdge)
+            // PERF: the player's edge glow is expensive (changing --ex / --ey repaints a masked,
+            // blurred ring), so it is refreshed at most every 32ms (~30fps), and the final resting
+            // position is always written (forceEdge)
             var EDGE_MIN_MS = 32, edgeWriteAt = 0;
             var edgeR = null, edgeRAt = 0, edgeOW = 1, edgeOH = 1, lastEx = '', lastEy = '';
             function edgeRect() {
@@ -2663,11 +2572,9 @@
                 return edgeR;
             }
             function paintAura(forceEdge) {
-                auraGlow.style.transform = 'translate3d(' + (auraPos.x - auraHalf).toFixed(1) + 'px,' +
-                                           (auraPos.y - auraHalf).toFixed(1) + 'px,0)';
                 if (!edgeEl) return;
                 if (!forceEdge && performance.now() - edgeWriteAt < EDGE_MIN_MS) return;
-                // aim the player's edge glow at the light (in the player's own coordinates)
+                // aim the player's edge glow at the tracked point (in the player's own coordinates)
                 var r = edgeRect();
                 if (!r.width || !r.height) return;
                 if (auraPos.x < r.left - EDGE_REACH || auraPos.x > r.right + EDGE_REACH ||
@@ -2700,9 +2607,8 @@
                 if (!auraRaf && auraLive && !reduceMotion) auraRaf = requestAnimationFrame(auraTick);
             }
 
-            // until the visitor moves the mouse, the light rests in the middle of the screen
+            // until the visitor moves the mouse, the tracked point rests in the middle of the screen
             function restAura() {
-                auraHalf = auraGlow.offsetWidth / 2;
                 if (!auraHasPointer) {
                     auraTarget.x = auraLead.x = auraPos.x = viewW / 2;
                     auraTarget.y = auraLead.y = auraPos.y = viewH / 2;
@@ -2779,10 +2685,9 @@
                 setVideo(introVideo, out < 1 && swipeDone && !document.hidden);
                 setVideo(heroVideo, p > 0.12 && heroVisible && !document.hidden);
 
-                // aura: fades out with the intro backdrop, and its loop sleeps while the intro is off screen
-                // PERF: the aura is fully invisible once the intro content is gone (introFade 0), so its animation
-                // loop sleeps and it is hidden from that point (it used to keep running until the circles ended too)
-                if (auraEl) { auraEl.style.opacity = introFade.toFixed(3); auraEl.style.visibility = introFade <= 0 ? 'hidden' : ''; }
+                // border-glow tracking: its loop sleeps while the intro is off screen
+                // PERF: the player's border glow is fully invisible once the intro content is gone (introFade 0),
+                // so the tracking loop sleeps from that point (it used to keep running until the circles ended too)
                 var auraShouldRun = out < 1;
                 root.classList.toggle('intro-off', dots >= 1);
                 if (auraShouldRun !== auraLive) {
@@ -2793,7 +2698,7 @@
                 // light mode: fade the light backdrop / nav bar with the intro content
                 var menuOpen = !!navOverlay && navOverlay.classList.contains('open');
                 setVar(intro, '--intro-fade', lightAmt.toFixed(3));
-                setVar(intro, '--theme-mix', mixE.toFixed(3));   // drives the aura + player edge glow colours
+                setVar(intro, '--theme-mix', mixE.toFixed(3));   // drives the player edge glow colours
                 // decide the menu's look once, at the moment it opens: light while the light intro is
                 // on screen, otherwise dark like the rest of the site (no flipping while it is open)
                 if (menuOpen && !menuWasOpen) menuLight = isLight() && introFade > 0.5;
