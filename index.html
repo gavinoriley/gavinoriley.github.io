@@ -35,7 +35,6 @@
 
     <script>
         document.documentElement.classList.add('landing-intro-active', 'intro-seq-pending');
-        // the intro buttons can't be hovered / clicked while they are still fading in
         setTimeout(function () { document.documentElement.classList.remove('intro-seq-pending'); }, 4400);
     </script>
 
@@ -70,10 +69,6 @@
             min-height: 100vh;
         }
 
-        /* two dot layers moved with transform (compositor only) instead of animating background-position (repaint every frame).
-           PERF: the drift is stepped in whole 1px hops (one hop every ~1.9s) instead of a continuous linear move.
-           The motion is only ~0.5px per second, so it looks identical, but a smooth animation forced the browser to
-           redraw the whole screen 60 times a second forever; a stepped one lets the GPU sit idle between hops. */
         body::before, body::after {
             content: '';
             position: fixed;
@@ -96,6 +91,7 @@
         @keyframes drift1 { to { transform: translate3d(52px, 52px, 0); } }
         @keyframes drift2 { to { transform: translate3d(-78px, 78px, 0); } }
 
+        /* LANDING INTRO CURTAIN (black screen + logo shown at the very start) */
         .intro-swipe {
             position: fixed;
             inset: 0;
@@ -106,9 +102,8 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            /* the curtain never moves: it holds the whole screen for a beat (0.6s),
-               then it and the logo on it fade out together (0.9s) to reveal the site */
             animation: introFadeOut 0.9s ease-in-out 0.6s forwards;
+            will-change: opacity;
         }
 
         .intro-logo {
@@ -124,7 +119,6 @@
             100% { opacity: 0; visibility: hidden; }
         }
 
-        /* FROSTED TOP NAV BAR */
         .top-nav-bar {
             position: fixed;
             top: 0;
@@ -143,7 +137,6 @@
             box-shadow: 0 1px 0 rgba(0, 0, 0, 0.35);
         }
 
-        /* MENU */
         .menu-toggle {
             position: relative;
             width: 22px;
@@ -288,7 +281,6 @@
             color: #fff;
         }
 
-        /* SOCIALS */
         .hero-socials {
             position: relative;
             display: flex;
@@ -388,7 +380,6 @@
             fill: currentColor;
         }
 
-        /* LAYOUT */
         #wrapper {
             position: relative;
             z-index: 1;
@@ -397,7 +388,6 @@
             padding: 0 28px 90px;
         }
 
-        /* HERO SECTION */
         .title-section {
             position: relative;
             z-index: 10;
@@ -540,9 +530,6 @@
             line-height: 0;
         }
 
-        /* CHARACTERS: clickable character stills laid over FinalCharacters2.png.
-           Positions are percentages of the 3360x2969 source image, so the overlays stay locked
-           to the stills at every screen width. */
         .image-sequence .characters-stage {
             position: relative;
             display: block;
@@ -561,17 +548,14 @@
             padding: 0;
             border: 0;
             background: none;
-            cursor: pointer;
             line-height: 0;
             font: inherit;
             appearance: none;
             -webkit-appearance: none;
             -webkit-tap-highlight-color: transparent;
-            /* springy, smooth grow on hover / shrink on release */
             transition: transform 0.24s cubic-bezier(0.34, 1.4, 0.64, 1), filter 0.15s ease;
             transform-origin: 50% 50%;
-            --rest: 1;                /* the size the button settles at (changes on hover) */
-        }
+            --rest: 1;        }
         .image-sequence .characters-stage .char-hit img {
             display: block;
             width: 100%;
@@ -580,18 +564,15 @@
             user-select: none;
             -webkit-user-drag: none;
         }
-        /* HOVER: the button grows a little (mouse / trackpad only, so touch screens don't get a stuck-open look) */
         @media (hover: hover) and (pointer: fine) {
             .characters-stage .char-hit:hover { transform: scale(1.08); filter: brightness(1.15); z-index: 2; --rest: 1.08; }
         }
         .characters-stage .char-hit:focus-visible { outline: 2px solid #fff; outline-offset: 2px; z-index: 2; }
-        /* PRESS: it sinks in like a physical button while held down... */
         .characters-stage .char-hit:active {
             transform: scale(0.9) translateY(1px);
             filter: brightness(0.85);
             transition-duration: 0.06s;
         }
-        /* ...and springs back with a little bounce when it is clicked / tapped / activated with the keyboard */
         .characters-stage .char-hit.is-clicked { animation: charPress 0.32s ease-out; }
         @keyframes charPress {
             0%   { transform: scale(0.9) translateY(1px); filter: brightness(0.85); }
@@ -599,14 +580,10 @@
             100% { transform: scale(var(--rest, 1)); }
         }
 
-        /* ---- character info panel ----
-           Frosted page (same recipe as the hamburger menu: dark 55% wash + 24px blur), the pressed
-           character's enlarged art on the left, name + description on the right. */
         .char-panel {
             position: fixed;
             inset: 0;
-            z-index: 400;              /* above everything, including the nav bar (200) and menu (150) */
-            background: rgba(7, 7, 7, 0.55);
+            z-index: 400;            background: rgba(7, 7, 7, 0.55);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             overflow-y: auto;
@@ -614,10 +591,8 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            /* fade OUT: opacity first, then switch visibility off once it has faded */
             transition: opacity 0.4s ease, visibility 0s linear 0.4s;
             outline: none;
-            cursor: pointer;
         }
         .char-panel.open {
             opacity: 1;
@@ -651,8 +626,7 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            image-rendering: pixelated;        /* enlarged pixel art stays crisp instead of blurry */
-            user-select: none;
+            image-rendering: pixelated;            user-select: none;
             -webkit-user-drag: none;
         }
         .char-panel-text {
@@ -670,19 +644,16 @@
             font-weight: normal;
             letter-spacing: 2px;
             line-height: 1.2;
-            text-align: center;                /* title: middle centre of the text column */
-            color: #fff;
+            text-align: center;            color: #fff;
             margin-bottom: 26px;
         }
         .char-panel-body p {
             font-size: clamp(15px, 1.35vw, 19px);
             line-height: 1.7;
             letter-spacing: 0.4px;
-            text-align: left;                  /* description: directly underneath the title */
-        }
+            text-align: left;        }
         .char-panel-body p + p { margin-top: 1em; }
 
-        /* ---- world video panel (same frosted page as the character panel) ---- */
         .video-panel {
             position: fixed;
             inset: 0;
@@ -690,8 +661,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 28px 16px;          /* same space above and below, so the window sits dead centre */
-            background: rgba(7, 7, 7, 0.55);
+            padding: 28px 16px;            background: rgba(7, 7, 7, 0.55);
             backdrop-filter: blur(24px);
             -webkit-backdrop-filter: blur(24px);
             opacity: 0;
@@ -707,15 +677,11 @@
             transition: opacity 0.4s ease, visibility 0s;
         }
         .video-panel-window {
-            /* The window has exactly the same shape as the video (--vr = width / height, set by the script
-               for each video; the game footage is 16:10), so YouTube has no spare room to fill with black
-               bars. As large as fits: up to 1100px wide, never wider than the screen or taller than it. */
             --vr: 1.6;
             width: min(1100px, 100%, calc((100vh - 56px) * var(--vr)));
             width: min(1100px, 100%, calc((100dvh - 56px) * var(--vr)));
             aspect-ratio: var(--vr);
             background: #000;
-            /* thin outline drawn as a shadow (not a border) so it takes no space from the video */
             box-shadow: 0 0 0 1px #333, 0 24px 70px rgba(0, 0, 0, 0.6);
             transform: scale(0.96);
             transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -754,6 +720,7 @@
             animation: scroll 40s linear infinite;
             will-change: transform;
         }
+        .carousel.paused .carousel-inner { animation-play-state: paused; }
         .carousel-inner img {
             width: calc(100vw / 3);
             flex-shrink: 0;
@@ -794,7 +761,6 @@
         }
         .footer-links a:hover { color: #aaa; }
 
-        /* MODALS */
         .modal-overlay,
         .patch-modal-overlay,
         .mobile-demo-modal {
@@ -910,7 +876,6 @@
             opacity: 0.9;
         }
 
-        /* MOBILE RESPONSIVE ADAPTATIONS */
         @media (max-width: 700px) {
             .top-nav-bar {
                 padding-left: max(12px, env(safe-area-inset-left));
@@ -1036,23 +1001,12 @@
     </style>
 
     <style id="landing-intro-styles">
-        /* ===================================================================
-           LANDING INTRO
-           A full-screen intro that fades away on scroll, over a night-time
-           background image, after which the main site fades in. Scroll progress is
-           driven by the script at the bottom of the page.
-           Only active when JS is running (class set in <head>), otherwise the
-           page falls back to the normal site.
-           =================================================================== */
+        /* LANDING INTRO STYLES */
 
-        /* The menu / modal code sets body{overflow:hidden} inline, which would turn
-           <body> into a scroll container and break position:sticky on the pinned
-           hero below. <html> already clips horizontal overflow, so body doesn't need to. */
         body { overflow: visible !important; }
 
         :root {
-            --intro-scroll: 150vh; /* how much scrolling the intro transition takes */
-        }
+            --intro-scroll: 150vh;        }
 
         .landing-intro { display: none; }
 
@@ -1060,18 +1014,15 @@
             display: block;
             position: fixed;
             inset: 0;
-            z-index: 120; /* above the page, below the nav overlay (150) and nav bar (200) */
-            pointer-events: none;
+            z-index: 120;            pointer-events: none;
             overflow: hidden;
         }
 
-        /* main site starts hidden and is faded in by the script */
         .landing-intro-active #wrapper {
             opacity: 0;
             visibility: hidden;
         }
 
-        /* pin the main hero in place while the intro fades out and the site fades in */
         .landing-intro-active .hero-pin-zone {
             position: relative;
             width: 100vw;
@@ -1088,7 +1039,6 @@
             margin-left: 0;
         }
 
-        /* intro background image (fades out with the intro as the page is scrolled) */
         .landing-bg {
             position: absolute;
             inset: 0;
@@ -1129,7 +1079,6 @@
             color: #c8c8d0;
             text-shadow: 0 0 12px rgba(220, 220, 230, 0);
             filter: brightness(1);
-            /* fade-out when the cursor leaves: still smooth, a little quicker than the build-up */
             transition: color 1s cubic-bezier(0.4, 0, 0.2, 1),
                         text-shadow 1s cubic-bezier(0.4, 0, 0.2, 1),
                         filter 1s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1138,7 +1087,6 @@
             color: #f0f0f5;
             text-shadow: 0 0 12px rgba(220, 220, 230, 0.5);
             filter: brightness(1.2);
-            /* slow, heavy build-up to the full glow (nudged slightly quicker: 1.8s -> 1.5s) */
             transition: color 1.5s cubic-bezier(0.5, 0, 0.2, 1),
                         text-shadow 1.5s cubic-bezier(0.5, 0, 0.2, 1),
                         filter 1.5s cubic-bezier(0.5, 0, 0.2, 1);
@@ -1146,7 +1094,6 @@
 
         .landing-video-wrapper {
             position: relative;
-            /* 920px max, shrinks on short screens so everything fits without clipping */
             width: max(280px, min(90vw, 920px, calc((100vh - 290px) * 1.7778)));
             width: max(280px, min(90vw, 920px, calc((100dvh - 290px) * 1.7778)));
         }
@@ -1168,13 +1115,11 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            /* brightening back up when the cursor leaves: smooth, a little quicker than the dim */
             transition: filter 1s cubic-bezier(0.4, 0, 0.2, 1), opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
             will-change: filter;
         }
         .landing-video-window.is-dimmed video {
             filter: brightness(0.4) saturate(0.7);
-            /* slow, heavy dim, same timing as the tagline glow and button aura (1.8s -> 1.5s) */
             transition: filter 1.5s cubic-bezier(0.5, 0, 0.2, 1), opacity 1.5s cubic-bezier(0.5, 0, 0.2, 1);
         }
 
@@ -1236,7 +1181,6 @@
             text-decoration: none;
             border: 1px solid rgba(180, 180, 190, 0.22);
             box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
-            /* fade-out when the cursor leaves: smooth, a little quicker than the build-up */
             transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1),
                         border-color 1s cubic-bezier(0.4, 0, 0.2, 1),
                         color 1s cubic-bezier(0.4, 0, 0.2, 1);
@@ -1249,15 +1193,11 @@
             color: #fff;
             border-color: rgba(220, 220, 230, 0.55);
             background: rgba(255, 255, 255, 0.1);
-            /* slow, heavy build-up to the full aura (1.6s -> 1.35s) */
             transition: background-color 1.35s cubic-bezier(0.5, 0, 0.2, 1),
                         border-color 1.35s cubic-bezier(0.5, 0, 0.2, 1),
                         color 1.35s cubic-bezier(0.5, 0, 0.2, 1);
         }
 
-        /* "aura" glow behind the button. Two soft layers that only fade in opacity, so it
-           swells up slowly and heavily instead of snapping on. The wide halo is the slower
-           of the two, so the glow keeps growing right up to its climax. */
         .landing-pill-btn::before,
         .landing-pill-btn::after {
             content: '';
@@ -1270,24 +1210,20 @@
             will-change: opacity;
             transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        /* wide, diffuse halo */
         .landing-pill-btn::before {
             box-shadow: 0 10px 60px 14px rgba(170, 170, 215, 0.20),
                         0 18px 130px 36px rgba(150, 150, 205, 0.14);
         }
-        /* tighter, brighter core hugging the button */
         .landing-pill-btn::after {
             box-shadow: 0 0 22px 3px rgba(215, 215, 235, 0.30),
                         0 6px 46px 8px rgba(190, 190, 225, 0.20);
         }
         .landing-pill-btn:hover::before {
             opacity: 1;
-            transition: opacity 1.85s cubic-bezier(0.5, 0, 0.2, 1); /* was 2.2s */
-        }
+            transition: opacity 1.85s cubic-bezier(0.5, 0, 0.2, 1);        }
         .landing-pill-btn:hover::after {
             opacity: 1;
-            transition: opacity 1.35s cubic-bezier(0.5, 0, 0.2, 1); /* was 1.6s */
-        }
+            transition: opacity 1.35s cubic-bezier(0.5, 0, 0.2, 1);        }
 
         .landing-scroll-hint {
             position: absolute;
@@ -1328,6 +1264,7 @@
 
         @media (prefers-reduced-motion: reduce) {
             body::before,
+            body::after,
             .carousel-inner,
             .landing-scroll-arrow { animation: none; }
             .intro-swipe { animation-duration: 0.01s; animation-delay: 0s; }
@@ -1351,20 +1288,8 @@
             .landing-scroll-hint span { font-size: 11px; }
         }
 
-        /* ===================================================================
-           CURSOR LIGHT -> PLAYER EDGE GLOW
-           The visible ball of light that used to drift after the cursor has been removed.
-           What remains is its effect: the cursor (smoothed by the script at the bottom of
-           the page) still lights up the border of the video player, exactly as before.
-           =================================================================== */
-        /* PERF: the scroll-hint arrow bounces forever; stop it once the intro is scrolled away */
         html.intro-off .landing-scroll-arrow { animation: none; }
 
-        /* ---- video player edge glow ----
-           Two rings hugging the border of the player, lit by a radial gradient that is centred
-           on the cursor (--ex / --ey are set by the script). So the border only brightens on the
-           side the cursor is passing, and falls back to nothing when it moves away.
-           .edge-line = crisp 1.5px border, .edge-bloom = soft blurred spill inside and outside. */
         .landing-video-edge {
             position: absolute;
             inset: 0;
@@ -1388,7 +1313,6 @@
         .edge-line  { padding: 1.5px; filter: invert(1); }
         .edge-bloom { padding: 3px;   filter: invert(1) blur(9px); }
 
-        /* pale lavender, (30, 30, 5) inverts to (225, 225, 250) */
         .is-dark .edge-line {
             background: radial-gradient(circle min(420px, 62vw) at var(--ex) var(--ey),
                 rgba(30, 30, 5, 0.85) 0%, rgba(30, 30, 5, 0.50) 35%,
@@ -1400,26 +1324,9 @@
                 rgba(65, 65, 20, 0.08) 75%, rgba(65, 65, 20, 0) 100%);
         }
 
-        /* ===================================================================
-           INTRO SEQUENCE  (plays once, as the black curtain fades away)
-           Light comes up first, then the player, the player's screen powers on, the logo
-           pulls into focus, the tagline settles, "demons demons...!" ignites letter by
-           letter, and the three buttons fade in last.
-
-           --seq-t0 is the moment the curtain is mostly gone. It is tied to .intro-swipe:
-           0.6s hold + 0.9s fade = 1.5s to fully clear, and the sequence starts a little
-           before that (1.2s) so the site's own elements fade in as the curtain fades out.
-           Change them together.
-
-           Every animation uses fill-mode "backwards", so afterwards the
-           elements simply return to their normal styles (no leftover inline state).
-           =================================================================== */
+        /* LANDING INTRO SEQUENCE STYLES (opening animation) */
         :root { --seq-t0: 1.2s; }
 
-        @keyframes seqLightsUp {
-            from { opacity: 0; }
-            to   { opacity: 1; }
-        }
         @keyframes seqWindowIn {
             from { opacity: 0; transform: scale(0.955); }
             to   { opacity: 1; transform: scale(1); }
@@ -1454,44 +1361,36 @@
             to   { opacity: 0.7; }
         }
 
-        /* 1. the player settles into place... */
         .landing-video-window {
             animation: seqWindowIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
             animation-delay: calc(var(--seq-t0) + 0.1s);
         }
-        /* 2. ...and its screen powers on (a black cover lifting off the video) */
         .landing-video-window::after {
             content: '';
             position: absolute;
             inset: 0;
-            z-index: 50;           /* above the video, below the logo (60) */
-            background: #000;
+            z-index: 50;            background: #000;
             opacity: 0;
             pointer-events: none;
             animation: seqScreenOn 1.4s cubic-bezier(0.4, 0, 0.2, 1) backwards;
             animation-delay: calc(var(--seq-t0) + 0.5s);
         }
-        /* 3. logo pulls into focus */
         .landing-center-logo {
             animation: seqLogoIn 1.3s cubic-bezier(0.16, 1, 0.3, 1) backwards;
             animation-delay: calc(var(--seq-t0) + 0.9s);
         }
-        /* 4. tagline */
         .landing-tagline {
             animation: seqRise 1.1s cubic-bezier(0.22, 0.8, 0.2, 1) backwards;
             animation-delay: calc(var(--seq-t0) + 1.3s);
         }
-        /* 5. "demons demons...!" ignites one letter at a time, top to bottom */
         .landing-side-text span {
             animation: seqLetter 0.9s ease-out backwards;
             animation-delay: calc(var(--seq-t0) + 1.5s + var(--i, 0) * 0.045s);
         }
-        /* 6. buttons fade up one after another */
         .landing-pill-btn {
             animation: seqRise 1s cubic-bezier(0.3, 0, 0.2, 1) backwards;
             animation-delay: calc(var(--seq-t0) + 1.9s + var(--i, 0) * 0.17s);
         }
-        /* 7. scroll hint, last */
         .landing-scroll-hint {
             animation: seqHint 1s ease-out backwards;
             animation-delay: calc(var(--seq-t0) + 2.9s);
@@ -1510,12 +1409,7 @@
             .landing-scroll-hint { animation: none; }
             html.intro-seq-pending .landing-action-row { pointer-events: auto; }
         }
-    </style>
 
-    <style id="perf-overrides">
-        .intro-swipe { will-change: opacity; }
-        /* "bad guy" twitches once, a moment after the tagline settles, then returns to normal.
-           transform + a tiny text-shadow on 7 glyphs, stepped (snaps instead of tweening), so it is nearly free. */
         .bad-guy {
             display: inline-block;
             white-space: nowrap;
@@ -1539,9 +1433,8 @@
             94%, 100% { transform: none; text-shadow: 0 0 0 rgba(224, 64, 64, 0); }
         }
         @media (prefers-reduced-motion: reduce) { .bad-guy { animation: none; } }
-        .carousel.paused .carousel-inner { animation-play-state: paused; }
-        @media (prefers-reduced-motion: reduce) { body::after { animation: none; } }
     </style>
+
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -1566,6 +1459,7 @@
     </script>
 </head>
 <body>
+    <!-- LANDING INTRO CURTAIN -->
     <div class="intro-swipe">
         <img src="https://gavinoriley.github.io/assets/whitehamaface.png" alt="Hamachi" class="intro-logo" fetchpriority="high" decoding="sync">
     </div>
@@ -1730,7 +1624,7 @@
         </div>
     </div>
 
-    <!-- LANDING INTRO: fades away as the user scrolls, then the main site fades in -->
+    <!-- LANDING INTRO START -->
     <div class="landing-intro" id="landingIntro">
         <div class="landing-bg" id="landingBg" aria-hidden="true"></div>
 
@@ -1771,6 +1665,8 @@
         </div>
     </div>
 
+    <!-- LANDING INTRO END -->
+
     <div id="wrapper">
         <main>
             <div class="hero-pin-zone" id="heroPinZone">
@@ -1797,7 +1693,7 @@
                     </div>
                 </div>
             </section>
-            </div><!-- /hero-pin-zone -->
+            </div>
 
             <div class="image-sequence">
                 <div class="carousel">
@@ -1829,8 +1725,6 @@
                     </div>
                 </div>
 
-                <!-- these three tall images have no width/height, so they load up front (low priority) instead of lazily:
-                     the page height is then settled during the intro and the scrollbar thumb does not jump while scrolling -->
                 <a href="https://hamachithepsychotickiller.com/publishingpartnerships/">
                     <img loading="eager" fetchpriority="low" decoding="async" src="https://gavinoriley.github.io/assets/sleekCorPubOp3.png" alt="Publishing Opportunity">
                 </a>
@@ -1863,8 +1757,7 @@
                         <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/aboutpunnibox.png" alt="" draggable="false">
                     </button>
                 </div>
-                <!-- WORLDS: same clickable-still buttons as the characters, each opens a video instead of text.
-                     Positions are percentages of the 3360 x 2345 artwork, measured from its pixels. -->
+
                 <div class="characters-stage worlds-stage">
                     <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalWorlds4.png" alt="Worlds" width="3360" height="2345">
                     <button type="button" class="char-hit" data-world="rr" aria-label="Riches Reef: watch video" aria-haspopup="dialog" style="left:23.27381%;top:29.63753%;width:12.14286%;height:24.43497%;">
@@ -1891,8 +1784,6 @@
         </footer>
     </div>
 
-    <!-- CHARACTER INFO PANEL: frosted page + enlarged art (left) + name and description (right).
-         Filled in by the script at the bottom of the page. Clicking anywhere on it fades it away. -->
     <div class="char-panel" id="charPanel" role="dialog" aria-modal="true" aria-labelledby="charPanelTitle" aria-hidden="true" tabindex="-1" data-lenis-prevent>
         <div class="char-panel-inner">
             <div class="char-panel-art"><img id="charPanelImg" alt="" draggable="false"></div>
@@ -1903,7 +1794,6 @@
         </div>
     </div>
 
-    <!-- WORLD VIDEO PANEL: frosted page with a large video window. Clicking outside the window closes it. -->
     <div class="video-panel" id="worldVideoPanel" role="dialog" aria-modal="true" aria-label="World video" aria-hidden="true" tabindex="-1">
         <div class="video-panel-window">
             <iframe id="worldVideoIframe" title="World video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
@@ -1912,7 +1802,7 @@
 
     <script src="https://unpkg.com/lenis@1.3.23/dist/lenis.min.js"></script>
     <script>
-        const lenis = new Lenis({
+        const lenis = typeof Lenis === 'function' ? new Lenis({
             lerp: 0.08,
             wheelMultiplier: 1.0,
             touchMultiplier: 1.5,
@@ -1922,9 +1812,13 @@
             anchors: true,
             allowNestedScroll: true,
             stopInertiaOnNavigate: true
-        });
+        }) : undefined;
 
-        // MENU CONTROLS
+        function lockScroll(lock) {
+            document.body.style.overflow = lock ? 'hidden' : '';
+            if (lenis) { lock ? lenis.stop() : lenis.start(); }
+        }
+
         const menuToggle = document.getElementById('menuToggleBtn');
         const navOverlay = document.getElementById('mainNavOverlay');
         const menuLinksWrapper = document.getElementById('menuLinksWrapper');
@@ -1941,16 +1835,14 @@
             navOverlay.classList.toggle('open');
 
             if (isOpen) {
-                document.body.style.overflow = '';
-                if (typeof lenis !== 'undefined') lenis.start();
+                lockScroll(false);
                 setTimeout(() => {
                     menuLinksWrapper.classList.remove('hidden');
                     synopsisContentPanel.classList.remove('active');
                     contactContentPanel.classList.remove('active');
                 }, 400);
             } else {
-                document.body.style.overflow = 'hidden';
-                if (typeof lenis !== 'undefined') lenis.stop();
+                lockScroll(true);
             }
         }
 
@@ -1959,8 +1851,7 @@
             if (!navOverlay.classList.contains('open')) {
                 menuToggle.classList.add('open');
                 navOverlay.classList.add('open');
-                document.body.style.overflow = 'hidden';
-                if (typeof lenis !== 'undefined') lenis.stop();
+                lockScroll(true);
             }
             menuLinksWrapper.classList.add('hidden');
             synopsisContentPanel.classList.remove('active');
@@ -2014,7 +1905,6 @@
             if (e.target === navOverlay) toggleMenu();
         });
 
-        // TRAILER LIGHTBOX
         const trailerLightbox = document.getElementById('trailerLightbox');
         const modalVideoIframe = document.getElementById('modalVideoIframe');
         const watchTrailerBtn = document.getElementById('watchTrailerBtn');
@@ -2025,16 +1915,14 @@
             if (e) e.preventDefault();
             modalVideoIframe.src = targetEmbedSource;
             trailerLightbox.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            if (typeof lenis !== 'undefined') lenis.stop();
+            lockScroll(true);
         }
 
         function closeTrailerModal(e) {
             if (e) e.preventDefault();
             trailerLightbox.classList.remove('open');
             modalVideoIframe.src = "";
-            document.body.style.overflow = '';
-            if (typeof lenis !== 'undefined') lenis.start();
+            lockScroll(false);
         }
 
         if (watchTrailerBtn) watchTrailerBtn.addEventListener('click', openTrailerModal);
@@ -2043,7 +1931,6 @@
             if (e.target === trailerLightbox) closeTrailerModal(e);
         });
 
-        // PATCH NOTES MODAL
         const patchNotesModal = document.getElementById('patchNotesModal');
         const patchNotesBtn = document.getElementById('patchNotesBtn');
         const closePatchBtn = document.getElementById('closePatchBtn');
@@ -2051,15 +1938,13 @@
         function openPatchNotesModal(e) {
             if (e) e.preventDefault();
             patchNotesModal.classList.add('open');
-            document.body.style.overflow = 'hidden';
-            if (typeof lenis !== 'undefined') lenis.stop();
+            lockScroll(true);
         }
 
         function closePatchNotesModal(e) {
             if (e) e.preventDefault();
             patchNotesModal.classList.remove('open');
-            document.body.style.overflow = '';
-            if (typeof lenis !== 'undefined') lenis.start();
+            lockScroll(false);
         }
 
         if (patchNotesBtn) patchNotesBtn.addEventListener('click', openPatchNotesModal);
@@ -2068,13 +1953,12 @@
             if (e.target === patchNotesModal) closePatchNotesModal(e);
         });
 
-        // MOBILE DEMO INTERCEPT
         const playDemoBtn = document.getElementById('playDemoBtn');
         const mobileDemoModal = document.getElementById('mobileDemoModal');
 
         function isMobileDevice() {
-            return window.innerWidth <= 768 || 
-                   /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) || 
+            return window.innerWidth <= 768 ||
+                   /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent) ||
                    window.matchMedia('(max-width: 768px)').matches;
         }
 
@@ -2083,18 +1967,15 @@
                 if (isMobileDevice()) {
                     e.preventDefault();
                     mobileDemoModal.classList.add('open');
-                    document.body.style.overflow = 'hidden';
-                    if (typeof lenis !== 'undefined') lenis.stop();
+                    lockScroll(true);
                 }
             });
             mobileDemoModal.addEventListener('click', () => {
                 mobileDemoModal.classList.remove('open');
-                document.body.style.overflow = '';
-                if (typeof lenis !== 'undefined') lenis.start();
+                lockScroll(false);
             });
         }
 
-        // HERO TAGLINE DYNAMICS
         const heroLabel = document.querySelector('.hero-label');
         const defaultTagline = 'the platformer game where you can play as the bad guy';
         const defaultColor = '#c0c0c0';
@@ -2120,7 +2001,6 @@
             el.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
         });
 
-        // SHARE DROPDOWN
         const shareEngineTrigger = document.getElementById('shareEngineTrigger');
         const shareDropdownPanel = document.getElementById('shareDropdownPanel');
         const copyLinkActionBtn = document.getElementById('copyLinkActionBtn');
@@ -2167,7 +2047,6 @@
         'use strict';
         var root = document.documentElement;
 
-        // if anything below goes wrong, fall back to showing the normal site
         function bailOut() {
             root.classList.remove('landing-intro-active');
             var w = document.getElementById('wrapper');
@@ -2183,7 +2062,7 @@
             var pinnedHero = pinZone.querySelector('.title-section');
             var site       = document.getElementById('wrapper');
 
-            var swipeDone  = false;  // intro video waits for the black curtain to finish fading
+            var swipeDone  = false;
 
             function clamp(v) { return Math.min(1, Math.max(0, v)); }
 
@@ -2193,31 +2072,21 @@
                 viewH = intro.clientHeight || window.innerHeight;
             }
 
-            // visitors who ask for reduced motion get no cursor-follow glow animation
             var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
             sizeView();
 
-            /* ---------- cursor -> player edge glow (the visible light itself has been removed) ---------- */
             var edgeEl   = document.getElementById('landingVideoEdge');
 
-            // The border glow follows an invisible point that trails the cursor. Two stages of smoothing
-            // are chained: an invisible "lead" point chases the cursor, and the glow point chases the
-            // lead point. That gives the same soft start and long, settling tail as before.
-            // Bigger numbers = heavier / slower. (milliseconds; frame-rate independent)
-            // To make the border react to the cursor instantly instead, set both to 1.
             var AURA_LEAD_MS = 160;
             var AURA_DRAG_MS = 300;
-            var EDGE_REACH   = 460;   // px: matches the radius of the player's edge glow
+            var EDGE_REACH   = 460;
 
-            var auraTarget = { x: 0, y: 0 };   // where the cursor is
+            var auraTarget = { x: 0, y: 0 };
             var auraLead   = { x: 0, y: 0 };
-            var auraPos    = { x: 0, y: 0 };   // the (invisible) point the border glow is aimed at
+            var auraPos    = { x: 0, y: 0 };
             var auraRaf = 0, auraLast = 0, auraLive = true, auraHasPointer = false;
 
-            // PERF: the player's edge glow is expensive (changing --ex / --ey repaints a masked,
-            // blurred ring), so it is refreshed at most every 32ms (~30fps), and the final resting
-            // position is always written (forceEdge)
             var EDGE_MIN_MS = 32, edgeWriteAt = 0;
             var edgeR = null, edgeRAt = 0, edgeOW = 1, edgeOH = 1, lastEx = '', lastEy = '';
             function edgeRect() {
@@ -2230,7 +2099,6 @@
             function paintAura(forceEdge) {
                 if (!edgeEl) return;
                 if (!forceEdge && performance.now() - edgeWriteAt < EDGE_MIN_MS) return;
-                // aim the player's edge glow at the tracked point (in the player's own coordinates)
                 var r = edgeRect();
                 if (!r.width || !r.height) return;
                 if (auraPos.x < r.left - EDGE_REACH || auraPos.x > r.right + EDGE_REACH ||
@@ -2263,7 +2131,6 @@
                 if (!auraRaf && auraLive && !reduceMotion) auraRaf = requestAnimationFrame(auraTick);
             }
 
-            // until the visitor moves the mouse, the tracked point rests in the middle of the screen
             function restAura() {
                 if (!auraHasPointer) {
                     auraTarget.x = auraLead.x = auraPos.x = viewW / 2;
@@ -2288,13 +2155,11 @@
             window.addEventListener('resize', restAura);
             window.addEventListener('load', restAura);
 
-            /* ---------- scroll-driven fade ---------- */
-            // progress 0 -> 1 across the pinned scroll distance
-            var OUT_END    = 0.40;  // intro content fully gone
-            var IN_START   = 0.45;  // main site starts fading in
-            var IN_END     = 0.90;  // main site fully visible
-            var BG_START   = 0.40;  // background image starts dissolving
-            var BG_END     = 0.75;  // background image gone
+            var OUT_END    = 0.40;
+            var IN_START   = 0.45;
+            var IN_END     = 0.90;
+            var BG_START   = 0.40;
+            var BG_END     = 0.75;
 
             var pinTop = 0, pinScrollable = 1;
             function measure() {
@@ -2302,9 +2167,6 @@
                 pinScrollable = Math.max(1, pinZone.offsetHeight - pinnedHero.offsetHeight);
                 edgeR = null;
             }
-            var navBarEl = document.querySelector('.top-nav-bar');
-            var varCache = {};
-            function setVar(el, name, val) { if (varCache[name] !== val) { varCache[name] = val; el.style.setProperty(name, val); } }
             var introVideo = document.getElementById('introBgVideo');
             var heroVideo  = document.getElementById('heroBgVideo');
             var heroVisible = true;
@@ -2321,25 +2183,18 @@
             function update() {
                 var p = clamp(((window.pageYOffset || 0) - pinTop) / pinScrollable);
 
-                // phase 1: intro content fades out and eases back slightly
                 var out = clamp(p / OUT_END);
                 content.style.opacity = (1 - out).toFixed(3);
                 content.style.transform = 'scale(' + (1 - out * 0.08).toFixed(3) + ')';
                 content.style.pointerEvents = out < 0.8 ? 'auto' : 'none';
                 content.style.visibility = out >= 1 ? 'hidden' : '';
 
-                // the background image stays a little longer, then dissolves
                 var bgOut = clamp((p - BG_START) / (BG_END - BG_START));
                 bgEl.style.opacity = (1 - bgOut).toFixed(3);
                 intro.style.visibility = bgOut >= 1 ? 'hidden' : '';
-                // PERF: the intro video is paused as soon as the intro content is fully faded out (out >= 1, scroll 40%),
-                // not 35% of scroll later: between those points it was still decoding video nobody could see
                 setVideo(introVideo, out < 1 && swipeDone && !document.hidden);
                 setVideo(heroVideo, p > 0.12 && heroVisible && !document.hidden);
 
-                // border-glow tracking: its loop sleeps while the intro is off screen
-                // PERF: the player's border glow is fully invisible once the intro content is gone (out = 1),
-                // so the tracking loop sleeps from that point
                 var auraShouldRun = out < 1;
                 root.classList.toggle('intro-off', bgOut >= 1);
                 if (auraShouldRun !== auraLive) {
@@ -2347,7 +2202,6 @@
                     if (auraLive) kickAura();
                 }
 
-                // phase 2: main website fades in
                 var inn = clamp((p - IN_START) / (IN_END - IN_START));
                 site.style.opacity = inn.toFixed(3);
                 site.style.visibility = inn > 0 ? 'visible' : 'hidden';
@@ -2363,13 +2217,11 @@
             measure();
             update();
 
-            // once the black curtain has faded away, the intro video can start playing
             var swipeEl = document.querySelector('.intro-swipe');
             function swipeFinished() { if (!swipeDone) { swipeDone = true; update(); } }
             if (swipeEl) swipeEl.addEventListener('animationend', function () { swipeEl.style.display = 'none'; swipeFinished(); });
             setTimeout(swipeFinished, 2000);
 
-            /* ---------- intro buttons reuse the existing menu / trailer code ---------- */
             function press(id) {
                 var el = document.getElementById(id);
                 if (el) el.click();
@@ -2384,8 +2236,6 @@
                 press('watchTrailerBtn');
             });
 
-            // hovering a button dims the video and lights up the tagline
-            // (the vertical "demons demons...!" text intentionally does not glow)
             var videoWindow = document.getElementById('landingVideoWindow');
             var glowTargets = [document.getElementById('landingTagline')];
             document.querySelectorAll('.landing-pill-btn').forEach(function (btn) {
@@ -2403,7 +2253,6 @@
             bailOut();
         }
 
-        /* ---------- small site-wide extras ---------- */
         try {
             var menuBtn = document.getElementById('menuToggleBtn');
             var menuOverlay = document.getElementById('mainNavOverlay');
@@ -2416,7 +2265,6 @@
                 if (el) el.click();
             };
 
-            // menu button tells assistive tech whether the menu is open
             menuBtn.setAttribute('aria-controls', 'mainNavOverlay');
             var syncMenuState = function () {
                 menuBtn.setAttribute('aria-expanded', menuOverlay.classList.contains('open') ? 'true' : 'false');
@@ -2424,7 +2272,6 @@
             new MutationObserver(syncMenuState).observe(menuOverlay, { attributes: true, attributeFilter: ['class'] });
             syncMenuState();
 
-            // Esc closes whatever is on top, using each piece's own close handler
             document.addEventListener('keydown', function (e) {
                 if (e.key !== 'Escape') return;
                 var share = document.getElementById('shareDropdownPanel');
@@ -2448,14 +2295,8 @@
         })();
     </script>
     <script>
-        // CHARACTER BUTTONS (overlays on the characters image) + INFO PANEL
-        // Each button carries data-character="<id>": hamachi, demonqueen, blooze, lanternspawn,
-        // pink, observer, royalblood, punni. Clicking one opens the frosted panel with that character's
-        // enlarged art and text; clicking anywhere (or pressing Esc) fades it away again.
         (function () {
             var ART_BASE = 'https://gavinoriley.github.io/assets/';
-            // To edit a character's text, change it here. "art" is only needed when the enlarged
-            // picture should be a different file from the button's own picture (Hamachi's is).
             var CHARACTERS = {
                 hamachi: {
                     title: 'About Hamachi',
@@ -2527,13 +2368,26 @@
                 try { if (typeof lenis !== 'undefined') { on ? lenis.start() : lenis.stop(); } } catch (e) {}
             }
 
+            var artToken = 0;
+            function setArt(src) {
+                var token = ++artToken;
+                var reveal = function () { if (token === artToken) artImg.style.visibility = ''; };
+                if (!src) { artImg.style.visibility = 'hidden'; artImg.removeAttribute('src'); return; }
+                artImg.style.visibility = 'hidden';
+                artImg.onload = reveal;
+                artImg.onerror = reveal;
+                artImg.src = src;
+                if (artImg.complete && artImg.naturalWidth) {
+                    if (artImg.decode) { artImg.decode().then(reveal, reveal); } else { reveal(); }
+                }
+            }
+
             function show(id, btn) {
                 var data = CHARACTERS[id];
                 if (!data || !panel) return;
                 opener = btn;
-                // enlarged art: the button's own picture, unless this character has a special one
                 var own = btn.querySelector('img');
-                artImg.src = data.art || (own ? (own.currentSrc || own.src) : '');
+                setArt(data.art || (own ? (own.currentSrc || own.src) : ''));
                 titleEl.textContent = data.title;
                 bodyEl.textContent = '';
                 data.text.forEach(function (t) {
@@ -2552,16 +2406,15 @@
             function hide() {
                 clearTimeout(openTimer);
                 if (!panel.classList.contains('open')) return;
-                panel.classList.remove('open');           // CSS fades the whole panel (art + text) out
+                panel.classList.remove('open');
                 panel.setAttribute('aria-hidden', 'true');
                 setScroll(true);
                 if (opener) { try { opener.focus({ preventScroll: true }); } catch (e) {} }
             }
 
             function onCharacterClick(id, btn) {
-                // button "press" bounce, then open the panel just after, so the press is seen
                 btn.classList.remove('is-clicked');
-                void btn.offsetWidth;                      // restart the animation if clicked again quickly
+                void btn.offsetWidth;
                 btn.classList.add('is-clicked');
                 clearTimeout(openTimer);
                 openTimer = setTimeout(function () { show(id, btn); }, reduceMotion ? 0 : 140);
@@ -2577,20 +2430,16 @@
             });
 
             if (panel) {
-                // clicking anywhere on the panel (the art, the text, the empty space) closes it;
-                // the short guard stops a double-tap from closing it the instant it opens
                 panel.addEventListener('click', function () { if (performance.now() - openedAt > 250) hide(); });
                 document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
             }
 
-            // Hamachi's big picture is a separate (larger) file: fetch it a little before it is needed
-            // so it is already there when the panel opens
-            var warmed = false;
+            var warmed = false, warmedImg = null;
             function warm() {
                 if (warmed) return;
                 warmed = true;
-                var im = new Image();
-                im.src = CHARACTERS.hamachi.art;
+                warmedImg = new Image();
+                warmedImg.src = CHARACTERS.hamachi.art;
             }
             if (stage && 'IntersectionObserver' in window) {
                 new IntersectionObserver(function (e, o) {
@@ -2602,16 +2451,12 @@
         })();
     </script>
     <script>
-        // WORLD VIDEO BUTTONS (overlays on the worlds image): same press / hover behaviour as the character
-        // buttons, but they open a large video window. Clicking outside the window (or Esc) closes it.
         (function () {
             var WORLD_VIDEOS = {
-                rr: 'EWWrg6uLmPg',   // Riches Reef
-                dd: 'prWQdnQguiQ',   // Desolate Demise
-                pp: 'UHKTqlpdTbY'    // Pink Paradise
+                rr: 'EWWrg6uLmPg',
+                dd: 'prWQdnQguiQ',
+                pp: 'UHKTqlpdTbY'
             };
-            // Shape of each video (width / height). The game footage is 16:10 = 1.6. If a video is ever
-            // re-uploaded in another shape (16:9 = 1.7778), change its number here.
             var WORLD_RATIOS = { rr: 1.6, dd: 1.6, pp: 1.6 };
             var reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
             var panel  = document.getElementById('worldVideoPanel');
@@ -2642,9 +2487,8 @@
             function hide() {
                 clearTimeout(openTimer);
                 if (!panel.classList.contains('open')) return;
-                panel.classList.remove('open');            // CSS fades the whole panel out
+                panel.classList.remove('open');
                 panel.setAttribute('aria-hidden', 'true');
-                // stop the video (and its sound) right away; hide the frame so no white flash shows while fading
                 frame.style.visibility = 'hidden';
                 frame.removeAttribute('src');
                 setScroll(true);
@@ -2656,15 +2500,13 @@
                 btn.addEventListener('click', function () {
                     var id = btn.getAttribute('data-world');
                     btn.classList.remove('is-clicked');
-                    void btn.offsetWidth;                  // restart the press bounce if clicked again quickly
+                    void btn.offsetWidth;
                     btn.classList.add('is-clicked');
                     clearTimeout(openTimer);
                     openTimer = setTimeout(function () { show(id, btn); }, reduceMotion ? 0 : 140);
                 });
             });
 
-            // a click anywhere OUTSIDE the video window closes it (clicks on the player itself do not);
-            // the short guard stops a double-tap from closing it the instant it opens
             panel.addEventListener('click', function (e) {
                 if (win.contains(e.target)) return;
                 if (performance.now() - openedAt > 250) hide();
