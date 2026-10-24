@@ -1086,7 +1086,6 @@
             left: 0;
             width: 100%;
             margin-left: 0;
-            will-change: transform;
         }
 
         /* intro background image (fades out with the intro as the page is scrolled) */
@@ -1830,11 +1829,13 @@
                     </div>
                 </div>
 
+                <!-- these three tall images have no width/height, so they load up front (low priority) instead of lazily:
+                     the page height is then settled during the intro and the scrollbar thumb does not jump while scrolling -->
                 <a href="https://hamachithepsychotickiller.com/publishingpartnerships/">
-                    <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/sleekCorPubOp3.png" alt="Publishing Opportunity">
+                    <img loading="eager" fetchpriority="low" decoding="async" src="https://gavinoriley.github.io/assets/sleekCorPubOp3.png" alt="Publishing Opportunity">
                 </a>
-                <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/4BLOCkRESTHAMACHI.png" alt="Roadblock and gameplay features">
-                <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalIntroduction.png" alt="Introduction">
+                <img loading="eager" fetchpriority="low" decoding="async" src="https://gavinoriley.github.io/assets/4BLOCkRESTHAMACHI.png" alt="Roadblock and gameplay features">
+                <img loading="eager" fetchpriority="low" decoding="async" src="https://gavinoriley.github.io/assets/FinalIntroduction.png" alt="Introduction">
                 <div class="characters-stage">
                     <img loading="lazy" decoding="async" src="https://gavinoriley.github.io/assets/FinalCharacters2.png" alt="Characters" width="3360" height="2969">
                     <button type="button" class="char-hit" data-character="hamachi" aria-label="Hamachi" style="left:39.6131%;top:48.97272%;width:8.09524%;height:8.58875%;">
@@ -2350,7 +2351,6 @@
                 var inn = clamp((p - IN_START) / (IN_END - IN_START));
                 site.style.opacity = inn.toFixed(3);
                 site.style.visibility = inn > 0 ? 'visible' : 'hidden';
-                pinnedHero.style.transform = inn < 1 ? 'scale(' + (0.96 + 0.04 * inn).toFixed(3) + ')' : '';
             }
 
             var scrollTick = 0;
