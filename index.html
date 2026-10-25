@@ -490,26 +490,35 @@
             font-size: 14px;
             letter-spacing: 0.6px;
             border: 1px solid rgba(255,255,255,0.18);
+            border-color: var(--b, rgba(255,255,255,0.18));
             padding: 10px 18px;
             border-radius: 50px;
             background: rgba(0,0,0,0.5);
-            transition: color 0.2s, border-color 0.2s, background 0.2s;
+            box-shadow: 0 0 0 0 rgba(var(--c), 0);
+            transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+                        border-color 1s cubic-bezier(0.4, 0, 0.2, 1),
+                        color 1s cubic-bezier(0.4, 0, 0.2, 1),
+                        box-shadow 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .hero-actions a:hover {
+        .hero-actions a:hover,
+        .hero-actions a:focus-visible {
             color: #fff;
-            background: rgba(0,0,0,0.55);
+            background: rgba(var(--c), 0.28);
+            border-color: rgb(var(--c));
+            box-shadow: 0 0 15px 1px rgba(var(--c), 0.5),
+                        0 0 38px 5px rgba(var(--c), 0.22);
+            transition: background-color 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                        border-color 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                        color 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+                        box-shadow 0.9s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        .hero-actions a.watch { border-color: #c33a3a; }
-        .hero-actions a.watch:hover { border-color: #e05050; }
-        .hero-actions a.demo { border-color: #3a9a4a; }
-        .hero-actions a.demo:hover { border-color: #50b860; }
-        .hero-actions a.buy { border-color: #3a6aaa; }
-        .hero-actions a.buy:hover { border-color: #5080c0; }
-        .hero-actions a.cube { border-color: #c9a83a; }
-        .hero-actions a.cube:hover { border-color: #e0c050; }
-        .hero-actions a.patch { border-color: #555; }
-        .hero-actions a.patch:hover { border-color: #777; }
+        /* --c = hover glow color (r,g,b) for each button */
+        .hero-actions a.watch { --c: 224,80,80;   --b: #c33a3a; }
+        .hero-actions a.demo  { --c: 80,184,96;   --b: #3a9a4a; }
+        .hero-actions a.buy   { --c: 80,128,192;  --b: #3a6aaa; }
+        .hero-actions a.cube  { --c: 224,192,80;  --b: #c9a83a; }
+        .hero-actions a.patch { --c: 190,190,190; --b: #555; }
 
         .image-sequence {
             position: relative;
@@ -2055,10 +2064,9 @@
         const badGuy = 'the platformer game where you can play as the bad guy';
         const goodGuy = 'the platformer game where you can play as the good guy';
 
-        function setTagline(text, color) {
+        function setTagline(text) {
             if (!heroLabel) return;
             heroLabel.textContent = text;
-            heroLabel.style.color = color;
         }
 
         [
@@ -2070,8 +2078,8 @@
         ].forEach(({ selector, text, color }) => {
             const el = document.querySelector(selector);
             if (!el) return;
-            el.addEventListener('mouseenter', () => setTagline(text, color));
-            el.addEventListener('mouseleave', () => setTagline(defaultTagline, defaultColor));
+            el.addEventListener('mouseenter', () => setTagline(text));
+            el.addEventListener('mouseleave', () => setTagline(defaultTagline));
         });
 
         const shareEngineTrigger = document.getElementById('shareEngineTrigger');
