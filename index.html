@@ -493,7 +493,8 @@
             border-color: var(--b, rgba(255,255,255,0.18));
             padding: 10px 18px;
             border-radius: 50px;
-            background: rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
             isolation: isolate;
             transition: background-color 1s cubic-bezier(0.4, 0, 0.2, 1),
                         border-color 1s cubic-bezier(0.4, 0, 0.2, 1),
@@ -502,15 +503,32 @@
         .hero-actions a:hover,
         .hero-actions a:focus-visible {
             color: #fff;
-            background: rgba(var(--c), 0.28);
             border-color: rgb(var(--c));
-            transition: background-color 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                        border-color 0.9s cubic-bezier(0.22, 1, 0.36, 1),
-                        color 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+            transition: background-color 1.35s cubic-bezier(0.5, 0, 0.2, 1),
+                        border-color 1.35s cubic-bezier(0.5, 0, 0.2, 1),
+                        color 1.35s cubic-bezier(0.5, 0, 0.2, 1);
         }
 
-        /* Two-layer halo, same structure/timing as .landing-pill-btn, tinted per button */
-        .hero-actions a::before,
+        /* Subtle white lift on hover, identical to .landing-pill-btn (+6% white, same timing) */
+        .hero-actions a::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: inherit;
+            pointer-events: none;
+            z-index: -1;
+            background: rgba(255, 255, 255, 0.06);
+            opacity: 0;
+            will-change: opacity;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .hero-actions a:hover::before,
+        .hero-actions a:focus-visible::before {
+            opacity: 1;
+            transition: opacity 1.35s cubic-bezier(0.5, 0, 0.2, 1);
+        }
+
+        /* Tight hover glow, tinted per button (wide radiating aura layer removed) */
         .hero-actions a::after {
             content: '';
             position: absolute;
@@ -522,18 +540,9 @@
             will-change: opacity;
             transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .hero-actions a::before {
-            box-shadow: 0 8px 48px 10px rgba(var(--c), 0.20),
-                        0 14px 104px 28px rgba(var(--c), 0.14);
-        }
         .hero-actions a::after {
             box-shadow: 0 0 18px 2px rgba(var(--c), 0.30),
                         0 5px 38px 6px rgba(var(--c), 0.20);
-        }
-        .hero-actions a:hover::before,
-        .hero-actions a:focus-visible::before {
-            opacity: 1;
-            transition: opacity 1.85s cubic-bezier(0.5, 0, 0.2, 1);
         }
         .hero-actions a:hover::after,
         .hero-actions a:focus-visible::after {
@@ -1300,7 +1309,7 @@
                         color 1.35s cubic-bezier(0.5, 0, 0.2, 1);
         }
 
-        .landing-pill-btn::before,
+        /* Tight hover glow only (wide radiating aura layer removed) */
         .landing-pill-btn::after {
             content: '';
             position: absolute;
@@ -1312,17 +1321,10 @@
             will-change: opacity;
             transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
         }
-        .landing-pill-btn::before {
-            box-shadow: 0 10px 60px 14px rgba(170, 170, 215, 0.20),
-                        0 18px 130px 36px rgba(150, 150, 205, 0.14);
-        }
         .landing-pill-btn::after {
             box-shadow: 0 0 22px 3px rgba(215, 215, 235, 0.30),
                         0 6px 46px 8px rgba(190, 190, 225, 0.20);
         }
-        .landing-pill-btn:hover::before {
-            opacity: 1;
-            transition: opacity 1.85s cubic-bezier(0.5, 0, 0.2, 1);        }
         .landing-pill-btn:hover::after {
             opacity: 1;
             transition: opacity 1.35s cubic-bezier(0.5, 0, 0.2, 1);        }
