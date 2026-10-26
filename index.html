@@ -234,7 +234,7 @@
             opacity: 0;
             visibility: hidden;
             pointer-events: none;
-            transition: opacity 0.4s ease, visibility 0.4s ease;
+            transition: opacity 0.4s ease, visibility 0.4s ease, background-color 1.2s ease-in-out;
             overflow-y: auto;
             overscroll-behavior: contain;
         }
@@ -323,6 +323,13 @@
             display: inline-block;
             width: 110px;
         }
+        .panel h2,
+        .panel .panel-subhead,
+        .panel li,
+        .panel li::before,
+        .meta-line,
+        .meta-line strong,
+        .panel p { transition: color 0.8s ease, text-shadow 0.8s ease; }
 
         .copy-email-btn {
             background: none;
@@ -1776,6 +1783,44 @@
         }
         html.theme-light .landing-scroll-arrow {
             filter: drop-shadow(0 0 1px #0b0b16) drop-shadow(0 0 1px #0b0b16) drop-shadow(0 0 1px #0b0b16);
+        }
+
+        /* LIGHT THEME: menu overlay (synopsis / contact / links) while the light intro art is behind it.
+           The overlay is a translucent dark scrim, which over bright artwork turns mid-grey and makes the
+           original greys (#777-#aaa) hard to read. Same hierarchy, lighter tones, slightly denser scrim.
+           Scoped to the intro so the menu over the dark main page keeps its original colours. */
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay {
+            background-color: rgba(7, 7, 12, 0.74);
+        }
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a            { color: #e6e6ee; }
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a:nth-child(1):hover,
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a:nth-child(5):hover { color: #ff6b6b; }
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a:nth-child(2):hover,
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a:nth-child(6):hover { color: #5fd16f; }
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a:nth-child(3):hover,
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a:nth-child(7):hover { color: #6fa8ff; }
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a:nth-child(4):hover,
+        html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay a:nth-child(8):hover { color: #ffd75e; }
+
+        html.theme-light.landing-intro-active:not(.intro-off) .panel {
+            color: #f2f2f7;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        html.theme-light.landing-intro-active:not(.intro-off) .panel h2             { color: #d9d9e4; }
+        html.theme-light.landing-intro-active:not(.intro-off) .panel .panel-subhead { color: #c9c9d6; }
+        html.theme-light.landing-intro-active:not(.intro-off) .panel li             { color: #e8e8f0; }
+        html.theme-light.landing-intro-active:not(.intro-off) .panel li::before     { color: #bcbccb; }
+        html.theme-light.landing-intro-active:not(.intro-off) .meta-line            { color: #d4d4e0; }
+        html.theme-light.landing-intro-active:not(.intro-off) .meta-line strong     { color: #f4f4f9; }
+        html.theme-light.landing-intro-active:not(.intro-off) .copy-email-btn {
+            border-color: rgba(255, 255, 255, 0.55);
+            color: #f2f2f7;
+            text-shadow: none;
+        }
+        html.theme-light.landing-intro-active:not(.intro-off) .copy-email-btn:hover,
+        html.theme-light.landing-intro-active:not(.intro-off) .copy-email-btn.copied {
+            border-color: #fff;
+            color: #fff;
         }
     </style>
 
