@@ -38,13 +38,10 @@
 document.documentElement.classList.add('landing-intro-active', 'intro-seq-pending');
 setTimeout(function () { document.documentElement.classList.remove('intro-seq-pending'); }, 4400);
 
-// Theme: follows the system light/dark setting, with a manual override from the
-// sun/moon button. Sets html.theme-light / html.theme-dark before first paint.
 (function () {
 var root = document.documentElement, KEY = 'hama-theme';
 var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
-var saved = null;
-try { saved = localStorage.getItem(KEY); } catch (e) {}
+try { localStorage.removeItem(KEY); } catch (e) {}
 function apply(t) {
 root.classList.toggle('theme-light', t === 'light');
 root.classList.toggle('theme-dark', t !== 'light');
@@ -53,22 +50,16 @@ try { document.dispatchEvent(new CustomEvent('hama-themechange', { detail: t }))
 window.hamaTheme = {
 get: function () { return root.classList.contains('theme-light') ? 'light' : 'dark'; },
 toggle: function () {
-var next = this.get() === 'light' ? 'dark' : 'light';
-try { localStorage.setItem(KEY, next); } catch (e) {}
-apply(next);
+apply(this.get() === 'light' ? 'dark' : 'light');
 }
 };
-apply(saved === 'light' || saved === 'dark' ? saved : (mq && mq.matches ? 'light' : 'dark'));
-// changing the system setting always wins and clears the manual choice
+apply(mq && mq.matches ? 'light' : 'dark');
 function onSystem(e) {
-try { localStorage.removeItem(KEY); } catch (err) {}
 apply(e.matches ? 'light' : 'dark');
 }
 if (mq) { if (mq.addEventListener) mq.addEventListener('change', onSystem); else if (mq.addListener) mq.addListener(onSystem); }
 })();
 
-// Colour-scheme background crossfade: block the transition on first paint only,
-// so later light/dark switches fade smoothly between the two images.
 document.documentElement.classList.add('no-bg-transition');
 window.addEventListener('load', function () {
 requestAnimationFrame(function () {
@@ -132,7 +123,7 @@ animation: drift2 100s steps(78) infinite;
 @keyframes drift1 { to { transform: translate3d(52px, 52px, 0); } }
 @keyframes drift2 { to { transform: translate3d(-78px, 78px, 0); } }
 
-/* LANDING INTRO CURTAIN (black screen + logo shown at the very start) */
+/* LANDING INTRO CURTAIN */
 .intro-swipe {
 position: fixed;
 inset: 0;
@@ -189,11 +180,10 @@ flex-direction: column;
 justify-content: space-between;
 z-index: 210;
 flex-shrink: 0;
-/* same treatment as the nav icons: white at 55%, brightening to full on hover */
 opacity: 0.55;
 transition: opacity 0.2s;
 }
-.menu-toggle::after { /* larger invisible hit area */
+.menu-toggle::after {
 content: '';
 position: absolute;
 inset: -12px -10px;
@@ -381,8 +371,6 @@ fill: none;
 stroke-width: 1.5;
 }
 
-/* Sun / moon theme switch (intro only; fades out as the main page scrolls in).
---tt-fade is driven by the intro scroll progress in JS. */
 .theme-toggle {
 position: relative;
 width: 22px;
@@ -414,12 +402,10 @@ stroke-linecap: round;
 stroke-linejoin: round;
 transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
 }
-/* shows the current mode: moon in dark, sun in light */
 .theme-toggle .icon-sun { opacity: 0; transform: rotate(-90deg) scale(0.4); }
 .theme-toggle .icon-moon { opacity: 1; transform: none; }
 html.theme-light .theme-toggle .icon-sun { opacity: 1; transform: none; }
 html.theme-light .theme-toggle .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.4); }
-/* no intro (or intro disabled) = nothing to switch */
 html:not(.landing-intro-active) .theme-toggle { display: none; }
 @media (prefers-reduced-motion: reduce) {
 .theme-toggle svg { transition: opacity 0.01s; }
@@ -619,7 +605,6 @@ border-color 1.35s cubic-bezier(0.5, 0, 0.2, 1),
 color 1.35s cubic-bezier(0.5, 0, 0.2, 1);
 }
 
-/* Subtle white lift on hover, identical to .landing-pill-btn (+6% white, same timing) */
 .hero-actions a::before {
 content: '';
 position: absolute;
@@ -638,7 +623,6 @@ opacity: 1;
 transition: opacity 1.35s cubic-bezier(0.5, 0, 0.2, 1);
 }
 
-/* Tight hover glow, tinted per button (wide radiating aura layer removed) */
 .hero-actions a::after {
 content: '';
 position: absolute;
@@ -660,9 +644,6 @@ opacity: 1;
 transition: opacity 1.35s cubic-bezier(0.5, 0, 0.2, 1);
 }
 
-/* --c = hover glow color (r,g,b) for each button
---g = glow strength multiplier: darker colours (red, blue) emit less light at the same
-opacity, so each is scaled to give the same glow brightness as the intro buttons' pale glow */
 .hero-actions a.watch { --c: 224,80,80; --b: #c33a3a; --g: 3.12; }
 .hero-actions a.demo { --c: 80,184,96; --b: #3a9a4a; --g: 1.87; }
 .hero-actions a.buy { --c: 80,128,192; --b: #3a6aaa; --g: 3.3; }
@@ -891,8 +872,6 @@ object-fit: cover;
 100% { transform: translateX(calc(-100vw * 12 / 3)); }
 }
 
-/* FINAL MEMORIAL (lily + two candles, sits between the Worlds image and the footer line) */
-/* full-bleed band: pure black where it meets the Worlds image, easing into the page colour (#070707) toward the footer */
 .memorial-band {
 position: relative;
 z-index: 1;
@@ -900,7 +879,7 @@ isolation: isolate;
 width: 100vw;
 left: 50%;
 margin-left: -50vw;
-padding: clamp(72px, 12vw, 150px) 28px 16px; /* bottom padding keeps the lowered candles inside the band */
+padding: clamp(72px, 12vw, 150px) 28px 16px;
 background: linear-gradient(to bottom, #000 0%, #000 45%, #070707 100%);
 }
 .memorial {
@@ -928,12 +907,11 @@ justify-self: center;
 }
 .memorial-light {
 width: 100%;
-/* candle PNG has a pure-black backdrop; "lighten" drops it onto the page colour so only the flame shows */
 mix-blend-mode: lighten;
-transform: translateY(25%); /* nudge candles slightly lower; adjust % to taste */
+transform: translateY(25%);
 }
 .memorial-light.left { grid-column: 1; justify-self: start; }
-.memorial-light.right { grid-column: 3; justify-self: end; transform: translateY(25%) scaleX(-1); } /* mirrored so the flames lean in opposite directions; keep the translateY in sync with .memorial-light */
+.memorial-light.right { grid-column: 3; justify-self: end; transform: translateY(25%) scaleX(-1); }
 
 #footer-contents {
 margin-top: 90px;
@@ -1264,9 +1242,6 @@ width: 100%;
 margin-left: 0;
 }
 
-/* The intro background is two stacked image layers (night + light).
-#landingBg itself keeps its opacity for the scroll fade handled in JS;
-the layers inside it crossfade whenever the OS colour scheme changes. */
 .landing-bg {
 --bg-fade: 1.2s;
 position: absolute;
@@ -1287,20 +1262,16 @@ background-repeat: no-repeat;
 transition: opacity var(--bg-fade) ease-in-out;
 will-change: opacity;
 }
-/* night layer: always fully opaque underneath (default / dark mode) */
 .landing-bg::before {
 background-image: url('https://gavinoriley.github.io/assets/backgroundhamanight.png');
 opacity: 1;
 }
-/* light layer: sits on top and fades in/out over the night layer,
-so there is never a see-through dip mid-transition */
 .landing-bg::after {
 background-image: url('https://gavinoriley.github.io/assets/backgroundhamalight.png');
 opacity: 0;
 }
 html.theme-light .landing-bg { background-color: #e9e9ee; }
 html.theme-light .landing-bg::after { opacity: 1; }
-/* no transition on first paint, so the page never fades in from the wrong image */
 html.no-bg-transition .landing-bg,
 html.no-bg-transition .landing-bg::before,
 html.no-bg-transition .landing-bg::after { transition: none; }
@@ -1308,17 +1279,12 @@ html.no-bg-transition .landing-bg::after { transition: none; }
 .landing-bg { --bg-fade: 0.01s; }
 }
 
-/* WATER MOVEMENT (light and dark)
-Each theme has its own water layer: a canvas that re-draws that theme's background through
-a flowing displacement field, so the foam / swirls themselves bend and drift (instead of a filter
-sitting on top). It is masked to the outlined water region and sits exactly over the still image.
-The night canvas shows in dark mode, the light canvas in light mode, and they crossfade with the backgrounds. */
 .landing-bg .water-fx {
 position: absolute;
 inset: 0;
 width: 100%;
 height: 100%;
-z-index: 1; /* above the background image layers (::before / ::after) */
+z-index: 1;
 pointer-events: none;
 opacity: 0;
 visibility: hidden;
@@ -1485,7 +1451,6 @@ border-color 1.35s cubic-bezier(0.5, 0, 0.2, 1),
 color 1.35s cubic-bezier(0.5, 0, 0.2, 1);
 }
 
-/* Tight hover glow only (wide radiating aura layer removed) */
 .landing-pill-btn::after {
 content: '';
 position: absolute;
@@ -1606,7 +1571,7 @@ rgba(65, 65, 20, 0.55) 0%, rgba(65, 65, 20, 0.28) 40%,
 rgba(65, 65, 20, 0.08) 75%, rgba(65, 65, 20, 0) 100%);
 }
 
-/* LANDING INTRO SEQUENCE STYLES (opening animation) */
+/* LANDING INTRO SEQUENCE STYLES */
 :root { --seq-t0: 1.2s; }
 
 @keyframes seqWindowIn {
@@ -1698,8 +1663,6 @@ white-space: nowrap;
 transform-origin: 50% 75%;
 animation: badGuyGrumble 1.4s steps(1, end) calc(var(--seq-t0) + 2.7s) 1 both;
 }
-/* red glow uses drop-shadow (not text-shadow) so it doesn't replace the
-inherited tagline text-shadow, which carries the light-mode outline */
 @keyframes badGuyGrumble {
 0% { transform: none; filter: drop-shadow(0 0 0 rgba(224, 64, 64, 0)); }
 6% { transform: translate(-1px, 1px) rotate(-2deg) skewX(-6deg); filter: drop-shadow(0 0 9px rgba(224, 64, 64, 0.9)); }
@@ -1718,16 +1681,6 @@ inherited tagline text-shadow, which carries the light-mode outline */
 }
 @media (prefers-reduced-motion: reduce) { .bad-guy { animation: none; } }
 
-/* LIGHT MODE: intro text styled for backgroundhamalight.png.
-The art is busy and heavily black-outlined, so floating text uses the same
-visual language as the game's own captions: white lettering with a thick
-near-black outline (stroke painted behind the fill so letters stay crisp).
-Buttons become dark glass pills to match the video window.
-All properties transition in step with the background fade.
-Applied via html.theme-light (set from the system setting or the sun/moon button). */
-/* Outline is built from a ring of text-shadows instead of -webkit-text-stroke:
-the stroke uses mitred joins, which shoot spikes out of sharp glyph corners
-(e.g. the bottoms of "w"). Shadows give a smooth, rounded outline. */
 html.theme-light .landing-tagline,
 html.theme-light .landing-side-text,
 html.theme-light .landing-scroll-hint span {
@@ -1781,8 +1734,6 @@ text-shadow: var(--ink-outline), 0 3px 8px rgba(0, 0, 0, 0.35),
 0 0 16px rgba(255, 255, 255, 0.55);
 }
 
-/* video window: softer, cooler shadow so it sits on the bright art
-instead of casting a heavy black halo */
 html.theme-light .landing-video-window {
 box-shadow: 0 18px 44px rgba(18, 22, 60, 0.45),
 0 0 0 1px rgba(255, 255, 255, 0.35);
@@ -1812,10 +1763,6 @@ html.theme-light .landing-scroll-arrow {
 filter: drop-shadow(0 0 1px #0b0b16) drop-shadow(0 0 1px #0b0b16) drop-shadow(0 0 1px #0b0b16);
 }
 
-/* LIGHT THEME: menu overlay (synopsis / contact / links) while the light intro art is behind it.
-The overlay is a translucent dark scrim, which over bright artwork turns mid-grey and makes the
-original greys (#777-#aaa) hard to read. Same hierarchy, lighter tones, slightly denser scrim.
-Scoped to the intro so the menu over the dark main page keeps its original colours. */
 html.theme-light.landing-intro-active:not(.intro-off) .nav-overlay {
 background-color: rgba(7, 7, 12, 0.74);
 }
@@ -2409,7 +2356,6 @@ lockScroll(false);
 
 const heroLabel = document.querySelector('.hero-label');
 const defaultTagline = 'the platformer game where you can play as the bad guy';
-const defaultColor = '#c0c0c0';
 const badGuy = 'the platformer game where you can play as the bad guy';
 const goodGuy = 'the platformer game where you can play as the good guy';
 
@@ -2419,12 +2365,12 @@ heroLabel.textContent = text;
 }
 
 [
-{ selector: '#watchTrailerBtn', text: badGuy, color: '#ff4444' },
-{ selector: '#playDemoBtn', text: goodGuy, color: '#44ff66' },
-{ selector: '.hero-actions a.buy', text: badGuy, color: '#44aaff' },
-{ selector: '.hero-actions a.cube', text: goodGuy, color: '#ffee44' },
-{ selector: '#patchNotesBtn', text: badGuy, color: '#ff4444' }
-].forEach(({ selector, text, color }) => {
+{ selector: '#watchTrailerBtn', text: badGuy },
+{ selector: '#playDemoBtn', text: goodGuy },
+{ selector: '.hero-actions a.buy', text: badGuy },
+{ selector: '.hero-actions a.cube', text: goodGuy },
+{ selector: '#patchNotesBtn', text: badGuy }
+].forEach(({ selector, text }) => {
 const el = document.querySelector(selector);
 if (!el) return;
 el.addEventListener('mouseenter', () => setTagline(text));
@@ -2620,7 +2566,6 @@ content.style.transform = 'scale(' + (1 - out * 0.08).toFixed(3) + ')';
 content.style.pointerEvents = out < 0.8 ? 'auto' : 'none';
 content.style.visibility = out >= 1 ? 'hidden' : '';
 if (themeBtn) {
-/* sun/moon switch fades out with the intro and is gone by the main page */
 themeBtn.style.setProperty('--tt-fade', (1 - out).toFixed(3));
 themeBtn.style.pointerEvents = out < 0.8 ? '' : 'none';
 themeBtn.style.visibility = out >= 1 ? 'hidden' : '';
@@ -2967,25 +2912,6 @@ sync();
 </script>
 
 <script id="water-fx-script">
-/* WATER MOVEMENT (light AND dark theme)
-Each theme gets its own water layer: a canvas that re-draws that theme's background picture inside the
-water region as a grid of small tiles, each sampled from a slightly different spot of the picture. The
-sampling offsets follow a slowly flowing wave field, so the foam / swirls bend and drift like a separate
-water layer. The two canvases crossfade together with the background images when the theme changes.
-
-On top of the moving water sit small blue surface sparkles (think the pale caustic bits on the Nevermind
-cover). They come in four shapes (dot, dash, expanding ring, tiny cross-glint), spawn at random spots
-inside the water, drift slowly across the surface and get carried along by the same wave field.
-Sparkles are light-theme only: the dark theme keeps the moving water but has no sparkles, and because the
-sparkles live on the light canvas they fade away with it when the theme changes.
-Light theme: the water is both very pale (foam, cyan) and deep royal blue, so each sparkle checks how
-bright the water is under it. Over the blue it is a white glint (dots, dashes, rings, cross glints); over
-the pale water it is only a soft light-aqua ripple ring or shimmer dash, kept faint so it reads as water.
-
-Edges: the water is kept still near its outline (the shift fades to zero toward the edge, so no stray
-pixels of the outline or the boardwalk get pulled in) and sparkles never spawn or show near the edge.
-Plain 2D canvas: no WebGL and no cross-origin image reads, so it works with any image host.
-Only the layer matching the visible theme runs (about 30fps), plus the outgoing one while it fades. */
 (function () {
 var root = document.documentElement;
 var cvLight = document.getElementById('waterFx');
@@ -2999,45 +2925,39 @@ if (!root.classList.contains('landing-intro-active')) { bail('intro inactive'); 
 var LIGHT_URL = 'https://gavinoriley.github.io/assets/backgroundhamalight.png';
 var NIGHT_URL = 'https://gavinoriley.github.io/assets/backgroundhamanight.png';
 var MASK_URL = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA8AAAAIcCAMAAAAOgzdJAAADAFBMVEX///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////8AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAADSrVnnAAAAQHRSTlMABAgMEBQYHCAkKC0xNTk9QUVJTVFVWV1hZWltcXV5fYKGio6SlpqeoqaqrrK2ur7CxsrO0tfb3+Pn6+/z9/v/gsO1LwAAD65JREFUeNrt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';
-var DW = 1920; /* design width: all coordinates below are in 1920-wide image space */
-var T = 8; /* tile size in image px */
+var DW = 1920;
+var T = 8;
 var LOOP = 24, TAU = 6.2831853, FPS_GAP = 1000 / 30, FADE_MS = 1500;
 
-/* ---- sparkle look: tweak these ---- */
-var SPARK_COUNT = 22; /* how many sparkles are alive at once (light theme only) */
-var SPARK_SIZE = 1; /* overall size multiplier (0.7 = even smaller, 1.4 = bigger) */
+var SPARK_COUNT = 26;
+var SPARK_SIZE = 1;
 var SPARK_PALETTES = {
-/* light theme: drawn normally. onBlue = used where the water is dark blue, onPale = where it is pale/foam
-(paleAlpha softens the aqua ones so they stay subtle) */
 light: { blend: 'source-over', alpha: 1.15, paleAlpha: 0.85, lineMin: 0.9,
 onBlue: [[255, 255, 255], [236, 250, 255], [212, 244, 255]],
 onPale: [[74, 184, 234], [96, 196, 238], [62, 172, 228]] }
 };
-var PALE_AT = 0.6; /* water brighter than this (0..1) counts as "pale" in light mode */
-/* brightness of the light background's water, 120x68 grid over the 1920x1080 picture (0 = dark, 255 = white).
-Baked from the water-region screenshot; regenerate it if the light background art changes. */
+var PALE_AT = 0.6;
 var LUM_W = 120, LUM_H = 68, LUM_DH = 1080;
 var LUM_B64 = '3Nzd3+Dh4uTl5ufp6+zu7/Hy9PX39/n5+vv9/v/////////+/v79/f38/Pz89ubm5uXl5eTk5OTj4+Pi4uLh4eDg4ODg39/x/f39/f7+/v////////////78+Pby7enk39vX0c3Jw8bMvLGxsqmjoJ2ZNjQiHh4f2trb3d7f4eLk5ebo6uvt7vDy8/X29/j5+vv9/v///+7Y8/7+/f39/Pz8/Pv76+bm5eXl5eTk5OPj4+Li4uHh4eDg4ODf39/g8Pz9/f3+/v7///////////369/Tw6+bh3dnTzsrFwMK7sa+2rqGempacNS0fHh4f2Nna29ze3+Hi5OXn6ers7e/x8vT09/j6+vr8/v7VydHSssj9/fz8/Pv7+/v67ebm5eXk5OTj4+Pj4uLh4eHh4ODf39/f397e3uf49vv6+P3+/v7///////359vLu6eTf2tXPysbBv7qysLq4opuXlZWsMzIiHh4e19fY2tvc3t/h4+Tm6Onr7e7w8PDy9Pf5+vr72a7M09XUzbv8/Pz7+/r6+vn57ebl5eXk5OTj4+Li4uHh4eDg39/f39/e3t7e3ebe3d3Q3Pr9/v7+/////v359PDr5+Hc2NHMx8PAurOxvsarmpeUkZa9STclHh4e1dbX2Nrb3d7g4uPl5+nq7O3v8Obu7ff4+uy7wsqYmpm8zMD8+/v7+vr6+fj47OXl5eTk4+Pj4uLi4eHh4ODg39/f3t7e3d3d4N3c3Nxxfu/9/c/m/vr5/v358+7p5N+V1M7KcsG9tbK/0sOelZOAbHK5nzojHh4e1NXW19na3N3f4eLk5ujo5+fo5+Pk6vH2yrvMm5/Q0sqXvcf7+vr5+fj49/f36OXk5OTj4+Pi4uLh4eDg4N/f3t7e3t3d3d3c3Nzc3Ls0I5/u70ys7d/ppmTx9+/o4t1Lcs/MSJC4s73U2buYj1Y3UjlOdjUgHh4e09TV1tfZ29ze4OLj5eXf1tTR1N3h5tXDzZ2g0NXV1dLGfPX6+fn4+Pf39/bv5OTk5OPj4+Li4eHg4ODg39/e3t7e3d3c3Nzc3Nvb268zHiK9iTOW251COoX7+vXu5uBJOofWMzSwvNLd276VRzo6Njo6MzIeHh4e0tPU1dfY2tvd3+Hi5N/QwsDC0NvJuMmhotDV09LU1dHGx/n5+Pj39vb29fDl5OTj4+Pi4uLh4eDg4N/f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zs3NzMzMy8vLysrKycnExskxUnkkH3cjUrqZiJqIz9zU4NeLs6/q6ejm5OPg2Nnb2djX1Ys4JBsdV4+Pg56dm5ugv87R09XV1dXV1dXV1dXU0MqS3N3h4eLs7u3k19bW1tzc19XV1NTU09PT0tLR0dDQ0M/Ozs3NzMzLy8rKycnJyMjIyMfHx8dcsYofeMZBz+9vm7SZmdHR07ecj57q6ejn5ePi4N7c29nY14wuRB8oio+Ps83R09XV1dXV1dXV1dTSzbWqxNLRzLW+2drb3eTu7ezm1dXV1dbX29TT09PS0tHR0dDQz8/Ozs3MzMvLysrJycjIyMfHx8fGxsbGxsavxrogncalyumiraKXkcHI0qKOkqfr6uno5uTj4eDd3Nva2ZdBhR9rj4+P1dXV1dXV1dTRvqKbmpaRmbC3mZLLyabZ2dnc4ent7evl1NTU09PV1tbS0dHQ0NDPz87Ozs3MzMvLysnJycjIx8fGxsbFxcXExMTExMTExMV73OLXxuHRjZWwr5TFy6S2tI3o6uro5+Tg3+Df3tzb2qmcfkyPj4+P08+5n5qYl5eZq8bNz9LT1NXV07SXp87Y2NjY2+Hq7Orh0tLS0tLR0dfR0M/Pz87Ozc3My8vKysnJyMjHx8bGxcXExMTEw8PDw8PDw8PDw9Ln6ers5+zjsqyiknbBxZ+dlrC+5urp49bLy9ff4N7d3NLNqISPj4+PkJSrxczO0NLT1dXV1dXV1dXV082EmdjY2NfX1t3l6ura0dHQ0NDPz8/Wzs7NzczMy8vKycnIyMfHxsbFxcTEw8PDwsLCwcHBwcHBwcHBxuXn5+nq6dzi25ejrquZx5afw76f0eHgz7+1tMDY4eDf3M+zfo+Pj4+P09TV1dXV1dXV1dXV1dXV1dXUz8py0tjY2NfW1Nfh6OfQz8/Ozs7Ozc3O0cvLysrJycnIx8fGxsXFxMTDw8LCwcHBwcDAwMC/v7+/v7+/0+Xm5+jq6+rXz6i1u5WAzJ+LlXRxUMXJwby5tLTL3+Lg17yMjo+Pj4+P1dXV1dXV1dXV1dXV1dPS09XRzLOu49rY19bT09Pe59rOzc3NzMzMy8vKzczJyMjHx8bGxcXExMPDwsLBwcDAwL+/vr6+vr69vb29vb2+3OTl5ufp6uvjz6OqosCorLCGk4E9SMN8w8G8uba+2+Pfy5yJj4+Pj4+P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R05WXmhwp6uJl5TGweDe6evn5OHe5O3t7OjUx86vrq2sr7Gsp6akoqCfnZuamJeVk5KRj46Mi4qJiIeGhoWFhYSEhIWFhYaGiImov8fApJ2hg4AnGRweHiBCcYqGgHNQVFBqYmNxcWLDqWZxd8bGxsbGxsbGx8PHRkxUXWVudoiVjpSZkOXn5eLn5OPg3+rt7OvZxMytrKuqqamxt6mgn52bmZiWlJKRj46Mi4mIh4aFhIOBgYGBgYCAgICAgYKDg4WnjZG0lJSZdCkXHTROZoSEfnpOVVFRbnFvmJ5lcXnGxr+Js8bHx8jKysvMzc3NRkpSWmNrc3yDi5KbuuTp6efm4+Hh4Obtz+TS0NCrqqmopqW0uKidm5mXlZSSkI6Ni4qIhoWEg4GBf35+fXx8fHx8fHx8fX1+f5ScjJKhj3uAhGZsgoF9bHRWT1RPbHGBdXBlwsaqaabGxsbIys3P0tPU1dXW1tbWRUlQWGBocXmBiJCaxubp6+/p5/bFy9fqurC/0uC5p6alo7rc29i4mJaUkpCOjIqJh4WEgoF/fn18e3p5eXh3d3d3d3d4eHl9mqaHg4uPeYuJhH51cVhZYFhjXnB/gmGoxZCaxsbGxsfJzIbT1dfX2NjY2NjY2NjY7Pnw5tW7o5OIhYyaz+r69/r99vT7/rm918usrcHQrqSjocbc29nYwsq8nYyKiIaFg4GAfn17enl3dnZ1dHRzc3Jzc3Nzc3eDe3l6e3SIg3Z0XVpaWmJxYWZmroaoxq7GxsbGxsfJzdLV16rY2NjY2NjY2NjY2NjY///////////+9eLW4+nr+P/57fL4/v/+vbK9squqwruhn7LM2tnW1dbV06uHhIKBf317enh3dXRzcnFwcG9vbm5ubm9vc3Vzc3R2eFhcWVxbYm5fb21kgr2fd7vGxrjHx8jLz9PW19jY2NjY2NjY2NjY2NjY2NjYqGZkZ3qNn7XL2fH+//315uz88+np6/L7//b1rq6yprLQyrCwt8/T0dHV1MmMgX99e3l3dnRzcXBvbm1sa2pqamlpaoOCbW1ub3BydGNmWGlyeHuKgZqztMbGscbGyI3P0tTW2NjY2NjY2NjY2NfM2NjY2M602NjYh0dJUFZdZWx0e4Ov6vb9//z2+fru6enp7uvm4dzZpqHG2sent7uywbXC0smTfXt5d3VzcnFvbWxramloaGZnZmVlZmhnaGhqa21uidOOkp2+1r2cxpTExsbGyMvQ1NbY2NjY2NjY2NjY2NjY2NjY2NjY2NjYsNjY+ItKTlRbYWlwd4Cy4+fm6e/z+f7/+e/p6enp6ufi39zZrryzqs60l5CWsLeRend1dHFwbmxraWhnZmVdX2FcXlVTVWJjZGVmZ2lrw8zV2drY0cmessbGxsfN09bY2NjY2NjY2NjY2NjY2NjY2NjY2NjY2NjYhdjY//69ZlJYX2VsdH2w3+bo6Onp6Onu8/j68erp6enp6Obi4N7cr6y6sJ+XqMm1enNxcG1samheZGxlaGxzeXJrcW9rXm1VT2FiZGZo07Ssxc/KsaKXmcbGx83W2NjY2NjY2NjY2NjY2Ni42NjY2NjY2NjY2NjY1tjYarb2/s2DXGJpcHifxNDX3ODj5efp6enp7/T07enp6enp6efl5OLg4Kmako+oyqpzb21eXGFxZmV0fXp6fn54bmZgXFlbT1llX1u5xa2MiIl9h6PzrMbGxNHY2NjY2NjYpNjX1djY2NjY2NjY2NfV2NjY2NjY2NjYRUdTi8b13pxubHWdtrzCyM3S19zi5unp6enp7O/s6unp6enp6ejn5ePh3oticXF4XFp4f4KAd2tkX1lYWWBqdX6UjmhfXV5jYV11cHJnStje7Pbv4sbGc9PW19jY2NjYxtXY2NjY2NjY2NjY2JbM2NjY2NjY2NfYRUdKTVBZh7rgzaems7i9wcbKztLX3ePo6enp6enp6enp6enp6eno6eije2p7enNoaGdaVVhbanR1dG1mZmdpY1lba4CPmpuiqKqqqqeSdfbu5uDc4MjGxtTY2NjY2NjY2NjY2NjY2NjY2NjY2MvY2NjY2NjY2MTXREdKTVBUd8HB2vP96trMwMPHy8/S1drg5ujp6enp6enp6enp6enpr5JuZWFbXV5ndnNtZGRkZGJhYWx0dXV1dXV1gpGQjYR1bWViXFNZWFmJj5KarZ3CydXY2NjY2NjY2NjY2NjY2NTK2NjY2NjY2NjY2NjY2JvXREdJTVBUg/z////u4uLp69/VzszQ09bZ3ePm5+np6enp6enq6elQVmByiJGGb15ZWltodHV1dXV1dXRpXE9GSEZFQkFHUFNaZnZ9g4mPlp2kqqysrJZgqNXY19jY2NjY2NjY2NjY2KzC2NjY2NjY2NjX19bW1MXRQ0dJTE9TVoXY/v+3rLC0ub3BxsrN0NPW2dzf4eXo6enp6emFhXhsbmllaXKEjHZ1dXV1dGtcU09MTkxYZG90dHV1dXZ3e4KLlp+lp6iqqqurq6uqqqqGYref19jY2MrK2NjY2NjY2MvJ2NjX19fW1dTS0dLc/f3+Q0ZJTE9TVllceML03Luytrq+wsbJzdDU1tnb3eDk5+np6V9rd5CkpaWgmZGKeFxPUVNQUV5tdnd2dnV0dHR0dX2GkZmfpamrrKyrq6uqqqmpqampqamJdWe32NjY2NjY2NjY2NfX19bV1NPR0NDX3///5LOtooV1Q0ZITE9SVVhcYYKlwuTu3cu8v8PHys7R09bZ293ghouap6eflYx9Y1ZWUVRWZYCcpaikl4uBe3d1dXZ2eH2KmaSoqqusq6uqqamqqamqqqqqqqqml5J5dW6l2M24oZqoxdTT0tHPz87W3vvz6NnZ1NXb/vbgWkFBQ0VIS09SVVhbYYeipqqyx9vp6d7RyMvO0dPW2Id1hoFqXFZWVldheImTnKSoq6uqqqqnoZaNhYB+f4OLl6KnqaqqqquqqamqqqqqqqqqqqqqqKONdnFgWltfZWJydXVxYmJznJJYWFVVYFxSTlRzl8Ly+7WKeXNcQ0VIS05RVmh5h62+wcPAw8jN1+j/++7cztHU1lZXWWF2gIWNlZ2kqaqrqqqqqqqqqqqpqKalpKOkpaepqampqaqqqqqqqqqqqqqqqqmlnJKEaVxZWl52g4uSlpaTjIV+eXZ1dXFYV1VTUlFQTlxWUEhOarL+/v7+SnSjxdnt+v/////9+vXv6+bi397e7P2de3d/iJKaoaWnqaqqqqqqqqqpqqqqqaqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqppJqPemRcWltogZCWnqeqqqioqKempqalpJ2QfXV1bFVTUlFQTUxKSkhHT57/////+//////////7qqCipKeqrbC0t7m9bHV6hpajqqyrq6qqqqmpqamqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqibgHBjXV9thZqfoaWpqqqqqqmqqaqqqqqqqaqqqqqqpn11dXBWYWt1e4SPorrY+v7+/uzC+v/////////kaJOfo6aprK+ztrhLdXiDlqWqq6uqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqagm5B9dXBrZF1mfo2XoaiqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqIR1dXVUXnubwfL9/v////anX0JB';
 var lumGrid = null;
 try { var raw = atob(LUM_B64); lumGrid = new Uint8Array(raw.length); for (var li = 0; li < raw.length; li++) lumGrid[li] = raw.charCodeAt(li); } catch (e) { lumGrid = null; }
-function lumAt(x, y) { /* 0..1 water brightness at design position (x,y); 0.5 if the grid is unavailable */
+function lumAt(x, y) {
 if (!lumGrid) return 0.5;
 var gx = Math.floor(x * LUM_W / DW), gy = Math.floor(y * LUM_H / LUM_DH);
 gx = gx < 0 ? 0 : (gx >= LUM_W ? LUM_W - 1 : gx); gy = gy < 0 ? 0 : (gy >= LUM_H ? LUM_H - 1 : gy);
 return lumGrid[gy * LUM_W + gx] / 255;
 }
 
-var maskImg = new Image(); /* no crossOrigin: nothing here ever reads pixels back from the pictures */
+var maskImg = new Image();
 var maskPx = null, maskW = 0, maskH = 0, maskOk = false;
 var raf = 0, last = 0, fadeUntil = 0, wasLight = root.classList.contains('theme-light');
 var layers = [];
 
 function isLight() { return root.classList.contains('theme-light'); }
 
-/* displacement of the water surface at image position (x,y) and phase t (0..TAU over LOOP seconds) */
 function warp(x, y, t, out) {
 var k = (y - 560) / 520; k = k < 0 ? 0 : (k > 1 ? 1 : k);
-var amp = 0.4 + 0.6 * k; /* bigger movement nearer the viewer */
+var amp = 0.4 + 0.6 * k;
 out[0] = amp * (7.0 * Math.sin(y * 0.012 + x * 0.004 - t * 3)
 + 3.0 * Math.sin(y * 0.026 - x * 0.016 + t * 5 + 2.1)
 + 1.0 * Math.sin(y * 0.060 + x * 0.035 - t * 7));
@@ -3046,7 +2966,6 @@ out[1] = amp * (5.0 * Math.sin(x * 0.010 - y * 0.006 + t * 3 + 1.3)
 + 0.8 * Math.sin(x * 0.055 - y * 0.045 + t * 7 + 0.7));
 }
 
-/* ---- one water layer per theme ---- */
 function makeLayer(cv, url, isLightLayer) {
 if (!cv) return null;
 var ctx = cv.getContext('2d');
@@ -3054,7 +2973,7 @@ if (!ctx) { removeCanvas(cv); return null; }
 var L = {
 cv: cv, ctx: ctx, light: isLightLayer, img: new Image(), imgOk: false, ready: false,
 tiles: [], spawn: [], sparks: [], DH: 1080,
-pal: isLightLayer ? SPARK_PALETTES.light : null /* no sparkles in the dark theme */
+pal: isLightLayer ? SPARK_PALETTES.light : null
 };
 L.img.onload = function () { L.imgOk = true; tryBuild(); };
 L.img.onerror = function () { try { console.warn('[water-fx] ' + (isLightLayer ? 'light' : 'night') + ' background failed to load'); } catch (e) {} removeCanvas(cv); L.dead = true; };
@@ -3062,12 +2981,11 @@ L.img.src = url;
 return L;
 }
 
-/* which tiles touch water, how far each one is from the water's edge, and where sparkles may spawn */
-var EDGE_CALM_FROM = 1.5, EDGE_CALM_TO = 5; /* tiles from the edge: no shift at FROM, full shift at TO */
-var SPARK_EDGE_GONE = 3, SPARK_EDGE_FULL = 6; /* tiles from the edge: sparkles invisible at GONE, full at FULL */
-var SPARK_SPAWN_DEPTH = 7; /* sparkles only spawn at least this many tiles inside the water */
+var EDGE_CALM_FROM = 1.5, EDGE_CALM_TO = 5;
+var SPARK_EDGE_GONE = 3, SPARK_EDGE_FULL = 6;
+var SPARK_SPAWN_DEPTH = 7;
 function smooth(a, b, x) { var t = (x - a) / (b - a); t = t < 0 ? 0 : (t > 1 ? 1 : t); return t * t * (3 - 2 * t); }
-function depthAt(L, x, y) { /* distance from the water edge, in tiles, at design position (x,y) */
+function depthAt(L, x, y) {
 var tx = Math.floor(x / T), ty = Math.floor(y / T);
 tx = tx < 0 ? 0 : (tx >= L.cols ? L.cols - 1 : tx); ty = ty < 0 ? 0 : (ty >= L.rows ? L.rows - 1 : ty);
 return L.depth[ty * L.cols + tx];
@@ -3088,7 +3006,6 @@ for (var yy = y0; yy < y1 && yy < mh; yy++) for (var xx = x0; xx < x1 && xx < mw
 rawA[ty * cols + tx] = n ? sum / n / 255 : 0;
 }
 }
-/* distance (in tiles) from each tile to the nearest non-water tile; the picture's own border does not count as an edge */
 var BIG = 9999, dep = new Float32Array(cols * rows), i, x, y, v;
 for (i = 0; i < dep.length; i++) dep[i] = rawA[i] > 0.5 ? BIG : 0;
 for (y = 0; y < rows; y++) for (x = 0; x < cols; x++) {
@@ -3115,7 +3032,7 @@ L.depth = dep;
 for (var ty2 = 0; ty2 < rows; ty2++) {
 for (var tx2 = 0; tx2 < cols; tx2++) {
 var k = ty2 * cols + tx2, a = rawA[k];
-if (a > 0.02) L.tiles.push({ x: tx2 * T, y: ty2 * T, a: smooth(EDGE_CALM_FROM, EDGE_CALM_TO, dep[k]) }); /* a = how much this tile may shift */
+if (a > 0.02) L.tiles.push({ x: tx2 * T, y: ty2 * T, a: smooth(EDGE_CALM_FROM, EDGE_CALM_TO, dep[k]) });
 if (a > 0.9 && dep[k] >= SPARK_SPAWN_DEPTH) L.spawn.push({ x: tx2 * T, y: ty2 * T });
 }
 }
@@ -3127,25 +3044,19 @@ for (var sn = 0; sn < SPARK_COUNT; sn++) { var sp = {}; spawnSpark(L, sp, tNow, 
 L.ready = true;
 }
 
-/* ---- sparkles ---- */
-/* type 0 = dot, 1 = dash, 2 = ripple ring, 3 = cross glint */
 function spawnSpark(L, p, tSec, aged) {
 var tl = L.spawn[(Math.random() * L.spawn.length) | 0];
 p.x = tl.x + Math.random() * T;
 p.y = tl.y + Math.random() * T;
-/* slow drift across the surface: mostly one way, a few going against it */
 p.vx = (Math.random() < 0.8 ? 1 : -1) * (3 + Math.random() * 9);
 p.vy = (Math.random() - 0.5) * 3;
-/* light theme: is the water where this one will drift pale (foam / cyan) or deep blue? */
 p.pale = L.light && lumAt(p.x + p.vx * 1.8, p.y + p.vy * 1.8) > PALE_AT;
 var r = Math.random();
-if (p.pale) p.type = r < 0.55 ? 1 : 2; /* pale water: only shimmer dashes and ripple rings, no dots or crosses */
-else p.type = r < 0.40 ? 0 : (r < 0.68 ? 1 : (r < 0.86 ? 2 : 3));
-p.size = (p.type === 0 ? 0.8 + Math.random() * 1.3 /* dot radius */
-: p.type === 1 ? 2.5 + Math.random() * 4.5 /* dash half-length */
-: p.type === 2 ? 3 + Math.random() * 5.5 /* ring max radius */
-: 2.5 + Math.random() * 3) * SPARK_SIZE; /* glint arm length */
-p.life = p.type === 2 ? 1.4 + Math.random() * 1.4 : 1.8 + Math.random() * 3.2;
+p.type = p.pale ? 1 : (r < 0.34 ? 0 : (r < 0.72 ? 1 : 2));
+p.size = (p.type === 0 ? 0.8 + Math.random() * 1.3
+: p.type === 1 ? 2.5 + Math.random() * 4.5
+: 2.5 + Math.random() * 3) * SPARK_SIZE;
+p.life = 1.8 + Math.random() * 3.2;
 p.a = 0.4 + Math.random() * 0.5;
 var cols = L.pal.colors;
 if (L.light) cols = p.pale ? L.pal.onPale : L.pal.onBlue;
@@ -3153,7 +3064,7 @@ p.col = cols[(Math.random() * cols.length) | 0];
 p.rot = (Math.random() - 0.5) * 0.3;
 p.tw = 2 + Math.random() * 5;
 p.ph = Math.random() * TAU;
-p.born = aged ? tSec - Math.random() * p.life : tSec + 0.4 + Math.random() * 2.2; /* random pause before respawning, so they don't pulse in step */
+p.born = aged ? tSec - Math.random() * p.life : tSec + 0.4 + Math.random() * 2.2;
 }
 
 var d = [0, 0];
@@ -3165,41 +3076,31 @@ var p = sp[i], age = tSec - p.born;
 if (age < 0) continue;
 if (age > p.life) { spawnSpark(L, p, tSec, false); continue; }
 var u = age / p.life;
-var env = Math.sin(Math.PI * u); env *= env; /* smooth fade in and out */
+var env = Math.sin(Math.PI * u); env *= env;
 var px = p.x + p.vx * age, py = p.y + p.vy * age;
 warp(px, py, t, d);
 var wx = px + d[0], wy = py + d[1];
 var X = offX + wx * s, Y = offY + wy * s;
 if (X < -20 || Y < -20 || X > cw + 20 || Y > ch + 20) continue;
-var ef = smooth(SPARK_EDGE_GONE, SPARK_EDGE_FULL, depthAt(L, wx, wy)); /* fade out before reaching the water's edge */
+var ef = smooth(SPARK_EDGE_GONE, SPARK_EDGE_FULL, depthAt(L, wx, wy));
 if (ef < 0.03) continue;
 var k2 = (py - 560) / 520; k2 = k2 < 0 ? 0 : (k2 > 1 ? 1 : k2);
-var pm = (0.55 + 0.75 * k2) * s; /* perspective: smaller toward the horizon */
-var flat = 0.35 + 0.3 * k2; /* ...and squashed flatter */
+var pm = (0.55 + 0.75 * k2) * s;
+var flat = 0.35 + 0.3 * k2;
 var c = p.col, al, rx, ry, am = p.pale ? L.pal.paleAlpha : L.pal.alpha;
 
-if (p.type === 2) { /* ripple ring: grows outward while it fades */
-var rr = p.size * pm * Math.pow(u, 0.6);
-if (rr < 0.8) continue;
-al = Math.min(1, p.a * am) * Math.pow(1 - u, 1.4) * Math.min(1, u * 8) * ef;
-ctx.strokeStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + al.toFixed(3) + ')';
-ctx.lineWidth = Math.max(L.pal.lineMin, 0.9 * pm);
-ctx.beginPath(); ctx.ellipse(X, Y, rr, rr * flat, 0, 0, TAU); ctx.stroke();
-continue;
-}
-
-var tw = p.type === 3 ? Math.max(0, Math.sin(tSec * p.tw + p.ph)) : 0.65 + 0.35 * Math.sin(tSec * p.tw + p.ph);
+var tw = p.type === 2 ? Math.max(0, Math.sin(tSec * p.tw + p.ph)) : 0.65 + 0.35 * Math.sin(tSec * p.tw + p.ph);
 al = env * tw * Math.min(1, p.a * am) * ef;
 if (al < 0.02) continue;
 ctx.fillStyle = 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + al.toFixed(3) + ')';
-if (p.type === 0) { /* small round dot with a faint halo */
+if (p.type === 0) {
 rx = Math.max(0.6, p.size * pm); ry = rx * (0.6 + 0.3 * k2);
 ctx.beginPath(); ctx.ellipse(X, Y, rx, ry, 0, 0, TAU); ctx.fill();
 ctx.globalAlpha = 0.28; ctx.beginPath(); ctx.ellipse(X, Y, rx * 2.2, ry * 2.2, 0, 0, TAU); ctx.fill(); ctx.globalAlpha = 1;
-} else if (p.type === 1) { /* short horizontal dash of light */
+} else if (p.type === 1) {
 rx = Math.max(1.2, p.size * pm); ry = Math.max(L.pal.lineMin * 0.7, 0.6 * pm);
 ctx.beginPath(); ctx.ellipse(X, Y, rx, ry, p.rot, 0, TAU); ctx.fill();
-} else { /* tiny cross-shaped glint */
+} else {
 rx = Math.max(1.4, p.size * pm); ry = Math.max(L.pal.lineMin * 0.7, 0.55 * pm);
 ctx.beginPath(); ctx.ellipse(X, Y, rx, ry, 0, 0, TAU); ctx.fill();
 ctx.beginPath(); ctx.ellipse(X, Y, ry, rx * (0.45 + 0.25 * k2), 0, 0, TAU); ctx.fill();
@@ -3214,9 +3115,9 @@ var dpr = Math.min(window.devicePixelRatio || 1, 1.5);
 var cw = Math.round(cv.clientWidth * dpr), ch = Math.round(cv.clientHeight * dpr);
 if (!cw || !ch) return;
 if (cv.width !== cw || cv.height !== ch) { cv.width = cw; cv.height = ch; }
-var s = Math.max(cw / DW, ch / DH); /* same maths as background-size: cover */
+var s = Math.max(cw / DW, ch / DH);
 var offX = (cw - DW * s) / 2, offY = (ch - DH * s) / 2;
-var k = img.naturalWidth / DW; /* design px -> source picture px */
+var k = img.naturalWidth / DW;
 var t = ((now / 1000) % LOOP) / LOOP * TAU;
 
 ctx.globalCompositeOperation = 'source-over';
@@ -3224,7 +3125,6 @@ ctx.clearRect(0, 0, cw, ch);
 ctx.imageSmoothingEnabled = true;
 for (var i = 0; i < tiles.length; i++) {
 var tl = tiles[i];
-/* destination rectangle snapped to whole device pixels, so neighbouring tiles never leave seams */
 var dx0 = Math.round(offX + tl.x * s), dx1 = Math.round(offX + (tl.x + T) * s);
 var dy0 = Math.round(offY + tl.y * s), dy1 = Math.round(offY + (tl.y + T) * s);
 if (dx1 <= 0 || dy1 <= 0 || dx0 >= cw || dy0 >= ch) continue;
@@ -3237,39 +3137,34 @@ sy = sy < 0 ? 0 : (sy > DH - sh ? DH - sh : sy);
 ctx.drawImage(img, sx * k, sy * k, sw * k, sh * k, dx0, dy0, dx1 - dx0, dy1 - dy0);
 }
 
-/* small light-blue sparkles drifting over the surface */
 if (L.sparks.length) drawSparks(L, now / 1000, t, offX, offY, s, cw, ch);
 
-/* keep only the water region (feathered edge) */
 ctx.globalCompositeOperation = 'destination-in';
 ctx.drawImage(maskImg, offX, offY, DW * s, DH * s);
 ctx.globalCompositeOperation = 'source-over';
 if (!cv.classList.contains('is-live')) cv.classList.add('is-live');
 }
 
-/* ---- run loop ---- */
 function layerRuns(L) {
 if (!L.ready || L.dead || document.hidden || root.classList.contains('intro-off')) return false;
-return L.light === isLight() || performance.now() < fadeUntil; /* the outgoing layer keeps moving while it fades out */
+return L.light === isLight() || performance.now() < fadeUntil;
 }
 function anyRuns() { for (var i = 0; i < layers.length; i++) if (layerRuns(layers[i])) return true; return false; }
 var drawEma = 0;
 function frame(now) {
 raf = 0;
 if (!anyRuns()) return;
-/* 3 ms of slack keeps a steady 30fps on 60Hz screens (a 33.3 ms gap otherwise fails the test at random and drops frames to 20fps) */
 if (now - last >= FPS_GAP - 3) {
 last = now;
 var t0 = performance.now();
 for (var i = 0; i < layers.length; i++) {
 var Lr = layers[i];
 if (!layerRuns(Lr)) continue;
-try { draw(Lr, now); } catch (err) { /* one bad frame never freezes the loop: drop that layer and keep the still background */
+try { draw(Lr, now); } catch (err) {
 try { console.warn('[water-fx] draw error: ' + err.message); } catch (e) {}
 Lr.dead = true; removeCanvas(Lr.cv);
 }
 }
-/* quality governor: if drawing is slow on this device, lower the frame rate instead of stuttering the page */
 var ms = performance.now() - t0;
 drawEma = drawEma ? drawEma * 0.9 + ms * 0.1 : ms;
 if (drawEma > FPS_GAP * 0.55 && FPS_GAP < 100) { FPS_GAP = Math.min(100, FPS_GAP * 1.3); drawEma = 0; }
@@ -3287,7 +3182,6 @@ sync();
 }).observe(root, { attributes: true, attributeFilter: ['class'] });
 document.addEventListener('visibilitychange', sync);
 
-/* ---- loading ---- */
 function readMask() {
 var oc = document.createElement('canvas'); oc.width = maskW = maskImg.naturalWidth; oc.height = maskH = maskImg.naturalHeight;
 var oc2 = oc.getContext('2d'); oc2.drawImage(maskImg, 0, 0);
