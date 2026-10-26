@@ -38,6 +38,35 @@
         document.documentElement.classList.add('landing-intro-active', 'intro-seq-pending');
         setTimeout(function () { document.documentElement.classList.remove('intro-seq-pending'); }, 4400);
 
+        // Theme: follows the system light/dark setting, with a manual override from the
+        // sun/moon button. Sets html.theme-light / html.theme-dark before first paint.
+        (function () {
+            var root = document.documentElement, KEY = 'hama-theme';
+            var mq = window.matchMedia ? window.matchMedia('(prefers-color-scheme: light)') : null;
+            var saved = null;
+            try { saved = localStorage.getItem(KEY); } catch (e) {}
+            function apply(t) {
+                root.classList.toggle('theme-light', t === 'light');
+                root.classList.toggle('theme-dark', t !== 'light');
+                try { document.dispatchEvent(new CustomEvent('hama-themechange', { detail: t })); } catch (e) {}
+            }
+            window.hamaTheme = {
+                get: function () { return root.classList.contains('theme-light') ? 'light' : 'dark'; },
+                toggle: function () {
+                    var next = this.get() === 'light' ? 'dark' : 'light';
+                    try { localStorage.setItem(KEY, next); } catch (e) {}
+                    apply(next);
+                }
+            };
+            apply(saved === 'light' || saved === 'dark' ? saved : (mq && mq.matches ? 'light' : 'dark'));
+            // changing the system setting always wins and clears the manual choice
+            function onSystem(e) {
+                try { localStorage.removeItem(KEY); } catch (err) {}
+                apply(e.matches ? 'light' : 'dark');
+            }
+            if (mq) { if (mq.addEventListener) mq.addEventListener('change', onSystem); else if (mq.addListener) mq.addListener(onSystem); }
+        })();
+
         // Colour-scheme background crossfade: block the transition on first paint only,
         // so later light/dark switches fade smoothly between the two images.
         document.documentElement.classList.add('no-bg-transition');
@@ -160,18 +189,36 @@
             justify-content: space-between;
             z-index: 210;
             flex-shrink: 0;
+            /* same treatment as the nav icons: white at 55%, brightening to full on hover */
+            opacity: 0.55;
+            transition: opacity 0.2s;
+        }
+        .menu-toggle::after {            /* larger invisible hit area */
+            content: '';
+            position: absolute;
+            inset: -12px -10px;
+        }
+        .menu-toggle:hover,
+        .menu-toggle:focus-visible,
+        .menu-toggle.open { opacity: 1; }
+        .menu-toggle:focus-visible {
+            outline: 1px solid rgba(255, 255, 255, 0.6);
+            outline-offset: 6px;
+            border-radius: 2px;
         }
         .menu-toggle span {
             display: block;
             width: 100%;
-            height: 1px;
-            background: #777;
+            height: 2px;
+            background: #fff;
+            border-radius: 1px;
             transition: all 0.3s ease;
         }
         .menu-toggle span:nth-child(2) { width: 60%; }
-        .menu-toggle.open span:nth-child(1) { transform: translateY(7.5px) rotate(45deg); }
+        .menu-toggle:hover span:nth-child(2) { width: 100%; }
+        .menu-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
         .menu-toggle.open span:nth-child(2) { opacity: 0; }
-        .menu-toggle.open span:nth-child(3) { transform: translateY(-7.5px) rotate(-45deg); }
+        .menu-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
         .nav-overlay {
             position: fixed;
@@ -325,6 +372,50 @@
             stroke: #aaa;
             fill: none;
             stroke-width: 1.5;
+        }
+
+        /* Sun / moon theme switch (intro only; fades out as the main page scrolls in).
+           --tt-fade is driven by the intro scroll progress in JS. */
+        .theme-toggle {
+            position: relative;
+            width: 22px;
+            height: 22px;
+            padding: 0;
+            background: none;
+            border: none;
+            color: #fff;
+            flex-shrink: 0;
+            opacity: calc(var(--tt-fade, 1) * 0.55);
+            transition: opacity 0.2s;
+        }
+        .theme-toggle:hover,
+        .theme-toggle:focus-visible { opacity: var(--tt-fade, 1); }
+        .theme-toggle:focus-visible {
+            outline: 1px solid rgba(255, 255, 255, 0.6);
+            outline-offset: 4px;
+            border-radius: 4px;
+        }
+        .theme-toggle svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            transition: opacity 0.5s ease, transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        /* shows the current mode: moon in dark, sun in light */
+        .theme-toggle .icon-sun  { opacity: 0; transform: rotate(-90deg) scale(0.4); }
+        .theme-toggle .icon-moon { opacity: 1; transform: none; }
+        html.theme-light .theme-toggle .icon-sun  { opacity: 1; transform: none; }
+        html.theme-light .theme-toggle .icon-moon { opacity: 0; transform: rotate(90deg) scale(0.4); }
+        /* no intro (or intro disabled) = nothing to switch */
+        html:not(.landing-intro-active) .theme-toggle { display: none; }
+        @media (prefers-reduced-motion: reduce) {
+            .theme-toggle svg { transition: opacity 0.01s; }
         }
 
         .share-card,
@@ -991,7 +1082,8 @@
                 gap: 10px;
             }
             .hero-socials img,
-            .share-trigger-btn svg {
+            .share-trigger-btn svg,
+            .theme-toggle {
                 width: 20px;
                 height: 20px;
             }
@@ -1097,7 +1189,8 @@
                 gap: 8px;
             }
             .hero-socials img,
-            .share-trigger-btn svg {
+            .share-trigger-btn svg,
+            .theme-toggle {
                 width: 18px;
                 height: 18px;
             }
@@ -1198,10 +1291,8 @@
             background-image: url('https://gavinoriley.github.io/assets/backgroundhamalight.png');
             opacity: 0;
         }
-        @media (prefers-color-scheme: light) {
-            .landing-bg { background-color: #e9e9ee; }
-            .landing-bg::after { opacity: 1; }
-        }
+        html.theme-light .landing-bg { background-color: #e9e9ee; }
+        html.theme-light .landing-bg::after { opacity: 1; }
         /* no transition on first paint, so the page never fades in from the wrong image */
         html.no-bg-transition .landing-bg,
         html.no-bg-transition .landing-bg::before,
@@ -1598,94 +1689,93 @@
            visual language as the game's own captions: white lettering with a thick
            near-black outline (stroke painted behind the fill so letters stay crisp).
            Buttons become dark glass pills to match the video window.
-           All properties transition in step with the background fade. */
-        @media (prefers-color-scheme: light) {
-            /* Outline is built from a ring of text-shadows instead of -webkit-text-stroke:
-               the stroke uses mitred joins, which shoot spikes out of sharp glyph corners
-               (e.g. the bottoms of "w"). Shadows give a smooth, rounded outline. */
-            .landing-tagline,
-            .landing-side-text,
-            .landing-scroll-hint span {
-                --ink-outline:
-                    1px 0px 0 #0b0b16,
-                    0.87px 0.5px 0 #0b0b16,
-                    0.5px 0.87px 0 #0b0b16,
-                    0px 1px 0 #0b0b16,
-                    -0.5px 0.87px 0 #0b0b16,
-                    -0.87px 0.5px 0 #0b0b16,
-                    -1px 0px 0 #0b0b16,
-                    -0.87px -0.5px 0 #0b0b16,
-                    -0.5px -0.87px 0 #0b0b16,
-                    -0px -1px 0 #0b0b16,
-                    0.5px -0.87px 0 #0b0b16,
-                    0.87px -0.5px 0 #0b0b16,
-                    2px 0px 0 #0b0b16,
-                    1.93px 0.52px 0 #0b0b16,
-                    1.73px 1px 0 #0b0b16,
-                    1.41px 1.41px 0 #0b0b16,
-                    1px 1.73px 0 #0b0b16,
-                    0.52px 1.93px 0 #0b0b16,
-                    0px 2px 0 #0b0b16,
-                    -0.52px 1.93px 0 #0b0b16,
-                    -1px 1.73px 0 #0b0b16,
-                    -1.41px 1.41px 0 #0b0b16,
-                    -1.73px 1px 0 #0b0b16,
-                    -1.93px 0.52px 0 #0b0b16,
-                    -2px 0px 0 #0b0b16,
-                    -1.93px -0.52px 0 #0b0b16,
-                    -1.73px -1px 0 #0b0b16,
-                    -1.41px -1.41px 0 #0b0b16,
-                    -1px -1.73px 0 #0b0b16,
-                    -0.52px -1.93px 0 #0b0b16,
-                    -0px -2px 0 #0b0b16,
-                    0.52px -1.93px 0 #0b0b16,
-                    1px -1.73px 0 #0b0b16,
-                    1.41px -1.41px 0 #0b0b16,
-                    1.73px -1px 0 #0b0b16,
-                    1.93px -0.52px 0 #0b0b16;
-                text-shadow: var(--ink-outline), 0 3px 8px rgba(0, 0, 0, 0.35);
-            }
+           All properties transition in step with the background fade.
+           Applied via html.theme-light (set from the system setting or the sun/moon button). */
+        /* Outline is built from a ring of text-shadows instead of -webkit-text-stroke:
+           the stroke uses mitred joins, which shoot spikes out of sharp glyph corners
+           (e.g. the bottoms of "w"). Shadows give a smooth, rounded outline. */
+        html.theme-light .landing-tagline,
+        html.theme-light .landing-side-text,
+        html.theme-light .landing-scroll-hint span {
+            --ink-outline:
+                1px 0px 0 #0b0b16,
+                0.87px 0.5px 0 #0b0b16,
+                0.5px 0.87px 0 #0b0b16,
+                0px 1px 0 #0b0b16,
+                -0.5px 0.87px 0 #0b0b16,
+                -0.87px 0.5px 0 #0b0b16,
+                -1px 0px 0 #0b0b16,
+                -0.87px -0.5px 0 #0b0b16,
+                -0.5px -0.87px 0 #0b0b16,
+                -0px -1px 0 #0b0b16,
+                0.5px -0.87px 0 #0b0b16,
+                0.87px -0.5px 0 #0b0b16,
+                2px 0px 0 #0b0b16,
+                1.93px 0.52px 0 #0b0b16,
+                1.73px 1px 0 #0b0b16,
+                1.41px 1.41px 0 #0b0b16,
+                1px 1.73px 0 #0b0b16,
+                0.52px 1.93px 0 #0b0b16,
+                0px 2px 0 #0b0b16,
+                -0.52px 1.93px 0 #0b0b16,
+                -1px 1.73px 0 #0b0b16,
+                -1.41px 1.41px 0 #0b0b16,
+                -1.73px 1px 0 #0b0b16,
+                -1.93px 0.52px 0 #0b0b16,
+                -2px 0px 0 #0b0b16,
+                -1.93px -0.52px 0 #0b0b16,
+                -1.73px -1px 0 #0b0b16,
+                -1.41px -1.41px 0 #0b0b16,
+                -1px -1.73px 0 #0b0b16,
+                -0.52px -1.93px 0 #0b0b16,
+                -0px -2px 0 #0b0b16,
+                0.52px -1.93px 0 #0b0b16,
+                1px -1.73px 0 #0b0b16,
+                1.41px -1.41px 0 #0b0b16,
+                1.73px -1px 0 #0b0b16,
+                1.93px -0.52px 0 #0b0b16;
+            text-shadow: var(--ink-outline), 0 3px 8px rgba(0, 0, 0, 0.35);
+        }
 
-            .landing-tagline,
-            .landing-tagline.is-lit {
-                color: #fff;
-                filter: none;
-            }
-            .landing-tagline.is-lit {
-                text-shadow: var(--ink-outline), 0 3px 8px rgba(0, 0, 0, 0.35),
-                             0 0 16px rgba(255, 255, 255, 0.55);
-            }
+        html.theme-light .landing-tagline,
+        html.theme-light .landing-tagline.is-lit {
+            color: #fff;
+            filter: none;
+        }
+        html.theme-light .landing-tagline.is-lit {
+            text-shadow: var(--ink-outline), 0 3px 8px rgba(0, 0, 0, 0.35),
+                         0 0 16px rgba(255, 255, 255, 0.55);
+        }
 
-            /* video window: softer, cooler shadow so it sits on the bright art
-               instead of casting a heavy black halo */
-            .landing-video-window {
-                box-shadow: 0 18px 44px rgba(18, 22, 60, 0.45),
-                            0 0 0 1px rgba(255, 255, 255, 0.35);
-            }
+        /* video window: softer, cooler shadow so it sits on the bright art
+           instead of casting a heavy black halo */
+        html.theme-light .landing-video-window {
+            box-shadow: 0 18px 44px rgba(18, 22, 60, 0.45),
+                        0 0 0 1px rgba(255, 255, 255, 0.35);
+        }
 
-            .landing-side-text {
-                --side-color: #fff;
-            }
+        html.theme-light .landing-side-text {
+            --side-color: #fff;
+        }
 
-            .landing-pill-btn {
-                background: rgba(12, 12, 22, 0.8);
-                color: #f4f4fa;
-                border-color: rgba(255, 255, 255, 0.28);
-                box-shadow: 0 6px 20px rgba(10, 10, 30, 0.35);
-            }
-            .landing-pill-btn:hover {
-                background: rgba(30, 30, 48, 0.92);
-                color: #fff;
-                border-color: rgba(255, 255, 255, 0.65);
-            }
+        html.theme-light .landing-pill-btn {
+            background: rgba(12, 12, 22, 0.8);
+            color: #f4f4fa;
+            border-color: rgba(255, 255, 255, 0.28);
+            box-shadow: 0 6px 20px rgba(10, 10, 30, 0.35);
+        }
+        html.theme-light .landing-pill-btn:hover {
+            background: rgba(30, 30, 48, 0.92);
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.65);
+        }
 
-            .landing-scroll-hint {
-                --hint-color: #fff;
-                --hint-opacity: 1;
-            }
-            .landing-scroll-arrow {
-                filter: drop-shadow(0 0 1px #0b0b16) drop-shadow(0 0 1px #0b0b16) drop-shadow(0 0 1px #0b0b16);
-            }
+        html.theme-light .landing-scroll-hint {
+            --hint-color: #fff;
+            --hint-opacity: 1;
+        }
+        html.theme-light .landing-scroll-arrow {
+            filter: drop-shadow(0 0 1px #0b0b16) drop-shadow(0 0 1px #0b0b16) drop-shadow(0 0 1px #0b0b16);
         }
     </style>
 
@@ -1726,6 +1816,10 @@
         </button>
 
         <div class="hero-socials">
+            <button type="button" class="theme-toggle" id="themeToggleBtn" aria-label="Switch to light mode">
+                <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+            </button>
             <div class="x-hover-wrapper" style="position:relative;">
                 <a href="https://x.com/imgavinoriley" target="_blank" rel="noopener noreferrer" aria-label="X">
                     <img src="https://gavinoriley.github.io/assets/whitex.png" alt="X">
@@ -2322,6 +2416,7 @@
             var pinZone    = document.getElementById('heroPinZone');
             var pinnedHero = pinZone.querySelector('.title-section');
             var site       = document.getElementById('wrapper');
+            var themeBtn   = document.getElementById('themeToggleBtn');
 
             var swipeDone  = false;
 
@@ -2449,6 +2544,12 @@
                 content.style.transform = 'scale(' + (1 - out * 0.08).toFixed(3) + ')';
                 content.style.pointerEvents = out < 0.8 ? 'auto' : 'none';
                 content.style.visibility = out >= 1 ? 'hidden' : '';
+                if (themeBtn) {
+                    /* sun/moon switch fades out with the intro and is gone by the main page */
+                    themeBtn.style.setProperty('--tt-fade', (1 - out).toFixed(3));
+                    themeBtn.style.pointerEvents = out < 0.8 ? '' : 'none';
+                    themeBtn.style.visibility = out >= 1 ? 'hidden' : '';
+                }
 
                 var bgOut = clamp((p - BG_START) / (BG_END - BG_START));
                 bgEl.style.opacity = (1 - bgOut).toFixed(3);
@@ -2773,6 +2874,20 @@
                 if (performance.now() - openedAt > 250) hide();
             });
             document.addEventListener('keydown', function (e) { if (e.key === 'Escape') hide(); });
+        })();
+    </script>
+    <script>
+        (function () {
+            var btn = document.getElementById('themeToggleBtn');
+            if (!btn || !window.hamaTheme) return;
+            function sync() {
+                var light = window.hamaTheme.get() === 'light';
+                var label = light ? 'Switch to dark mode' : 'Switch to light mode';
+                btn.setAttribute('aria-label', label);
+            }
+            btn.addEventListener('click', function () { window.hamaTheme.toggle(); });
+            document.addEventListener('hama-themechange', sync);
+            sync();
         })();
     </script>
 </body>
