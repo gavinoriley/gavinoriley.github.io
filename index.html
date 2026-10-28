@@ -10,22 +10,28 @@
   if (!root.classList.contains('landing-intro-active')) { kill('intro inactive'); return; }
   var ctx = cv.getContext('2d');
   if (!ctx) { kill('no 2d context'); return; }
+
   var RAY_RGB    = [255, 244, 214];
   var STRENGTH   = 1.3;
   var RAY_COUNT  = 18;
   var SPEED      = 1.0;
-  var RES_DIV    = 3;
-  var FPS_GAP    = 1000 / 30, FADE_MS = 1500;
+  var RES_DIV    = 4;
+  var MIN_GAP    = 1000 / 24, MAX_GAP = 100, FADE_MS = 1500;
+  var SCROLL_IDLE_MS = 160;
   var SUN_X      = 0.47;
   var SUN_Y      = -0.40;
   var FOOT_MIN   = -0.30;
   var FOOT_MAX   = 1.30;
   var LEFT_BOOST = 2.0;
+
   var reduced = !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches);
-  var PROFILE = [[1.00, 0.22], [0.78, 0.22], [0.54, 0.22], [0.30, 0.20], [0.12, 0.16]];
-  var STOPS = 18;
+
+  var PROFILE = [[1.00, 0.22], [0.72, 0.24], [0.46, 0.26], [0.20, 0.28]];
+  var STOPS = 12;
+
   var seed = 7;
   function rnd() { seed = (seed * 16807) % 2147483647; return (seed - 1) / 2147483646; }
+
   var rays = [];
   for (var i = 0; i < RAY_COUNT; i++) {
     var u = (i + 0.5) / RAY_COUNT;
@@ -46,15 +52,19 @@
     r.a *= 1 + (LEFT_BOOST - 1) * Math.min(1, (0.5 - r.foot) / 0.3);
     r.pb = (j + 0.5) / leftRays.length * 6.283 * 1.0;
   });
-  var cw = 0, ch = 0;
-  function rgba(a) { return 'rgba(' + RAY_RGB[0] + ',' + RAY_RGB[1] + ',' + RAY_RGB[2] + ',' + a.toFixed(4) + ')'; }
+
+  var W = 0, H = 0, cw = 0, ch = 0;
+  function measure() { W = cv.clientWidth; H = cv.clientHeight; }
+  function rgba(a) { return 'rgba(' + RAY_RGB[0] + ',' + RAY_RGB[1] + ',' + RAY_RGB[2] + ',' + a.toFixed(3) + ')'; }
+
   function draw(tSec) {
-    var W = cv.clientWidth, H = cv.clientHeight;
+    if (!W || !H) measure();
     if (!W || !H) return false;
     var pw = Math.max(2, Math.round(W / RES_DIV)), ph = Math.max(2, Math.round(H / RES_DIV));
     if (cw !== pw || ch !== ph) { cv.width = cw = pw; cv.height = ch = ph; }
     ctx.setTransform(pw / W, 0, 0, ph / H, 0, 0);
     ctx.clearRect(0, 0, W, H);
+
     var t = tSec * SPEED;
     var refX = W * SUN_X;
     var ox = refX + W * (0.025 * Math.sin(t * 0.11) + 0.012 * Math.sin(t * 0.047 + 1.7));
@@ -63,6 +73,7 @@
     var footY = H * 0.9;
     var fanSway = 0.009 * Math.sin(t * 0.07 + 0.9);
     var glimmerAll = 0.88 + 0.12 * Math.sin(t * 0.21 + 0.6);
+
     var R = d0 + H * 0.62;
     var g = ctx.createRadialGradient(ox, oy, 0, ox, oy, R);
     var gk = STRENGTH * glimmerAll;
@@ -73,12 +84,14 @@
     ctx.globalAlpha = 1;
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, W, H);
+
     for (var i = 0; i < rays.length; i++) {
       var r = rays[i];
       var th = Math.atan2(r.foot * W - refX, footY - oy) + fanSway + r.sw * Math.sin(t * r.fs + r.ps);
       var breathe = 0.5 + 0.5 * Math.sin(t * r.fb + r.pb);
       var k = STRENGTH * r.a * (0.35 + 0.65 * breathe * breathe) * glimmerAll;
       if (k < 0.004) continue;
+
       var c = Math.max(0.25, Math.cos(th));
       var Ltop = d0 / c;
       var L = (d0 + H * r.len) / c;
@@ -86,6 +99,7 @@
       var pulse = -0.15 + (((t * r.sp + r.pp) % 1) + 1) % 1 * 1.3;
       var wob = 1 + 0.18 * Math.sin(t * r.fb * 1.7 + r.pp * 6.283);
       var tw = Math.tan(r.half * wob) * L;
+
       var gr = ctx.createLinearGradient(0, 0, 0, L);
       gr.addColorStop(0, rgba(Math.min(1, k)));
       for (var s = 0; s <= STOPS; s++) {
@@ -114,34 +128,53 @@
     if (!cv.classList.contains('is-live')) cv.classList.add('is-live');
     return true;
   }
+
+  if ('ResizeObserver' in window) { new ResizeObserver(measure).observe(cv); }
+  else { window.addEventListener('resize', measure); }
+
+  if (reduced) {
+    draw(12);
+    window.addEventListener('resize', function () { measure(); draw(12); });
+    return;
+  }
+
   function isLight() { return root.classList.contains('theme-light'); }
-  var raf = 0, last = 0, fadeUntil = 0, wasLight = isLight(), T0 = 40 + performance.now() / 1000;
+  var raf = 0, last = 0, gap = MIN_GAP, ema = 0, clock = 0;
+  var fadeUntil = 0, wasLight = isLight(), T0 = 40 + performance.now() / 1000;
+  var scrolling = false, scrollTimer = 0;
+
   function runs() {
-    if (document.hidden || root.classList.contains('intro-off') || !root.classList.contains('landing-intro-active')) return false;
+    if (scrolling || document.hidden || root.classList.contains('intro-off') || !root.classList.contains('landing-intro-active')) return false;
     return isLight() || performance.now() < fadeUntil;
   }
   function frame(now) {
     raf = 0;
-    if (!runs()) return;
-    if (now - last >= FPS_GAP - 3) {
+    if (!runs()) { last = 0; return; }
+    if (!last || now - last >= gap - 3) {
+      clock += last ? Math.min(100, now - last) / 1000 : 0;
       last = now;
-      try { draw(T0 + now / 1000); } catch (err) {
+      var t0 = performance.now();
+      try { draw(T0 + clock); } catch (err) {
         try { console.warn('[sun-rays] draw error: ' + err.message); } catch (e) {}
         kill('draw error'); return;
       }
+      var ms = performance.now() - t0;
+      ema = ema ? ema * 0.9 + ms * 0.1 : ms;
+      if (ema > gap * 0.45 && gap < MAX_GAP) { gap = Math.min(MAX_GAP, gap * 1.3); ema = 0; }
     }
     raf = requestAnimationFrame(frame);
   }
   function sync() {
-    if (reduced) return;
     if (runs()) { if (!raf) raf = requestAnimationFrame(frame); }
-    else if (raf) { cancelAnimationFrame(raf); raf = 0; }
+    else if (raf) { cancelAnimationFrame(raf); raf = 0; last = 0; }
   }
-  if (reduced) {
-    draw(12);
-    window.addEventListener('resize', function () { draw(12); });
-    return;
+  function onScroll() {
+    scrolling = true;
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function () { scrolling = false; sync(); }, SCROLL_IDLE_MS);
   }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
   new MutationObserver(function () {
     var light = isLight();
     if (light !== wasLight) { wasLight = light; fadeUntil = performance.now() + FADE_MS; setTimeout(sync, FADE_MS + 50); }
